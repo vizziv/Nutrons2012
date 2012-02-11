@@ -1,6 +1,8 @@
 package edu.neu.nutrons.reboundrumble.subsystems;
 
+import edu.neu.nutrons.lib.Utils;
 import edu.neu.nutrons.reboundrumble.RobotMap;
+import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterMaintainPowerCmd;
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Jaguar;
@@ -20,16 +22,25 @@ public class Shooter extends PIDSubsystem {
     private Jaguar mot = new Jaguar(RobotMap.SHOOTER_MOTOR);
     private Encoder enc = new Encoder(RobotMap.SHOOTER_ENC_A, RobotMap.SHOOTER_ENC_B,
                                       false, CounterBase.EncodingType.k1X);
+    private double power = 0;
+    private boolean enabled = false;
 
     public Shooter() {
         super(kp, ki, 0);
+        disable();
     }
 
     public void initDefaultCommand() {
+        setDefaultCommand(new ShooterMaintainPowerCmd());
     }
 
     public void setPower(double power) {
+        this.power = Utils.limit(power, -1.0, 1.0);
         mot.set(power);
+    }
+
+    public double getPower() {
+        return power;
     }
 
     public double getRate() {
@@ -37,9 +48,18 @@ public class Shooter extends PIDSubsystem {
         return enc.getRate();
     }
 
-    private double guessPower(double setpoint) {
-        // TODO: make a reasonable guess, preferably based on data.
-        return 0;
+    public void enable() {
+        enabled = true;
+        super.enable();
+    }
+
+    public void disable() {
+        enabled = false;
+        super.disable();
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 
     protected double returnPIDInput() {
@@ -48,6 +68,6 @@ public class Shooter extends PIDSubsystem {
 
     protected void usePIDOutput(double output) {
         // Start with a somewhat accurate guess and fine tune with PID.
-        mot.set(guessPower(getSetpoint()) + output);
+        mot.set(output);
     }
 }

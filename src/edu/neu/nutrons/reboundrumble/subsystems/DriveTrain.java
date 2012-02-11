@@ -3,6 +3,7 @@ package edu.neu.nutrons.reboundrumble.subsystems;
 import edu.neu.nutrons.lib.LinearVictor;
 import edu.neu.nutrons.reboundrumble.RobotMap;
 import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualCheesyCmd;
+import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -24,8 +25,10 @@ public class DriveTrain extends Subsystem {
     private LinearVictor rMot1 = new LinearVictor(RobotMap.R_1_DRIVE_MOTOR);
     private LinearVictor rMot2 = new LinearVictor(RobotMap.R_2_DRIVE_MOTOR);
     private Solenoid shifter = new Solenoid(RobotMap.SHIFTER);
-    private Encoder lEnc = new Encoder(RobotMap.L_DRIVE_ENC_A, RobotMap.L_DRIVE_ENC_B);
-    private Encoder rEnc = new Encoder(RobotMap.R_DRIVE_ENC_A, RobotMap.R_DRIVE_ENC_B);
+    private Encoder lEnc = new Encoder(RobotMap.L_DRIVE_ENC_A, RobotMap.L_DRIVE_ENC_B,
+                                       false, CounterBase.EncodingType.k1X);
+    private Encoder rEnc = new Encoder(RobotMap.R_DRIVE_ENC_A, RobotMap.R_DRIVE_ENC_B,
+                                       false, CounterBase.EncodingType.k1X);
     private Gyro hGyro = new Gyro(RobotMap.H_GYRO);
     private Gyro vGyro = new Gyro(RobotMap.V_GYRO);
     private double tSens = LOW_GEAR_T_SENS;

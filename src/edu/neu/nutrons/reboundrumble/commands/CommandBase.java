@@ -34,6 +34,9 @@ public abstract class CommandBase extends PIDCommand {
 
         // Display subsystem data on SmartDashboard.
         SmartDashboard.putData(dt);
+        SmartDashboard.putData(cam);
+        SmartDashboard.putData(shooter);
+        SmartDashboard.putData(hood);
     }
 
     public CommandBase(String name) {
