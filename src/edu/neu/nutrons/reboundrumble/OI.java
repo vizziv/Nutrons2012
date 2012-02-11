@@ -15,10 +15,11 @@ public class OI {
 
     private final double SHOOTER_INC = .1;
 
-    private Joystick pad = new Joystick(RobotMap.PAD);
-    private JoystickButton shooterZero = new JoystickButton(pad, 1);
-    private JoystickButton shooterPlus = new JoystickButton(pad, 4);
-    private JoystickButton shooterMinus = new JoystickButton(pad, 2);
+    private Joystick driverPad = new Joystick(RobotMap.PAD_DRIVER);
+    private Joystick opPad = new Joystick(RobotMap.PAD_OPERATOR);
+    private JoystickButton shooterZero = new JoystickButton(driverPad, 1);
+    private JoystickButton shooterPlus = new JoystickButton(driverPad, 4);
+    private JoystickButton shooterMinus = new JoystickButton(driverPad, 2);
 
     public OI(){
         shooterZero.whenPressed(new ShooterSetPowerCmd(0));
@@ -27,22 +28,34 @@ public class OI {
     }
 
     public double getDriveLeft() {
-        return -pad.getRawAxis(2);
+        return -driverPad.getRawAxis(2);
     }
 
     public double getDriveRight() {
-        return -pad.getRawAxis(4);
+        return -driverPad.getRawAxis(4);
     }
 
     public double getDriveThrottle() {
-        return -pad.getRawAxis(2);
+        return -driverPad.getRawAxis(2);
     }
 
     public double getDriveWheel() {
-        return pad.getRawAxis(3);
+        return driverPad.getRawAxis(3);
     }
 
     public boolean getDriveQuickTurn() {
-        return pad.getRawButton(6);
+        return driverPad.getRawButton(6);
+    }
+
+    public boolean getDriveShift() {
+        return driverPad.getRawButton(5);
+    }
+
+    public double getElevFront() {
+        return -opPad.getRawAxis(2);
+    }
+
+    public double getElevBack() {
+        return -opPad.getRawAxis(4);
     }
 }

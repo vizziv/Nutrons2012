@@ -19,22 +19,14 @@ public class Elevator extends Subsystem {
     public void initDefaultCommand() {
     }
 
-    public void setPowerF(double power) {
-        fMot.set(power);
-    }
-
-    public void setPowerB(double power) {
-        bMot.set(power);
-    }
-
     public double getPressure() {
         // TODO: figure out if this needs scaling, smoothing and/or other jazz.
         return (pressure.getVoltage() / 5.0);
     }
 
     public void setPowerFB(double fPower, double bPower) {
-        setPowerF(fPower);
-        setPowerB(bPower);
+        fMot.set(fPower);
+        bMot.set(bPower);
     }
 
     public void stop() {

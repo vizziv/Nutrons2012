@@ -1,16 +1,19 @@
-package edu.neu.nutrons.reboundrumble.commands.drivetrain;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package edu.neu.nutrons.reboundrumble.commands.elevator;
 
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
 
 /**
- * Control drive train with joysticks.
  *
- * @author Ziv
+ * @author root
  */
-public class DTManualLRCmd extends CommandBase {
+public class ElevatorManualCmd extends CommandBase {
 
-    public DTManualLRCmd() {
-        requires(dt);
+    public ElevatorManualCmd() {
+        requires(elev);
     }
 
     // Called just before this Command runs the first time
@@ -19,8 +22,7 @@ public class DTManualLRCmd extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        dt.driveLR(oi.getDriveLeft(), oi.getDriveRight());
-        dt.shift(oi.getDriveShift());
+        elev.setPowerFB(oi.getElevFront(), oi.getElevBack());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -30,7 +32,7 @@ public class DTManualLRCmd extends CommandBase {
 
     // Called once after isFinished returns true
     protected void end() {
-        dt.stop();
+        elev.stop();
     }
 
     // Called when another command which requires one or more of the same

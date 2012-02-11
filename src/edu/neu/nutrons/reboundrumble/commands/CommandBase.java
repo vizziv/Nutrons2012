@@ -1,10 +1,7 @@
 package edu.neu.nutrons.reboundrumble.commands;
 
 import edu.neu.nutrons.reboundrumble.OI;
-import edu.neu.nutrons.reboundrumble.subsystems.Camera;
-import edu.neu.nutrons.reboundrumble.subsystems.DriveTrain;
-import edu.neu.nutrons.reboundrumble.subsystems.Hood;
-import edu.neu.nutrons.reboundrumble.subsystems.Shooter;
+import edu.neu.nutrons.reboundrumble.subsystems.*;
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -23,6 +20,8 @@ public abstract class CommandBase extends PIDCommand {
     public static Camera cam = new Camera();
     public static Shooter shooter = new Shooter();
     public static Hood hood = new Hood();
+    public static Elevator elev = new Elevator();
+    //public static Intake intake = new Intake();
 
     public static void init() {
         // This MUST be here. If the OI creates Commands (which it very likely

@@ -14,7 +14,8 @@ public class RobotMap {
     public static final int R_1_DRIVE_MOTOR = 0;
     public static final int R_2_DRIVE_MOTOR = 0;
     public static final int SHIFTER = 0;
-    public static final int SHOOTER_MOTOR = 0;
+    public static final int SHOOTER_1_MOTOR = 0;
+    public static final int SHOOTER_2_MOTOR = 0;
     public static final int HOOD_MOTOR = 0;
     public static final int CAM_SERVO = 0;
     public static final int F_ELEV_MOTOR = 0;
@@ -22,7 +23,8 @@ public class RobotMap {
     public static final int INTAKE = 0;
     public static final int DROP_DOWN = 0;
     // Input.
-    public static final int PAD = 1;
+    public static final int PAD_DRIVER = 1;
+    public static final int PAD_OPERATOR = 2;
     public static final int L_DRIVE_ENC_A = 0;
     public static final int L_DRIVE_ENC_B = 0;
     public static final int R_DRIVE_ENC_A = 0;
