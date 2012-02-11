@@ -15,13 +15,14 @@ public class Shooter extends PIDSubsystem {
 
     // TODO: tune PID.
     private static final double kp = 0;
+    private static final double ki = 0;
 
     private Jaguar mot = new Jaguar(RobotMap.SHOOTER_MOTOR);
     private Encoder enc = new Encoder(RobotMap.SHOOTER_ENC_A, RobotMap.SHOOTER_ENC_B,
                                       false, CounterBase.EncodingType.k1X);
 
     public Shooter() {
-        super(kp, 0, 0);
+        super(kp, ki, 0);
     }
 
     public void initDefaultCommand() {

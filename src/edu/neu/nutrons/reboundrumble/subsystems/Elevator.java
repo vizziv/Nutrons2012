@@ -29,7 +29,7 @@ public class Elevator extends Subsystem {
 
     public double getPressure() {
         // TODO: figure out if this needs scaling, smoothing and/or other jazz.
-        return pressure.getVoltage();
+        return (pressure.getVoltage() / 5.0);
     }
 
     public void setPowerFB(double fPower, double bPower) {

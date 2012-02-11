@@ -22,7 +22,7 @@ public class RobotMap {
     public static final int INTAKE = 0;
     public static final int DROP_DOWN = 0;
     // Input.
-    public static final int PAD = 0;
+    public static final int PAD = 1;
     public static final int L_DRIVE_ENC_A = 0;
     public static final int L_DRIVE_ENC_B = 0;
     public static final int R_DRIVE_ENC_A = 0;

@@ -1,5 +1,7 @@
 package edu.neu.nutrons.reboundrumble;
 
+import edu.wpi.first.wpilibj.Joystick;
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -7,29 +9,25 @@ package edu.neu.nutrons.reboundrumble;
  * @author Ziv
  */
 public class OI {
-
+    private Joystick pad = new Joystick(RobotMap.PAD); 
+ 
     public double getDriveLeft() {
-        return 0.0;
-        // TODO: implement!
+        return -pad.getRawAxis(2);
     }
 
-    public double getDriveRight() {
-        return 0.0;
-        // TODO: implement!
+    public double getDriveRight() {     
+        return -pad.getRawAxis(4);
     }
 
     public double getDriveThrottle() {
-        return 0.0;
-        // TODO: implement!
+        return -pad.getRawAxis(2);
     }
 
     public double getDriveWheel() {
-        return 0.0;
-        // TODO: implement!
+        return pad.getRawAxis(3);
     }
 
     public boolean getDriveQuickTurn() {
-        return false;
-        // TODO: implement!
+        return pad.getRawButton(6);
     }
 }
