@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class OI {
 
     private final double SHOOTER_INC = .1;
+    private final double HOOD_POWER = .5;
 
     private Joystick driverPad = new Joystick(RobotMap.PAD_DRIVER);
     private Joystick opPad = new Joystick(RobotMap.PAD_OPERATOR);
@@ -57,5 +58,11 @@ public class OI {
 
     public double getElevBack() {
         return -opPad.getRawAxis(4);
+    }
+
+    public double getHoodPower(){
+        double up = opPad.getRawButton(8) ? HOOD_POWER : 0;
+        double down = opPad.getRawButton(7) ? -HOOD_POWER : 0;
+        return up + down;
     }
 }

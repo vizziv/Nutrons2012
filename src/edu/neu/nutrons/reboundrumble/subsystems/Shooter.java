@@ -19,8 +19,8 @@ public class Shooter extends PIDSubsystem {
     private static final double kp = 0;
     private static final double ki = 0;
 
-    private Jaguar mot1 = new Jaguar(RobotMap.SHOOTER_1_MOTOR);
-    private Jaguar mot2 = new Jaguar(RobotMap.SHOOTER_2_MOTOR);
+    private Jaguar mot1 = new Jaguar(RobotMap.SHOOTER_MOTOR_1);
+    private Jaguar mot2 = new Jaguar(RobotMap.SHOOTER_MOTOR_2);
     private Encoder enc = new Encoder(RobotMap.SHOOTER_ENC_A, RobotMap.SHOOTER_ENC_B,
                                       false, CounterBase.EncodingType.k1X);
     private double power = 0;

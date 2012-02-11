@@ -20,10 +20,8 @@ public class DriveTrain extends Subsystem {
     private final double LOW_GEAR_T_SENS = 1.36;
     private final double ENCODER_SCALE = 1;
 
-    private LinearVictor lMot1 = new LinearVictor(RobotMap.L_1_DRIVE_MOTOR);
-    private LinearVictor lMot2 = new LinearVictor(RobotMap.L_2_DRIVE_MOTOR);
-    private LinearVictor rMot1 = new LinearVictor(RobotMap.R_1_DRIVE_MOTOR);
-    private LinearVictor rMot2 = new LinearVictor(RobotMap.R_2_DRIVE_MOTOR);
+    private LinearVictor lMot = new LinearVictor(RobotMap.L_DRIVE_MOTOR);
+    private LinearVictor rMot = new LinearVictor(RobotMap.R_DRIVE_MOTOR);
     private Solenoid shifter = new Solenoid(RobotMap.SHIFTER);
     private Encoder lEnc = new Encoder(RobotMap.L_DRIVE_ENC_A, RobotMap.L_DRIVE_ENC_B,
                                        false, CounterBase.EncodingType.k1X);
@@ -38,10 +36,8 @@ public class DriveTrain extends Subsystem {
     }
 
     public void driveLR(double lPower, double rPower) {
-        lMot1.set(lPower);
-        lMot2.set(lPower);
-        rMot1.set(rPower);
-        rMot2.set(rPower);
+        lMot.set(lPower);
+        rMot.set(rPower);
     }
 
     public void shift(boolean highGear) {
