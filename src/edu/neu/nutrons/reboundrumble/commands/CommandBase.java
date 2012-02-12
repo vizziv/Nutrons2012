@@ -6,9 +6,7 @@ import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * The base for all commands. Has a single static instance of every singleton:
- * subsystems, the OI and so on. Extends PIDCommand, but if this is ignored in
- * child classes then they act like normal commands.
+ * The base for all commands.
  *
  * @author Ziv
  */

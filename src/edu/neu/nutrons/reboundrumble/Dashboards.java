@@ -15,6 +15,17 @@ public class Dashboards {
 
     private DriverStation ds = DriverStation.getInstance();
     private Dashboard lowDash = ds.getDashboardPackerLow();
+    private static Dashboards instance = null;
+
+    private Dashboards() {
+    }
+
+    public static Dashboards getInstance() {
+        if(instance == null) {
+            instance = new Dashboards();
+        }
+        return instance;
+    }
 
     public void sendData() {
         // LabVIEW stuff.
@@ -46,10 +57,14 @@ public class Dashboards {
         lowDash.finalizeCluster();
         lowDash.commit();
         // SmartDashboard stuff.
-        SmartDashboard.putDouble("Yaw", CommandBase.dt.getYaw());
+        // TODO: implement getting setpoint of some subsystems.
+        SmartDashboard.putDouble("Yaw", CommandBase.dt.yawGyro.getAngle());
+        SmartDashboard.putDouble("Yaw setpoint", 0);
         SmartDashboard.putDouble("Target1 X", CommandBase.cam.tracker.getTarget1().centerX);
-        SmartDashboard.putDouble("Cam Servo", CommandBase.cam.getPos());
-        SmartDashboard.putDouble("Shooter", CommandBase.shooter.getRate());
-        SmartDashboard.putDouble("Hood", CommandBase.hood.getPos());
+        SmartDashboard.putDouble("Cam servo", CommandBase.cam.getPos());
+        SmartDashboard.putDouble("Shooter", CommandBase.shooter.getPosition());
+        SmartDashboard.putDouble("Shooter setpoint", CommandBase.shooter.getSetpoint());
+        SmartDashboard.putDouble("Hood", CommandBase.hood.getPosition());
+        SmartDashboard.putDouble("Hood setpoint", CommandBase.hood.getSetpoint());
     }
 }

@@ -1,6 +1,7 @@
 package edu.neu.nutrons.reboundrumble.subsystems;
 
 import edu.neu.nutrons.reboundrumble.RobotMap;
+import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorManualCmd;
 import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -12,16 +13,19 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Elevator extends Subsystem {
 
-    private Jaguar fMot = new Jaguar(RobotMap.F_ELEV_MOTOR);
-    private Jaguar bMot = new Jaguar(RobotMap.B_ELEV_MOTOR);
-    private AnalogChannel pressure = new AnalogChannel(RobotMap.PRESSURE);
+    private final double PRESSURE_SCALE = 1.0 / 5.0;
+
+    private final Jaguar fMot = new Jaguar(RobotMap.F_ELEV_MOTOR);
+    private final Jaguar bMot = new Jaguar(RobotMap.B_ELEV_MOTOR);
+    private final AnalogChannel pressure = new AnalogChannel(RobotMap.PRESSURE);
 
     public void initDefaultCommand() {
+        setDefaultCommand(new ElevatorManualCmd());
     }
 
     public double getPressure() {
         // TODO: figure out if this needs scaling, smoothing and/or other jazz.
-        return (pressure.getVoltage() / 5.0);
+        return PRESSURE_SCALE * pressure.getVoltage();
     }
 
     public void setPowerFB(double fPower, double bPower) {

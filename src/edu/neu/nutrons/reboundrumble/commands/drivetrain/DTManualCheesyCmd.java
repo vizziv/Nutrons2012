@@ -3,7 +3,7 @@ package edu.neu.nutrons.reboundrumble.commands.drivetrain;
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
 
 /**
- * Control drive train with joysticks.
+ * Control drive train with joysticks, cheesy (car-like) style.
  *
  * @author Ziv
  */
@@ -30,12 +30,10 @@ public class DTManualCheesyCmd extends CommandBase {
 
     // Called once after isFinished returns true
     protected void end() {
-        dt.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-        end();
     }
 }

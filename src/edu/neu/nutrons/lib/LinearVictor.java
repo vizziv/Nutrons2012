@@ -10,6 +10,13 @@ import edu.wpi.first.wpilibj.Victor;
  */
 public class LinearVictor extends Victor {
 
+    // Constants
+    private final double a_1 = 0.394864;
+    private final double a_3 = 0.67367;
+    private final double a_5 = -3.409659;
+    private final double a_7 = 4.197125;
+    private final double deadband_value = 0.082;
+
     public LinearVictor(int port) {
         super(port);
     }
@@ -19,7 +26,6 @@ public class LinearVictor extends Victor {
     }
 
     public void set(double goal_speed) {
-        final double deadband_value = 0.082;
         if(goal_speed > deadband_value) {
             goal_speed -= deadband_value;
         }
@@ -38,26 +44,11 @@ public class LinearVictor extends Victor {
         double goal_speed6 = goal_speed5 * goal_speed;
         double goal_speed7 = goal_speed6 * goal_speed;
 
-        // Constants for the 5th order polynomial
-        double victor_fit_e1 = 0.437239;
-        double victor_fit_c1 = -1.56847;
-        double victor_fit_a1 = (-(125.0 * victor_fit_e1 + 125.0 * victor_fit_c1 - 116.0) / 125.0);
-        double answer_5th_order = (victor_fit_a1 * goal_speed5
-                + victor_fit_c1 * goal_speed3
-                + victor_fit_e1 * goal_speed);
+        double answer_7th_order = (a_7 * goal_speed7 + a_5 * goal_speed5 +
+                                   a_3 * goal_speed3 + a_1 * goal_speed);
 
-        // Constants for the 7th order polynomial
-        double victor_fit_c2 = -5.46889;
-        double victor_fit_e2 = 2.24214;
-        double victor_fit_g2 = -0.042375;
-        double victor_fit_a2 = (-(125.0 * (victor_fit_c2 + victor_fit_e2 + victor_fit_g2) - 116.0) / 125.0);
-        double answer_7th_order = (victor_fit_a2 * goal_speed7
-                + victor_fit_c2 * goal_speed5
-                + victor_fit_e2 * goal_speed3
-                + victor_fit_g2 * goal_speed);
-
-        // Average the 5th and 7th order polynomials
-        double answer = 0.85 * 0.5 * (answer_7th_order + answer_5th_order)
+        // Average polynomial with line
+        double answer = 0.85 * 0.5 * (answer_7th_order)
                 + .15 * goal_speed * (1.0 - deadband_value);
 
         if(answer > 0.001) {

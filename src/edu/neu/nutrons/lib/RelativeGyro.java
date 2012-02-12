@@ -3,14 +3,14 @@ package edu.neu.nutrons.lib;
 import edu.wpi.first.wpilibj.Gyro;
 
 /**
- * This makes it easy to read and "reset" a gyro without any extra logic, while
- * still keeping the match wide orientation.
+ * Easily resettable gyro that keeps track of absolute angle. Output is in
+ * interval [-180, 180], though absolute output has no bounds (as normal).
  *
  * @author Tom
  */
 public class RelativeGyro extends Gyro {
 
-    double curAngle = 0;
+    private double curAngle = 0;
 
     public RelativeGyro(int port){
         super(port);
@@ -21,7 +21,9 @@ public class RelativeGyro extends Gyro {
     }
 
     public double getAngle(){
-        return super.getAngle() - curAngle;
+        double angle = super.getAngle() - curAngle;
+        // Shift by 180, normalize to [0, 360], then shift back to [-180, 180].
+        return Utils.modulo(angle + 180, 360) - 180;
     }
 
     public double getAbsoluteAngle(){

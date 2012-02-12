@@ -14,14 +14,18 @@ import edu.wpi.first.wpilibj.command.PIDSubsystem;
  */
 public class Camera extends PIDSubsystem {
 
+    // Constants.
     // TODO: tune PID more.
-    private static final double kp = .125;
+    private static final double kp = 0.125;
+    private static final double ki = 0;
+    private static final double kd = 0;
 
-    public final Tracker tracker = new Tracker();
-    private Servo servo = new Servo(RobotMap.CAM_SERVO);
+    // Actual robot parts.
+    public final Tracker tracker = new Tracker(); // Axis camera is in here.
+    private final Servo servo = new Servo(RobotMap.CAM_SERVO);
 
     public Camera() {
-        super(kp, 0, 0);
+        super(kp, ki, kd);
     }
 
     public void setPos(double pos) {
@@ -40,7 +44,7 @@ public class Camera extends PIDSubsystem {
 
     protected void usePIDOutput(double output) {
         // Change position by PID output.
-        setPos(getPos() + output - CommandBase.dt.getYaw()/90.0);
+        setPos(getPos() + output - (CommandBase.dt.yawGyro.getAbsoluteAngle() / 90.0));
     }
 
     protected void initDefaultCommand() {

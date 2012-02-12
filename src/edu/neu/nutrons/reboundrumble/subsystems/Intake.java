@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Intake extends Subsystem {
 
-    private Relay intake = new Relay(RobotMap.INTAKE);
-    private Solenoid dropDown = new Solenoid(RobotMap.DROP_DOWN);
+    private final Relay intake = new Relay(RobotMap.INTAKE);
+    private final Solenoid dropDown = new Solenoid(RobotMap.DROP_DOWN);
 
     public void initDefaultCommand() {
     }
