@@ -28,6 +28,11 @@ public class Camera extends PIDSubsystem {
         super(kp, ki, kd);
     }
 
+    protected void initDefaultCommand() {
+        disable();
+        setDefaultCommand(new CamSetPosCmd(0));
+    }
+
     public void setPos(double pos) {
         // Change range from [-1,1] to [0,1].
         servo.set((pos + 1) / 2.0);
@@ -45,11 +50,6 @@ public class Camera extends PIDSubsystem {
     protected void usePIDOutput(double output) {
         // Change position by PID output.
         setPos(getPos() + output - (CommandBase.dt.yawGyro.getAbsoluteAngle() / 90.0));
-    }
-
-    protected void initDefaultCommand() {
-        // Always try to keep target in the middle of camera image.
-        setDefaultCommand(new CamSetPosCmd(0));
     }
 
     public double getAngle() {

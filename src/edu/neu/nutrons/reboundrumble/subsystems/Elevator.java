@@ -29,7 +29,7 @@ public class Elevator extends Subsystem {
     }
 
     public void setPowerFB(double fPower, double bPower) {
-        fMot.set(fPower);
+        fMot.set(-fPower);
         bMot.set(bPower);
     }
 

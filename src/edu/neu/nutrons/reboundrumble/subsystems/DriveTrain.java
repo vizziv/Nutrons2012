@@ -3,8 +3,10 @@ package edu.neu.nutrons.reboundrumble.subsystems;
 import edu.neu.nutrons.lib.LinearVictor;
 import edu.neu.nutrons.lib.RelativeGyro;
 import edu.neu.nutrons.reboundrumble.RobotMap;
-import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualCheesyCmd;
-import edu.wpi.first.wpilibj.*;
+import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualLRCmd;
+import edu.wpi.first.wpilibj.CounterBase;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -18,16 +20,6 @@ public class DriveTrain extends Subsystem {
     private final double HIGH_GEAR_T_SENS = 1.7;
     private final double LOW_GEAR_T_SENS = 1.36;
     private final double ENCODER_SCALE = 1.0;
-    // TODO: tune PIDs.
-    private static final double disKp = 0;
-    private static final double disKi = 0;
-    private static final double disKd = 0;
-    private static final double yawKp = 0;
-    private static final double yawKi = 0;
-    private static final double yawKd = 0;
-    private static final double pitchKp = 0;
-    private static final double pitchKi = 0;
-    private static final double pitchKd = 0;
 
     // Actual robot parts.
     private final LinearVictor lMot = new LinearVictor(RobotMap.L_DRIVE_MOTOR);
@@ -44,11 +36,11 @@ public class DriveTrain extends Subsystem {
     private double tSens = LOW_GEAR_T_SENS;
 
     public void initDefaultCommand() {
-        setDefaultCommand(new DTManualCheesyCmd());
+        setDefaultCommand(new DTManualLRCmd());
     }
 
     public void driveLR(double lPower, double rPower) {
-        lMot.set(lPower);
+        lMot.set(-lPower);
         rMot.set(rPower);
     }
 

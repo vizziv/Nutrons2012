@@ -11,6 +11,7 @@ public class ShooterDeltaPowerCmd extends ShooterSetPowerCmd {
 
     public ShooterDeltaPowerCmd(double deltaPower) {
         super(0); // Calls requires(shooter).
+        this.deltaPower = deltaPower;
     }
 
     protected void initialize() {

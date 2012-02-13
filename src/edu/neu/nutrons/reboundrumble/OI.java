@@ -17,9 +17,9 @@ public class OI {
 
     private Joystick driverPad = new Joystick(RobotMap.PAD_DRIVER);
     private Joystick opPad = new Joystick(RobotMap.PAD_OPERATOR);
-    private JoystickButton shooterZero = new JoystickButton(driverPad, 1);
-    private JoystickButton shooterPlus = new JoystickButton(driverPad, 4);
-    private JoystickButton shooterMinus = new JoystickButton(driverPad, 2);
+    private JoystickButton shooterZero = new JoystickButton(opPad, 1);
+    private JoystickButton shooterPlus = new JoystickButton(opPad, 2);
+    private JoystickButton shooterMinus = new JoystickButton(opPad, 4);
 
     public OI(){
         shooterZero.whenPressed(new ShooterSetPowerCmd(0));
