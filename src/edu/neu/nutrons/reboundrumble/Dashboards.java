@@ -59,7 +59,7 @@ public class Dashboards {
         // SmartDashboard stuff.
         // TODO: implement getting setpoint of some subsystems.
         SmartDashboard.putDouble("Yaw", CommandBase.dt.yawGyro.getAngle());
-        SmartDashboard.putDouble("Yaw setpoint", 0);
+        SmartDashboard.putDouble("Yaw setpoint", CommandBase.dtPID.getYawSetpoint());
         SmartDashboard.putDouble("Target1 X", CommandBase.cam.tracker.getTarget1().centerX);
         SmartDashboard.putDouble("Cam servo", CommandBase.cam.getPos());
         SmartDashboard.putDouble("Shooter", CommandBase.shooter.getPosition());

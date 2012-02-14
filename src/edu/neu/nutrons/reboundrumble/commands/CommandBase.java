@@ -1,5 +1,6 @@
 package edu.neu.nutrons.reboundrumble.commands;
 
+import edu.neu.nutrons.reboundrumble.DTPIDController;
 import edu.neu.nutrons.reboundrumble.OI;
 import edu.neu.nutrons.reboundrumble.subsystems.*;
 import edu.wpi.first.wpilibj.command.PIDCommand;
@@ -14,6 +15,7 @@ public abstract class CommandBase extends PIDCommand {
 
     // Single static instance of OI, dashboard and all subsystems.
     public static OI oi;
+    public static DTPIDController dtPID;
     public static DriveTrain dt = new DriveTrain();
     public static Camera cam = new Camera();
     public static Shooter shooter = new Shooter();
@@ -27,12 +29,14 @@ public abstract class CommandBase extends PIDCommand {
         // yet. Thus, their requires() statements may grab null pointers. Bad
         // news. Don't move it.
         oi = new OI();
+        dtPID = new DTPIDController();
 
         // Display subsystem data on SmartDashboard.
         SmartDashboard.putData(dt);
         SmartDashboard.putData(cam);
         SmartDashboard.putData(shooter);
         SmartDashboard.putData(hood);
+        // Drive train PID put on SmartDashboard in dtPID constructor.
     }
 
     public CommandBase(String name) {
