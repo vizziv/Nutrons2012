@@ -60,10 +60,18 @@ public class OI {
     }
 
     public boolean getHoodUp() {
-        return opPad.getRawButton(8);
+        return opPad.getRawButton(7);
     }
 
     public boolean getHoodDown() {
-        return opPad.getRawButton(7);
+        return opPad.getRawButton(8);
+    }
+
+    public boolean getDebug1() {
+        return opPad.getRawButton(9);
+    }
+
+    public boolean getDebug2() {
+        return opPad.getRawButton(10);
     }
 }

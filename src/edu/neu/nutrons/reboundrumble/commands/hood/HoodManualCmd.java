@@ -9,7 +9,7 @@ import edu.neu.nutrons.reboundrumble.commands.CommandBase;
  */
 public class HoodManualCmd extends CommandBase {
 
-    private final double HOOD_POWER = 0.5;
+    private final double HOOD_POWER = 1;
 
     public HoodManualCmd() {
         requires(hood);
@@ -23,7 +23,7 @@ public class HoodManualCmd extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         double up = oi.getHoodUp() ? HOOD_POWER : 0.0;
-        double down = oi.getHoodUp() ? -HOOD_POWER : 0.0;
+        double down = oi.getHoodDown() ? -HOOD_POWER : 0.0;
         hood.setPower(up + down);
     }
 

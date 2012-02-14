@@ -59,7 +59,7 @@ public class Nutrons2012 extends IterativeRobot {
 
     public void teleopContinuous() {
         // Do camera processing and dashboard communication separately.
-        CommandBase.cam.tracker.processImage();
+        //CommandBase.cam.tracker.processImage();
         Dashboards.getInstance().sendData();
     }
 }

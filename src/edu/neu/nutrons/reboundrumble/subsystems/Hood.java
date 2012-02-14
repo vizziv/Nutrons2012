@@ -1,9 +1,9 @@
 package edu.neu.nutrons.reboundrumble.subsystems;
 
+import edu.neu.nutrons.lib.LinearVictor;
 import edu.neu.nutrons.reboundrumble.RobotMap;
-import edu.neu.nutrons.reboundrumble.commands.hood.HoodManualCmd;
+import edu.neu.nutrons.reboundrumble.commands.hood.HoodDebugCmd;
 import edu.wpi.first.wpilibj.AnalogChannel;
-import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 
 /**
@@ -15,16 +15,18 @@ public class Hood extends PIDSubsystem {
 
     // Constants.
     // TODO: tune PID.
-    private static final double kp = 0.0;
+    private static final double kp = 1.0;
     private static final double ki = 0.0;
     private static final double kd = 0.0;
+    private final double POWER_SCALE = 0.5;
     private final double POT_SCALE = 1.0;
 
     // Actual robot parts.
-    private final Jaguar mot = new Jaguar(RobotMap.HOOD_MOTOR);
+    private final LinearVictor mot = new LinearVictor(RobotMap.HOOD_MOTOR);
     private final AnalogChannel pot = new AnalogChannel(RobotMap.HOOD_POT);
 
     // Other variables.
+    private boolean enabled = false;
 
     public Hood() {
         super(kp, ki, kd);
@@ -32,11 +34,11 @@ public class Hood extends PIDSubsystem {
 
     public void initDefaultCommand() {
         disable();
-        setDefaultCommand(new HoodManualCmd());
+        setDefaultCommand(new HoodDebugCmd());
     }
 
     public void setPower(double power) {
-        mot.set(power);
+        mot.set(POWER_SCALE * -power);
     }
 
     public double getPos() {
@@ -50,5 +52,19 @@ public class Hood extends PIDSubsystem {
 
     protected void usePIDOutput(double output) {
         setPower(output);
+    }
+
+    public void enable() {
+        enabled = true;
+        super.enable();
+    }
+
+    public void disable() {
+        enabled = false;
+        super.disable();
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 }

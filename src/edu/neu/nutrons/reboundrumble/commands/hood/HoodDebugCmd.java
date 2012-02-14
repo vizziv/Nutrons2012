@@ -1,29 +1,37 @@
-package edu.neu.nutrons.reboundrumble.commands.shooter;
+package edu.neu.nutrons.reboundrumble.commands.hood;
 
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
 
 /**
- * Maintains current shooter power if and only if PID is disabled.
+ * Sets hood motor power manually.
  *
  * @author Nutrons Pros
  */
-public class ShooterMaintainPowerCmd extends CommandBase {
+public class HoodDebugCmd extends CommandBase {
 
-    private double power = 0;
+    private final double HOOD_POWER = 1;
 
-    public ShooterMaintainPowerCmd() {
-        requires(shooter);
+    public HoodDebugCmd() {
+        requires(hood);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        power = shooter.getPower();
+        hood.disable();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if(!shooter.isEnabled()) {
-            shooter.setPower(power);
+        double up = oi.getHoodUp() ? HOOD_POWER : 0.0;
+        double down = oi.getHoodDown() ? -HOOD_POWER : 0.0;
+        if(oi.getDebug1()) {
+            hood.disable();
+        }
+        if(oi.getDebug2()) {
+            hood.enable();
+        }
+        if(!hood.isEnabled()) {
+            hood.setPower(up + down);
         }
     }
 
