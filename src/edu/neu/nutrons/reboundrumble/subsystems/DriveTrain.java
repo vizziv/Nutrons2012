@@ -6,6 +6,7 @@ import edu.neu.nutrons.reboundrumble.RobotMap;
 import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualLRCmd;
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -29,6 +30,7 @@ public class DriveTrain extends Subsystem {
                                        false, CounterBase.EncodingType.k1X);
     private final Encoder rEnc = new Encoder(RobotMap.R_DRIVE_ENC_A, RobotMap.R_DRIVE_ENC_B,
                                        false, CounterBase.EncodingType.k1X);
+    public RelativeEncoderAvg disEncAvg = new RelativeEncoderAvg();
     public final RelativeGyro yawGyro = new RelativeGyro(RobotMap.H_GYRO);
     public final RelativeGyro pitchGyro = new RelativeGyro(RobotMap.V_GYRO);
 
@@ -103,5 +105,22 @@ public class DriveTrain extends Subsystem {
             rPower = -1.0;
         }
         driveLR(lPower, rPower);
+    }
+
+    public double getAvgPos() {
+        return disEncAvg.pidGet();
+    }
+
+    public final class RelativeEncoderAvg implements PIDSource {
+        private double initialSum;
+        public double get() {
+            return (getLeftPos() + getRightPos() - initialSum) / 2.0;
+        }
+        public double pidGet() {
+            return get();
+        }
+        public void reset() {
+            initialSum = getLeftPos() + getRightPos();
+        }
     }
 }
