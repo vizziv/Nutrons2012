@@ -27,6 +27,7 @@ public class OI {
         shooterMinus.whenPressed(new ShooterDeltaPowerCmd(-SHOOTER_INC));
     }
 
+    //driverPad
     public double getDriveLeft() {
         return -driverPad.getRawAxis(2);
     }
@@ -51,6 +52,7 @@ public class OI {
         return driverPad.getRawButton(5);
     }
 
+    //opPad
     public double getElevFront() {
         return -opPad.getRawAxis(2);
     }
@@ -73,5 +75,21 @@ public class OI {
 
     public boolean getDebug2() {
         return opPad.getRawButton(10);
+    }
+
+    public boolean getElevHopper(){
+        return opPad.getRawButton(5);
+    }
+
+    public boolean getElevHopperRev(){
+        return opPad.getRawButton(11);
+    }
+    
+    public boolean getElevShooter(){
+        return opPad.getRawButton(3);
+    }
+
+    public boolean getElevShooterRev(){
+        return opPad.getRawButton(6);
     }
 }
