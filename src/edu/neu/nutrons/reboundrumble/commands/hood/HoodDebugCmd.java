@@ -3,7 +3,8 @@ package edu.neu.nutrons.reboundrumble.commands.hood;
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
 
 /**
- * Sets hood motor power manually.
+ * Sets hood motor power manually if and only if PID is disabled. Also enables
+ * and disables PID, but no way to set the setpoint. (Use SmartDashboard.)
  *
  * @author Nutrons Pros
  */

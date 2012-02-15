@@ -1,9 +1,12 @@
 package edu.neu.nutrons.reboundrumble.commands.elevator;
 
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
+import edu.neu.nutrons.reboundrumble.subsystems.Elevator;
 
 /**
  * Controls the elevator manually.
+ *
+ * @deprecated Separated into several commands for modularity.
  *
  * @author root
  */
@@ -19,37 +22,37 @@ public class ElevatorManualCmd extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if(oi.getElevShooter()){
+        if(oi.getElevShooter()) {
             setElevShooter();
         }
-        if(oi.getElevHopper()){
+        if(oi.getElevHopper()) {
             setElevHopper();
         }
-        if(oi.getElevHopperRev()){
+        if(oi.getElevHopperRev()) {
             setElevHopperREV();
         }
-        if(oi.getElevShooterRev()){
+        if(oi.getElevShooterRev()) {
             setElevShooterREV();
-        }else{
-            elev.setPowerFB(0, 0);
         }
-        //elev.setPowerFB(oi.getElevFront(), oi.getElevBack());
+        else {
+            elev.stop();
+        }
     }
 
-    protected void setElevShooter(){
-        elev.setPowerFB(-0.6, -0.6);
+    private void setElevShooter(){
+        elev.setPowerFB(-Elevator.POWER, -Elevator.POWER);
     }
 
-    protected void setElevShooterREV(){
-        elev.setPowerFB(0.6, 0.6);
+    private void setElevShooterREV(){
+        elev.setPowerFB(Elevator.POWER, Elevator.POWER);
     }
 
-    protected void setElevHopper(){
-        elev.setPowerFB(-0.6, 0.6);
+    private void setElevHopper(){
+        elev.setPowerFB(-Elevator.POWER, Elevator.POWER);
     }
 
-    protected void setElevHopperREV(){
-        elev.setPowerFB(0.6, -0.6);
+    private void setElevHopperREV(){
+        elev.setPowerFB(Elevator.POWER, -Elevator.POWER);
     }
 
     // Make this return true when this Command no longer needs to run execute()

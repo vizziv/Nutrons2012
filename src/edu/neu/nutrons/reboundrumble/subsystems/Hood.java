@@ -14,12 +14,14 @@ import edu.wpi.first.wpilibj.command.PIDSubsystem;
 public class Hood extends PIDSubsystem {
 
     // Constants.
+    public static final double MANUAL_POWER = 1;
     // TODO: tune PID.
     private static final double kp = 1.0;
     private static final double ki = 0.0;
     private static final double kd = 0.0;
     private final double POWER_SCALE = 0.5;
-    private final double POT_SCALE = 1.0;
+    private final double POT_MIN = 1.0;
+    private final double POT_RANGE = 0.4;
 
     // Actual robot parts.
     private final LinearVictor mot = new LinearVictor(RobotMap.HOOD_MOTOR);
@@ -33,6 +35,7 @@ public class Hood extends PIDSubsystem {
     }
 
     public void initDefaultCommand() {
+        // TODO: replace or delete these two lines when we're done debugging.
         disable();
         setDefaultCommand(new HoodDebugCmd());
     }
@@ -42,8 +45,9 @@ public class Hood extends PIDSubsystem {
     }
 
     public double getPos() {
-        // TODO: do smoothing or math if necessary.
-        return POT_SCALE * pot.getVoltage();
+        // Transforms from voltage to (approximately) the interval [0,1].
+        // TODO: do smoothing if necessary.
+        return (pot.getVoltage() - POT_MIN) / POT_RANGE;
     }
 
     protected double returnPIDInput() {

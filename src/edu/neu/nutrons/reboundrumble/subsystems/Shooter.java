@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.command.PIDSubsystem;
 public class Shooter extends PIDSubsystem {
 
     // Constants.
+    public static final double MANUAL_INC = 0.1;
     // TODO: tune PID.
     private static final double kp = 0.0;
     private static final double ki = 0.0;
