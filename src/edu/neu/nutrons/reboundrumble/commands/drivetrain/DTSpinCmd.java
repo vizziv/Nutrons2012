@@ -1,19 +1,22 @@
 package edu.neu.nutrons.reboundrumble.commands.drivetrain;
 
-import edu.neu.nutrons.reboundrumble.commands.CommandBase;
+import edu.neu.nutrons.reboundrumble.commands.TimedEndConditionCmd;
+import edu.neu.nutrons.reboundrumble.subsystems.DriveTrain;
 
 /**
  * Control drive train with joysticks, tank style.
  *
  * @author Ziv
  */
-public class DTSpinCmd extends CommandBase {
+public class DTSpinCmd extends TimedEndConditionCmd {
 
     double setpoint = 0;
 
     public DTSpinCmd(double setpoint) {
+        super(DriveTrain.YAW_SETTLE_TIME);
         this.setpoint = setpoint;
         requires(dt);
+        requires(shifter);
     }
 
     // Called just before this Command runs the first time
@@ -23,13 +26,14 @@ public class DTSpinCmd extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        dt.shift(false);
+        shifter.shift(false);
         dt.driveCar(0, dtPID.yawOut.get());
     }
 
     // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        // TODO: Decide on an end condition.
+    // Will only end if true for a continuous amount of time.
+    protected boolean returnEndCondition() {
+        // TODO: decide on an end condition.
         return false;
     }
 

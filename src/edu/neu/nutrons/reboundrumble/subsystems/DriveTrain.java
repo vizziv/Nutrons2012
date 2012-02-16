@@ -7,7 +7,6 @@ import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualLRCmd;
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -21,11 +20,11 @@ public class DriveTrain extends Subsystem {
     private final double HIGH_GEAR_T_SENS = 1.7;
     private final double LOW_GEAR_T_SENS = 1.36;
     private final double ENCODER_SCALE = 1.0;
+    public static final double YAW_SETTLE_TIME = 1.0;
 
     // Actual robot parts.
     private final LinearVictor lMot = new LinearVictor(RobotMap.L_DRIVE_MOTOR);
     private final LinearVictor rMot = new LinearVictor(RobotMap.R_DRIVE_MOTOR);
-    private final Solenoid shifter = new Solenoid(RobotMap.SHIFTER);
     private final Encoder lEnc = new Encoder(RobotMap.L_DRIVE_ENC_A, RobotMap.L_DRIVE_ENC_B,
                                        false, CounterBase.EncodingType.k1X);
     private final Encoder rEnc = new Encoder(RobotMap.R_DRIVE_ENC_A, RobotMap.R_DRIVE_ENC_B,
@@ -46,14 +45,13 @@ public class DriveTrain extends Subsystem {
         rMot.set(rPower);
     }
 
-    public void shift(boolean highGear) {
+    public void setTSens(boolean highGear) {
         if(highGear) {
             tSens = HIGH_GEAR_T_SENS;
         }
         else {
             tSens = LOW_GEAR_T_SENS;
         }
-        shifter.set(highGear);
     }
 
     public double getLeftPos() {

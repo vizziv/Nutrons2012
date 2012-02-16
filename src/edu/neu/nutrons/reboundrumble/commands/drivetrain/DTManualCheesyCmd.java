@@ -20,7 +20,6 @@ public class DTManualCheesyCmd extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         dt.driveCheesy(oi.getDriveThrottle(), oi.getDriveWheel(), oi.getDriveQuickTurn());
-        dt.shift(oi.getDriveShift());
     }
 
     // Make this return true when this Command no longer needs to run execute()
