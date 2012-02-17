@@ -5,7 +5,7 @@ import edu.neu.nutrons.reboundrumble.subsystems.Elevator;
 /**
  * Drives elevator belts in opposite directions.
  *
- * @author root
+ * @author Ziv
  */
 public class ElevatorHopperCmd extends ElevatorShooterCmd {
 
@@ -15,6 +15,6 @@ public class ElevatorHopperCmd extends ElevatorShooterCmd {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        elev.setPowerFB(sign * Elevator.fPOWER, sign * -Elevator.bPOWER);
+        elev.setPowerFB(sign * Elevator.F_POWER, sign * -Elevator.B_POWER);
     }
 }

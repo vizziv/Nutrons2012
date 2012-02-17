@@ -19,7 +19,7 @@ public class DriveTrain extends Subsystem {
     // Constants.
     private final double HIGH_GEAR_T_SENS = 1.7;
     private final double LOW_GEAR_T_SENS = 1.36;
-    private final double ENCODER_SCALE = 1.0;
+    private final double ENC_SCALE = 1.0;
     public static final double YAW_SETTLE_TIME = 1.0;
 
     // Actual robot parts.
@@ -55,11 +55,11 @@ public class DriveTrain extends Subsystem {
     }
 
     public double getLeftPos() {
-        return ENCODER_SCALE * lEnc.get();
+        return ENC_SCALE * lEnc.get();
     }
 
     public double getRightPos() {
-        return ENCODER_SCALE * rEnc.get();
+        return ENC_SCALE * rEnc.get();
     }
 
     public void stop() {
@@ -103,10 +103,6 @@ public class DriveTrain extends Subsystem {
             rPower = -1.0;
         }
         driveLR(lPower, rPower);
-    }
-
-    public double getAvgPos() {
-        return disEncAvg.pidGet();
     }
 
     public final class RelativeEncoderAvg implements PIDSource {

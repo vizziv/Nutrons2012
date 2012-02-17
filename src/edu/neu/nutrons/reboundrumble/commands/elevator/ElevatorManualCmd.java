@@ -8,7 +8,7 @@ import edu.neu.nutrons.reboundrumble.subsystems.Elevator;
  *
  * @deprecated Separated into several commands for modularity.
  *
- * @author root
+ * @author Nutrons Pros
  */
 public class ElevatorManualCmd extends CommandBase {
 
@@ -40,19 +40,19 @@ public class ElevatorManualCmd extends CommandBase {
     }
 
     private void setElevShooter(){
-        elev.setPowerFB(-Elevator.fPOWER, -Elevator.fPOWER);
+        elev.setPowerFB(-Elevator.F_POWER, -Elevator.F_POWER);
     }
 
     private void setElevShooterREV(){
-        elev.setPowerFB(Elevator.fPOWER, Elevator.fPOWER);
+        elev.setPowerFB(Elevator.F_POWER, Elevator.F_POWER);
     }
 
     private void setElevHopper(){
-        elev.setPowerFB(-Elevator.fPOWER, Elevator.fPOWER);
+        elev.setPowerFB(-Elevator.F_POWER, Elevator.F_POWER);
     }
 
     private void setElevHopperREV(){
-        elev.setPowerFB(Elevator.fPOWER, -Elevator.fPOWER);
+        elev.setPowerFB(Elevator.F_POWER, -Elevator.F_POWER);
     }
 
     // Make this return true when this Command no longer needs to run execute()

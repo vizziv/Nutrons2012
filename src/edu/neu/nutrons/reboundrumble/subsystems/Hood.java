@@ -1,6 +1,8 @@
 package edu.neu.nutrons.reboundrumble.subsystems;
 
 import edu.neu.nutrons.lib.LinearVictor;
+import edu.neu.nutrons.lib.MovingAverage;
+import edu.neu.nutrons.lib.Utils;
 import edu.neu.nutrons.reboundrumble.RobotMap;
 import edu.neu.nutrons.reboundrumble.commands.hood.HoodDebugCmd;
 import edu.wpi.first.wpilibj.AnalogChannel;
@@ -22,6 +24,7 @@ public class Hood extends PIDSubsystem {
     private final double POWER_SCALE = 0.5;
     private final double POT_MIN = 1.0;
     private final double POT_RANGE = 0.4;
+    private final int MOVING_AVG_LENGTH = 1;
 
     // Actual robot parts.
     private final LinearVictor mot = new LinearVictor(RobotMap.HOOD_MOTOR);
@@ -29,6 +32,7 @@ public class Hood extends PIDSubsystem {
 
     // Other variables.
     private boolean enabled = false;
+    private MovingAverage potFilter = new MovingAverage(MOVING_AVG_LENGTH);
 
     public Hood() {
         super(kp, ki, kd);
@@ -41,13 +45,28 @@ public class Hood extends PIDSubsystem {
     }
 
     public void setPower(double power) {
-        mot.set(POWER_SCALE * -power);
+        // If PID is enabled, then we don't need to refresh the pot filter.
+        double pos = getPos(!enabled);
+        boolean tooLow = (pos < 0) && (power < 0);
+        boolean tooHigh = (pos > 1) && (power > 0);
+        if(tooLow || tooHigh) {
+            mot.set(0);
+        }
+        else {
+            mot.set(POWER_SCALE * -power);
+        }
+    }
+
+    public double getPos(boolean refresh) {
+        // Transforms from voltage to (approximately) the interval [0,1].
+        if(refresh) {
+            potFilter.feed((pot.getVoltage() - POT_MIN) / POT_RANGE);
+        }
+        return potFilter.get();
     }
 
     public double getPos() {
-        // Transforms from voltage to (approximately) the interval [0,1].
-        // TODO: do smoothing if necessary.
-        return (pot.getVoltage() - POT_MIN) / POT_RANGE;
+        return getPos(true);
     }
 
     protected double returnPIDInput() {

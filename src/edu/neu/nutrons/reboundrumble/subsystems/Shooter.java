@@ -1,5 +1,6 @@
 package edu.neu.nutrons.reboundrumble.subsystems;
 
+import edu.neu.nutrons.lib.MovingAverage;
 import edu.neu.nutrons.lib.Utils;
 import edu.neu.nutrons.reboundrumble.RobotMap;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterMaintainPowerCmd;
@@ -22,6 +23,7 @@ public class Shooter extends PIDSubsystem {
     private static final double ki = 0.0;
     private static final double kd = 0.0;
     private final double ENC_SCALE = 1.0;
+    private final int MOVING_AVG_LENGTH = 1;
 
     // Actual robot parts.
     private final Jaguar mot1 = new Jaguar(RobotMap.SHOOTER_MOTOR_1);
@@ -32,6 +34,7 @@ public class Shooter extends PIDSubsystem {
     // Other variables.
     private double power = 0;
     private boolean enabled = false;
+    private MovingAverage encFilter = new MovingAverage(MOVING_AVG_LENGTH);
 
     public Shooter() {
         super(kp, ki, kd);
@@ -52,9 +55,16 @@ public class Shooter extends PIDSubsystem {
         return power;
     }
 
+    public double getRate(boolean refresh) {
+        // We want to control how frequently we refresh, so it's optional.
+        if(refresh) {
+            encFilter.feed(enc.getRate());
+        }
+        return ENC_SCALE * encFilter.get();
+    }
+
     public double getRate() {
-        // TODO: smooth if needed.
-        return ENC_SCALE * enc.getRate();
+        return getRate(true);
     }
 
     public void enable() {
@@ -76,7 +86,6 @@ public class Shooter extends PIDSubsystem {
     }
 
     protected void usePIDOutput(double output) {
-        // Start with a somewhat accurate guess and fine tune with PID.
         setPower(output);
     }
 }
