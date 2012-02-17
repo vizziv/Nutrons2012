@@ -40,19 +40,19 @@ public class ElevatorManualCmd extends CommandBase {
     }
 
     private void setElevShooter(){
-        elev.setPowerFB(-Elevator.POWER, -Elevator.POWER);
+        elev.setPowerFB(-Elevator.fPOWER, -Elevator.fPOWER);
     }
 
     private void setElevShooterREV(){
-        elev.setPowerFB(Elevator.POWER, Elevator.POWER);
+        elev.setPowerFB(Elevator.fPOWER, Elevator.fPOWER);
     }
 
     private void setElevHopper(){
-        elev.setPowerFB(-Elevator.POWER, Elevator.POWER);
+        elev.setPowerFB(-Elevator.fPOWER, Elevator.fPOWER);
     }
 
     private void setElevHopperREV(){
-        elev.setPowerFB(Elevator.POWER, -Elevator.POWER);
+        elev.setPowerFB(Elevator.fPOWER, -Elevator.fPOWER);
     }
 
     // Make this return true when this Command no longer needs to run execute()

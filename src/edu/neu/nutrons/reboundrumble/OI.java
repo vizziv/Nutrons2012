@@ -1,5 +1,6 @@
 package edu.neu.nutrons.reboundrumble;
 
+import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorHopperCmd;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorShooterCmd;
 import edu.neu.nutrons.reboundrumble.commands.shifter.ShifterStaticCmd;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterDeltaPowerCmd;
@@ -41,7 +42,7 @@ public class OI {
         shooterMinus.whenPressed(new ShooterDeltaPowerCmd(-Shooter.MANUAL_INC));
         elevShooterUp.whileHeld(new ElevatorShooterCmd(true));
         elevShooterDown.whileHeld(new ElevatorShooterCmd(false));
-        elevHopperUp.whileHeld(new ElevatorShooterCmd(true));
+        elevHopperUp.whileHeld(new ElevatorHopperCmd(true));
         elevHopperDown.whileHeld(new ElevatorShooterCmd(false));
     }
 

@@ -58,6 +58,7 @@ public class Dashboards {
         lowDash.commit();
         // SmartDashboard stuff.
         // TODO: implement getting setpoint of some subsystems.
+        SmartDashboard.putDouble("Force Sensor Value", CommandBase.elev.getPressure());
         SmartDashboard.putDouble("Yaw position", CommandBase.dt.yawGyro.getAngle());
         SmartDashboard.putDouble("Target1 X", CommandBase.cam.tracker.getTarget1().centerX);
         SmartDashboard.putDouble("Cam servo", CommandBase.cam.getPos());

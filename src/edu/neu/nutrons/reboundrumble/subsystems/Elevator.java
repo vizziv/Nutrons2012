@@ -14,9 +14,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Elevator extends Subsystem {
 
     // Constants.
-    private final double PRESSURE_SCALE = 1.0 / 5.0;
-    public static final double POWER = 0.6;
-
+    private final double PRESSURE_SCALE = 1.0;
+    public static final double fPOWER = 0.4;
+    public static final double bPOWER = 0.8;
     // Actual robot parts.
     private final Jaguar fMot = new Jaguar(RobotMap.F_ELEV_MOTOR);
     private final Jaguar bMot = new Jaguar(RobotMap.B_ELEV_MOTOR);
@@ -31,6 +31,7 @@ public class Elevator extends Subsystem {
         return PRESSURE_SCALE * pressure.getVoltage();
     }
 
+
     public void setPowerFB(double fPower, double bPower) {
         // TODO: confirm signs.
         fMot.set(-fPower);
@@ -40,4 +41,6 @@ public class Elevator extends Subsystem {
     public void stop() {
         setPowerFB(0, 0);
     }
+
+
 }
