@@ -43,11 +43,8 @@ public class OI {
         elevShooterUp.whileHeld(new ElevatorShooterCmd(true));
         elevShooterDown.whileHeld(new ElevatorShooterCmd(false));
         elevHopperUp.whileHeld(new ElevatorHopperCmd(true));
-<<<<<<< HEAD
         elevHopperDown.whileHeld(new ElevatorHopperCmd(false));
-=======
-        elevHopperDown.whileHeld(new ElevatorShooterCmd(false));
->>>>>>> 24c953786c7306e6e2d2de220256679ca184b489
+        elevHopperDown.whileHeld(new ElevatorHopperCmd(false));
     }
 
     // On driverPad.
