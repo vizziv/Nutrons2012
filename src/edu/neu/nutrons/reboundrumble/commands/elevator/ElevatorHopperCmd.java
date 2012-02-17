@@ -15,6 +15,6 @@ public class ElevatorHopperCmd extends ElevatorShooterCmd {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        elev.setPowerFB(sign * -Elevator.POWER, sign * Elevator.POWER);
+        elev.setPowerFB(sign * Elevator.fPOWER, sign * -Elevator.bPOWER);
     }
 }
