@@ -25,12 +25,12 @@ public class HoodDebugCmd extends CommandBase {
     protected void execute() {
         double up = oi.getHoodUp() ? HOOD_POWER : 0.0;
         double down = oi.getHoodDown() ? -HOOD_POWER : 0.0;
-        if(oi.getDebug1()) {
+        /*if(oi.getDebug1()) {
             hood.disable();
         }
         if(oi.getDebug2()) {
             hood.enable();
-        }
+        }*/
         if(!hood.isEnabled()) {
             hood.setPower(up + down);
         }

@@ -10,12 +10,12 @@ import edu.neu.nutrons.reboundrumble.commands.CommandBase;
 public class CamPointAtTargetCmd extends CommandBase {
 
     public CamPointAtTargetCmd() {
-        requires(cam);
+    //    requires(cam);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        cam.enable();
+      //  cam.enable();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -24,12 +24,13 @@ public class CamPointAtTargetCmd extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return cam.tracker.getTarget1().isNull();
+   //     return cam.tracker.getTarget1().isNull();
+        return true;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-        cam.disable();
+    //    cam.disable();
     }
 
     // Called when another command which requires one or more of the same

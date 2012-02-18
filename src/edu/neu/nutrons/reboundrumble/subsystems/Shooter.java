@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Single-wheel shooter.
@@ -28,8 +29,7 @@ public class Shooter extends PIDSubsystem {
     // Actual robot parts.
     private final Jaguar mot1 = new Jaguar(RobotMap.SHOOTER_MOTOR_1);
     private final Jaguar mot2 = new Jaguar(RobotMap.SHOOTER_MOTOR_2);
-    private final Encoder enc = new Encoder(RobotMap.SHOOTER_ENC_A, RobotMap.SHOOTER_ENC_B,
-                                      false, CounterBase.EncodingType.k1X);
+    private final Encoder enc = new Encoder(RobotMap.SHOOTER_ENC_A, RobotMap.SHOOTER_ENC_B);
 
     // Other variables.
     private double power = 0;
@@ -49,6 +49,7 @@ public class Shooter extends PIDSubsystem {
         this.power = Utils.limit(-power, -1.0, 1.0);
         mot1.set(this.power);
         mot2.set(this.power);
+        SmartDashboard.putInt("ShooterEncTest", enc.get());
     }
 
     public double getPower() {
@@ -64,7 +65,7 @@ public class Shooter extends PIDSubsystem {
     }
 
     public double getRate() {
-        return getRate(true);
+        return enc.getRate();//getRate(true);
     }
 
     public void enable() {

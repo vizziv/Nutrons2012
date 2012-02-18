@@ -1,11 +1,11 @@
 package edu.neu.nutrons.lib;
 
 /**
- * Smooths out an input stream of integers by averaging the latest values.
+ * Smooths out an signal by averaging the latest values.
  *
  * @author Ziv
  */
-public class MovingAverage {
+public class MovingAverage implements Filter {
 
     private double[] data;
     private double sum = 0;
@@ -17,9 +17,9 @@ public class MovingAverage {
         this.length = length;
     }
 
-    public void feed(double in) {
-        sum += in - data[i];
-        data[i] = in;
+    public void feed(double val) {
+        sum += val - data[i];
+        data[i] = val;
         i++;
         if(i >= length) {
             i = 0;

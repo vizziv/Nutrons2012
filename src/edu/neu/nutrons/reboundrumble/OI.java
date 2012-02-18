@@ -30,7 +30,8 @@ public class OI {
     private Button elevShooterUp = new JoystickButton(opPad, 3);
     private Button elevShooterDown = new JoystickButton(opPad, 6);
     private Button elevHopperUp = new JoystickButton(opPad, 5);
-    private Button elevHopperDown = new JoystickButton(opPad, 11);
+    private Button cameraTrack = new JoystickButton(opPad, 9);
+    private Button cameraCenter = new JoystickButton(opPad, 10);
     // TODO: add buttons for hood commands.
 
     public OI(){
@@ -43,8 +44,6 @@ public class OI {
         elevShooterUp.whileHeld(new ElevatorShooterCmd(true));
         elevShooterDown.whileHeld(new ElevatorShooterCmd(false));
         elevHopperUp.whileHeld(new ElevatorHopperCmd(true));
-        elevHopperDown.whileHeld(new ElevatorHopperCmd(false));
-        elevHopperDown.whileHeld(new ElevatorHopperCmd(false));
     }
 
     // On driverPad.
@@ -86,13 +85,13 @@ public class OI {
     }
 
     // These get assigned to various functions when we need to debug them.
-    public boolean getDebug1() {
+    /*public boolean getDebug1() {
         return opPad.getRawButton(9);
     }
 
     public boolean getDebug2() {
         return opPad.getRawButton(10);
-    }
+    }*/
 
     // We should never need these. They'll probably get removed at some point.
     public boolean getDriveShift() {

@@ -18,7 +18,7 @@ public abstract class CommandBase extends Command {
     public static DTPIDController dtPID;
     public static DriveTrain dt = new DriveTrain();
     public static Shifter shifter = new Shifter();
-    public static Camera cam = new Camera();
+    //public static Camera cam = new Camera();
     public static Shooter shooter = new Shooter();
     public static Hood hood = new Hood();
     public static Elevator elev = new Elevator();
@@ -34,7 +34,7 @@ public abstract class CommandBase extends Command {
 
         // Display subsystem data on SmartDashboard.
         SmartDashboard.putData(dt);
-        SmartDashboard.putData(cam);
+        //SmartDashboard.putData(cam);
         SmartDashboard.putData(shooter);
         SmartDashboard.putData(hood);
         // Drive train PID put on SmartDashboard in dtPID constructor.

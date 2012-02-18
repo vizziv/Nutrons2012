@@ -13,13 +13,13 @@ public class CamSetPosCmd extends CommandBase {
 
     public CamSetPosCmd(double pos) {
         this.pos = pos;
-        requires(cam);
+       // requires(cam);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        cam.disable();
-        cam.setPos(pos);
+       // cam.disable();
+       // cam.setPos(pos);
     }
 
     // Called repeatedly when this Command is scheduled to run

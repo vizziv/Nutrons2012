@@ -2,7 +2,6 @@ package edu.neu.nutrons.reboundrumble.subsystems;
 
 import edu.neu.nutrons.lib.LinearVictor;
 import edu.neu.nutrons.lib.MovingAverage;
-import edu.neu.nutrons.lib.Utils;
 import edu.neu.nutrons.reboundrumble.RobotMap;
 import edu.neu.nutrons.reboundrumble.commands.hood.HoodDebugCmd;
 import edu.wpi.first.wpilibj.AnalogChannel;
@@ -24,7 +23,7 @@ public class Hood extends PIDSubsystem {
     private final double POWER_SCALE = 0.5;
     private final double POT_MIN = 1.0;
     private final double POT_RANGE = 0.4;
-    private final int MOVING_AVG_LENGTH = 1;
+    private final int MOVING_AVG_LENGTH = 20;
 
     // Actual robot parts.
     private final LinearVictor mot = new LinearVictor(RobotMap.HOOD_MOTOR);
