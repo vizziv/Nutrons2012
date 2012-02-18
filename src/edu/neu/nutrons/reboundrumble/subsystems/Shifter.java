@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Shifter extends Subsystem {
 
     private final Solenoid shifter = new Solenoid(RobotMap.SHIFTER);
-    public static final boolean DEFAULT = true;
+    public static final boolean DEFAULT = false;
 
     public void initDefaultCommand() {
         setDefaultCommand(new ShifterStaticCmd(DEFAULT));

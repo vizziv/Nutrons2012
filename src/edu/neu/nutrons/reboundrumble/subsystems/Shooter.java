@@ -1,10 +1,10 @@
 package edu.neu.nutrons.reboundrumble.subsystems;
 
+import edu.neu.nutrons.lib.Derivative;
 import edu.neu.nutrons.lib.MovingAverage;
 import edu.neu.nutrons.lib.Utils;
 import edu.neu.nutrons.reboundrumble.RobotMap;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterMaintainPowerCmd;
-import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
@@ -22,22 +22,23 @@ public class Shooter extends PIDSubsystem {
     private static final double kp = 0.0;
     private static final double ki = 0.0;
     private static final double kd = 0.0;
-    private final double ENC_SCALE = 1.0;
-    private final int MOVING_AVG_LENGTH = 1;
+    private final double ENC_SCALE = -1.0;
+    private final int MOVING_AVG_LENGTH = 20;
 
     // Actual robot parts.
     private final Jaguar mot1 = new Jaguar(RobotMap.SHOOTER_MOTOR_1);
     private final Jaguar mot2 = new Jaguar(RobotMap.SHOOTER_MOTOR_2);
-    private final Encoder enc = new Encoder(RobotMap.SHOOTER_ENC_A, RobotMap.SHOOTER_ENC_B,
-                                      false, CounterBase.EncodingType.k1X);
+    private final Encoder enc = new Encoder(RobotMap.SHOOTER_ENC_A, RobotMap.SHOOTER_ENC_B);
 
     // Other variables.
     private double power = 0;
     private boolean enabled = false;
     private MovingAverage encFilter = new MovingAverage(MOVING_AVG_LENGTH);
+    private Derivative dEnc = new Derivative();
 
     public Shooter() {
         super(kp, ki, kd);
+        enc.start();
     }
 
     public void initDefaultCommand() {
@@ -58,7 +59,8 @@ public class Shooter extends PIDSubsystem {
     public double getRate(boolean refresh) {
         // We want to control how frequently we refresh, so it's optional.
         if(refresh) {
-            encFilter.feed(enc.getRate());
+            dEnc.feed(enc.get());
+            encFilter.feed(dEnc.get());
         }
         return ENC_SCALE * encFilter.get();
     }
@@ -86,6 +88,6 @@ public class Shooter extends PIDSubsystem {
     }
 
     protected void usePIDOutput(double output) {
-        setPower(output);
+        setPower(getPower() + output);
     }
 }

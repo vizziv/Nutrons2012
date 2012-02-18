@@ -4,7 +4,6 @@ import edu.neu.nutrons.lib.LinearVictor;
 import edu.neu.nutrons.lib.RelativeGyro;
 import edu.neu.nutrons.reboundrumble.RobotMap;
 import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualLRCmd;
-import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -25,16 +24,19 @@ public class DriveTrain extends Subsystem {
     // Actual robot parts.
     private final LinearVictor lMot = new LinearVictor(RobotMap.L_DRIVE_MOTOR);
     private final LinearVictor rMot = new LinearVictor(RobotMap.R_DRIVE_MOTOR);
-    private final Encoder lEnc = new Encoder(RobotMap.L_DRIVE_ENC_A, RobotMap.L_DRIVE_ENC_B,
-                                       false, CounterBase.EncodingType.k1X);
-    private final Encoder rEnc = new Encoder(RobotMap.R_DRIVE_ENC_A, RobotMap.R_DRIVE_ENC_B,
-                                       false, CounterBase.EncodingType.k1X);
+    private final Encoder lEnc = new Encoder(RobotMap.L_DRIVE_ENC_A, RobotMap.L_DRIVE_ENC_B);
+    private final Encoder rEnc = new Encoder(RobotMap.R_DRIVE_ENC_A, RobotMap.R_DRIVE_ENC_B);
     public RelativeEncoderAvg disEncAvg = new RelativeEncoderAvg();
     public final RelativeGyro yawGyro = new RelativeGyro(RobotMap.H_GYRO);
     public final RelativeGyro pitchGyro = new RelativeGyro(RobotMap.V_GYRO);
 
     // Other variables.
     private double tSens = LOW_GEAR_T_SENS;
+
+    public DriveTrain() {
+        lEnc.start();
+        rEnc.start();
+    }
 
     public void initDefaultCommand() {
         setDefaultCommand(new DTManualLRCmd());

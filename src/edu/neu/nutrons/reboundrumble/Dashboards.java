@@ -27,7 +27,7 @@ public class Dashboards {
         return instance;
     }
 
-    public void sendData() {
+    public void sendContinuousData() {
         // LabVIEW stuff.
         lowDash.addCluster(); // top
             lowDash.addCluster(); // target1 tracking
@@ -54,15 +54,22 @@ public class Dashboards {
                 lowDash.addInt((int)CommandBase.cam.tracker.getTarget4().rawBboxWidth);
                 lowDash.addInt((int)CommandBase.cam.tracker.getTarget4().rawBboxHeight);
             lowDash.finalizeCluster();
+            // Shooter.
+            lowDash.addDouble(CommandBase.shooter.getRate(false));
+            lowDash.addDouble(CommandBase.hood.getPos(false));
         lowDash.finalizeCluster();
         lowDash.commit();
+    }
+
+    public void sendPeriodicData() {
         // SmartDashboard stuff.
-        // TODO: implement getting setpoint of some subsystems.
         SmartDashboard.putDouble("Force Sensor Value", CommandBase.elev.getPressure());
         SmartDashboard.putDouble("Yaw position", CommandBase.dt.yawGyro.getAngle());
         SmartDashboard.putDouble("Target1 X", CommandBase.cam.tracker.getTarget1().centerX);
         SmartDashboard.putDouble("Cam servo", CommandBase.cam.getPos());
-        SmartDashboard.putDouble("Shooter rate", CommandBase.shooter.getPosition());
-        SmartDashboard.putDouble("Hood position", CommandBase.hood.getPosition());
+        SmartDashboard.putDouble("Shooter rate", CommandBase.shooter.getRate());
+        SmartDashboard.putDouble("Hood position", CommandBase.hood.getPos());
+        SmartDashboard.putDouble("DT left", CommandBase.dt.getLeftPos());
+        SmartDashboard.putDouble("DT right", CommandBase.dt.getRightPos());
     }
 }

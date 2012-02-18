@@ -21,7 +21,7 @@ public class Elevator extends Subsystem {
     // Actual robot parts.
     private final Jaguar fMot = new Jaguar(RobotMap.F_ELEV_MOTOR);
     private final Jaguar bMot = new Jaguar(RobotMap.B_ELEV_MOTOR);
-    private final AnalogChannel pressure = new AnalogChannel(RobotMap.PRESSURE);
+    private final AnalogChannel pressure = new AnalogChannel(RobotMap.SQUISHINESS);
 
     public void initDefaultCommand() {
         setDefaultCommand(new ElevatorIdleCmd());

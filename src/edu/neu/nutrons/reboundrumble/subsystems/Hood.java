@@ -2,7 +2,6 @@ package edu.neu.nutrons.reboundrumble.subsystems;
 
 import edu.neu.nutrons.lib.LinearVictor;
 import edu.neu.nutrons.lib.MovingAverage;
-import edu.neu.nutrons.lib.Utils;
 import edu.neu.nutrons.reboundrumble.RobotMap;
 import edu.neu.nutrons.reboundrumble.commands.hood.HoodDebugCmd;
 import edu.wpi.first.wpilibj.AnalogChannel;
@@ -18,13 +17,13 @@ public class Hood extends PIDSubsystem {
     // Constants.
     public static final double MANUAL_POWER = 1;
     // TODO: tune PID.
-    private static final double kp = 1.0;
+    private static final double kp = 25.0;
     private static final double ki = 0.0;
     private static final double kd = 0.0;
     private final double POWER_SCALE = 0.5;
     private final double POT_MIN = 1.0;
     private final double POT_RANGE = 0.4;
-    private final int MOVING_AVG_LENGTH = 1;
+    private final int MOVING_AVG_LENGTH = 100;
 
     // Actual robot parts.
     private final LinearVictor mot = new LinearVictor(RobotMap.HOOD_MOTOR);
@@ -46,7 +45,7 @@ public class Hood extends PIDSubsystem {
 
     public void setPower(double power) {
         // If PID is enabled, then we don't need to refresh the pot filter.
-        double pos = getPos(!enabled);
+        double pos = getPos();
         boolean tooLow = (pos < 0) && (power < 0);
         boolean tooHigh = (pos > 1) && (power > 0);
         if(tooLow || tooHigh) {
@@ -66,11 +65,11 @@ public class Hood extends PIDSubsystem {
     }
 
     public double getPos() {
-        return getPos(true);
+        return getPos(!enabled);
     }
 
     protected double returnPIDInput() {
-        return getPos();
+        return getPos(true);
     }
 
     protected void usePIDOutput(double output) {
