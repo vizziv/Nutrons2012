@@ -2,9 +2,12 @@ package edu.neu.nutrons.reboundrumble;
 
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorHopperCmd;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorShooterCmd;
+import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorSpitCmd;
+import edu.neu.nutrons.reboundrumble.commands.group.PrepareHoodAndShooterCmd;
 import edu.neu.nutrons.reboundrumble.commands.shifter.ShifterStaticCmd;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterDeltaPowerCmd;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterSetPowerCmd;
+import edu.neu.nutrons.reboundrumble.subsystems.Hood;
 import edu.neu.nutrons.reboundrumble.subsystems.Shifter;
 import edu.neu.nutrons.reboundrumble.subsystems.Shooter;
 import edu.wpi.first.wpilibj.Joystick;
@@ -22,16 +25,17 @@ public class OI {
     // Driver.
     private Joystick driverPad = new Joystick(RobotMap.PAD_DRIVER);
     private Button shift = new JoystickButton(driverPad, 5);
+
     // Operator.
     private Joystick opPad = new Joystick(RobotMap.PAD_OPERATOR);
     private Button shooterZero = new JoystickButton(opPad, 1);
     private Button shooterPlus = new JoystickButton(opPad, 2);
     private Button shooterMinus = new JoystickButton(opPad, 4);
     private Button elevShooterUp = new JoystickButton(opPad, 3);
-    private Button elevShooterDown = new JoystickButton(opPad, 6);
+    private Button elevSpitDown = new JoystickButton(opPad, 6);
     private Button elevHopperUp = new JoystickButton(opPad, 5);
-    private Button elevHopperDown = new JoystickButton(opPad, 11);
-    // TODO: add buttons for hood commands.
+    private Button prepareFender = new JoystickButton(opPad, 11);
+    private Button prepareLong = new JoystickButton(opPad, 12);
 
     public OI(){
         // When shift is held, go into the non-default gear.
@@ -41,10 +45,10 @@ public class OI {
         shooterPlus.whenPressed(new ShooterDeltaPowerCmd(Shooter.MANUAL_INC));
         shooterMinus.whenPressed(new ShooterDeltaPowerCmd(-Shooter.MANUAL_INC));
         elevShooterUp.whileHeld(new ElevatorShooterCmd(true));
-        elevShooterDown.whileHeld(new ElevatorShooterCmd(false));
         elevHopperUp.whileHeld(new ElevatorHopperCmd(true));
-        elevHopperDown.whileHeld(new ElevatorHopperCmd(false));
-        elevHopperDown.whileHeld(new ElevatorHopperCmd(false));
+        elevSpitDown.whileHeld(new ElevatorSpitCmd(false));
+        prepareFender.whenPressed(new PrepareHoodAndShooterCmd(Shooter.FENDER_POWER, Hood.FENDER_POS));
+        prepareLong.whenPressed(new PrepareHoodAndShooterCmd(Shooter.LONG_POWER, Hood.LONG_POS));
     }
 
     // On driverPad.

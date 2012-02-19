@@ -24,6 +24,10 @@ public class Hood extends PIDSubsystem {
     private final double POT_MIN = 1.0;
     private final double POT_RANGE = 0.4;
     private final int MOVING_AVG_LENGTH = 100;
+    private static final double TOLERANCE = .03;
+    public static final double SETTLE_TIME = 1.0;
+    public static final double FENDER_POS = 0.0;
+    public static final double LONG_POS = 0.8;
 
     // Actual robot parts.
     private final LinearVictor mot = new LinearVictor(RobotMap.HOOD_MOTOR);
@@ -45,7 +49,7 @@ public class Hood extends PIDSubsystem {
 
     public void setPower(double power) {
         // If PID is enabled, then we don't need to refresh the pot filter.
-        double pos = getPos();
+        double pos = getPos(!enabled);
         boolean tooLow = (pos < 0) && (power < 0);
         boolean tooHigh = (pos > 1) && (power > 0);
         if(tooLow || tooHigh) {
@@ -65,11 +69,15 @@ public class Hood extends PIDSubsystem {
     }
 
     public double getPos() {
-        return getPos(!enabled);
+        return getPos(true);
+    }
+
+    public boolean atSetpoint() {
+        return Math.abs(getPos(false) - getSetpoint()) < TOLERANCE;
     }
 
     protected double returnPIDInput() {
-        return getPos(true);
+        return getPos();
     }
 
     protected void usePIDOutput(double output) {

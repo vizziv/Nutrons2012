@@ -3,7 +3,7 @@ package edu.neu.nutrons.reboundrumble.subsystems;
 import edu.neu.nutrons.lib.LinearVictor;
 import edu.neu.nutrons.lib.RelativeGyro;
 import edu.neu.nutrons.reboundrumble.RobotMap;
-import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualLRCmd;
+import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualCheesyCmd;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -39,7 +39,7 @@ public class DriveTrain extends Subsystem {
     }
 
     public void initDefaultCommand() {
-        setDefaultCommand(new DTManualLRCmd());
+        setDefaultCommand(new DTManualCheesyCmd());
     }
 
     public void driveLR(double lPower, double rPower) {

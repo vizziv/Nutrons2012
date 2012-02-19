@@ -22,6 +22,8 @@ public class Shooter extends PIDSubsystem {
     private static final double kp = 0.0;
     private static final double ki = 0.0;
     private static final double kd = 0.0;
+    public static final double FENDER_POWER = .28;
+    public static final double LONG_POWER = .60;
     private final double ENC_SCALE = -1.0;
     private final int MOVING_AVG_LENGTH = 20;
 
@@ -75,12 +77,12 @@ public class Shooter extends PIDSubsystem {
     }
 
     public void disable() {
-        enabled = false;
-        super.disable();
+        //enabled = false;
+        //super.disable();
     }
 
     public boolean isEnabled() {
-        return enabled;
+        return false;//enabled;
     }
 
     protected double returnPIDInput() {
