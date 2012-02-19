@@ -49,7 +49,7 @@ public class Shooter extends PIDSubsystem {
     }
 
     public void setPower(double power) {
-        this.power = Utils.limit(-power, -1.0, 1.0);
+        this.power = Utils.limit(power, -1.0, 1.0);
         mot1.set(this.power);
         mot2.set(this.power);
     }
@@ -77,12 +77,12 @@ public class Shooter extends PIDSubsystem {
     }
 
     public void disable() {
-        //enabled = false;
-        //super.disable();
+        enabled = false;
+        super.disable();
     }
 
     public boolean isEnabled() {
-        return false;//enabled;
+        return enabled;
     }
 
     protected double returnPIDInput() {

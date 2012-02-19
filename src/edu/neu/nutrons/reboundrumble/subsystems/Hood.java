@@ -3,7 +3,7 @@ package edu.neu.nutrons.reboundrumble.subsystems;
 import edu.neu.nutrons.lib.LinearVictor;
 import edu.neu.nutrons.lib.MovingAverage;
 import edu.neu.nutrons.reboundrumble.RobotMap;
-import edu.neu.nutrons.reboundrumble.commands.hood.HoodDebugCmd;
+import edu.neu.nutrons.reboundrumble.commands.hood.HoodSetPowerCmd;
 import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 
@@ -17,13 +17,13 @@ public class Hood extends PIDSubsystem {
     // Constants.
     public static final double MANUAL_POWER = 1;
     // TODO: tune PID.
-    private static final double kp = 25.0;
+    private static final double kp = 20.0;
     private static final double ki = 0.0;
     private static final double kd = 0.0;
     private final double POWER_SCALE = 0.5;
     private final double POT_MIN = 1.0;
     private final double POT_RANGE = 0.4;
-    private final int MOVING_AVG_LENGTH = 100;
+    private final int MOVING_AVG_LENGTH = 20;
     private static final double TOLERANCE = .03;
     public static final double SETTLE_TIME = 1.0;
     public static final double FENDER_POS = 0.0;
@@ -44,7 +44,7 @@ public class Hood extends PIDSubsystem {
     public void initDefaultCommand() {
         // TODO: replace or delete these two lines when we're done debugging.
         disable();
-        setDefaultCommand(new HoodDebugCmd());
+        setDefaultCommand(new HoodSetPowerCmd(0));
     }
 
     public void setPower(double power) {

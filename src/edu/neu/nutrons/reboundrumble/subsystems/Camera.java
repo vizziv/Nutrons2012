@@ -2,7 +2,7 @@ package edu.neu.nutrons.reboundrumble.subsystems;
 
 import edu.neu.nutrons.reboundrumble.RobotMap;
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
-import edu.neu.nutrons.reboundrumble.commands.camera.CamSetPosCmd;
+import edu.neu.nutrons.reboundrumble.commands.camera.CamManualCmd;
 import edu.neu.nutrons.reboundrumble.vision.Tracker;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
@@ -30,7 +30,7 @@ public class Camera extends PIDSubsystem {
 
     protected void initDefaultCommand() {
         disable();
-        setDefaultCommand(new CamSetPosCmd(0));
+        setDefaultCommand(new CamManualCmd());
     }
 
     public void setPos(double pos) {

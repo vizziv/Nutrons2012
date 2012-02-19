@@ -5,6 +5,7 @@
 package edu.neu.nutrons.reboundrumble.commands.group;
 
 import edu.neu.nutrons.reboundrumble.commands.hood.HoodSetPosCmd;
+import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterMaintainPowerCmd;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterSetPowerCmd;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -15,7 +16,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class PrepareHoodAndShooterCmd extends CommandGroup {
 
     public PrepareHoodAndShooterCmd(double shooterPower, double hoodPos) {
-        addParallel(new ShooterSetPowerCmd(hoodPos));
-        addSequential(new HoodSetPosCmd(hoodPos));
+        addParallel(new HoodSetPosCmd(hoodPos));
+        addSequential(new ShooterSetPowerCmd(shooterPower));
+        addSequential(new ShooterMaintainPowerCmd());
     }
 }
