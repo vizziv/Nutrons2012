@@ -35,7 +35,7 @@ public class Tracker {
     public static final int IMAGE_WIDTH = 320;
     public static final int IMAGE_HEIGHT = 240;
 
-    private AxisCamera cam = AxisCamera.getInstance();
+    //private AxisCamera cam = AxisCamera.getInstance();
     private Target highTarget = Target.NullTarget;
     private Target target1 = Target.NullTarget;
     private Target target2 = Target.NullTarget;
@@ -46,7 +46,7 @@ public class Tracker {
     private CriteriaCollection inertiaCriteriaX = new CriteriaCollection();
     private CriteriaCollection inertiaCriteriaY = new CriteriaCollection();
 
-    public Tracker() {
+    /*public Tracker() {
         cam.writeResolution(AxisCamera.ResolutionT.k320x240);
         cam.writeBrightness(camBrightness);
         cam.writeColorLevel(camColor);
@@ -143,7 +143,7 @@ public class Tracker {
             }
         }
         return success;
-    }
+    }*/
 
     public Target getHighestTarget() {
         return highTarget;

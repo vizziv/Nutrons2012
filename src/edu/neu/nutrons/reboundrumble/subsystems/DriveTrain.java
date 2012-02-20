@@ -22,6 +22,7 @@ public class DriveTrain extends Subsystem {
     public static final double DIS_SETTLE_TIME = 1.0;
     public static final double YAW_SETTLE_TIME = 1.0;
     public static final double PITCH_SETTLE_TIME = 1.0;
+    public static double SMOOTHING_CYCLES = 40;
 
     // Actual robot parts.
     private final LinearVictor lMot = new LinearVictor(RobotMap.L_DRIVE_MOTOR);

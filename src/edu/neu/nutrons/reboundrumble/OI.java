@@ -2,9 +2,7 @@ package edu.neu.nutrons.reboundrumble;
 
 import edu.neu.nutrons.lib.ToggleButton;
 import edu.neu.nutrons.reboundrumble.commands.camera.CamPointAtTargetCmd;
-import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTDriveDistanceCmd;
-import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTSpinToTargetWithCamServoCmd;
-import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTTurnToTargetCmd;
+import edu.neu.nutrons.reboundrumble.commands.drivetrain.*;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorHopperCmd;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorMeasureCmd;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorShooterCmd;
@@ -35,7 +33,8 @@ public class OI {
     // Driver.
     private Joystick driverPad = new Joystick(RobotMap.PAD_DRIVER);
     private Button shift = new JoystickButton(driverPad, 5);
-    private Button driveFoot = new JoystickButton(driverPad, 4);
+    private Button fullForward = new JoystickButton(driverPad, 4);
+    private Button fullBackward = new JoystickButton(driverPad, 2);
 
     // Operator.
     private Joystick opPad = new Joystick(RobotMap.PAD_OPERATOR);
@@ -58,7 +57,10 @@ public class OI {
         // When shift is held, go into the non-default gear.
         // (We don't know which it will be, yet.)
         shift.whileHeld(new ShifterStaticCmd(!Shifter.DEFAULT));
-        driveFoot.whenPressed(new DTDriveDistanceCmd(1));
+        fullForward.whileHeld(new DTSmoothAccelCmd(1,0));
+        fullForward.whenReleased(new DTSmoothDecelCmd(1,0));
+        fullBackward.whileHeld(new DTSmoothAccelCmd(-1,0));
+        fullBackward.whenReleased(new DTSmoothDecelCmd(-1,0));
         shooterZero.whenPressed(new ShooterSetPowerCmd(0));
         shooterPlus.whenPressed(new ShooterDeltaPowerCmd(Shooter.MANUAL_INC));
         shooterMinus.whenPressed(new ShooterDeltaPowerCmd(-Shooter.MANUAL_INC));
