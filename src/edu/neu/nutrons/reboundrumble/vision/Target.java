@@ -39,8 +39,8 @@ public class Target {
                             Tracker.IMAGE_WIDTH;
             centerY = (-Tracker.IMAGE_HEIGHT/2.0 + bboxCornerY + bboxHeight/2.0) /
                             Tracker.IMAGE_HEIGHT;
-            ratio = bboxWidth / bboxHeight;
-            rectitude = area / (bboxWidth * bboxHeight);
+            ratio = (double)bboxWidth / (double)bboxHeight;
+            rectitude = (double)area / (double)(bboxWidth * bboxHeight);
         }
         else {
             centerX = 0;

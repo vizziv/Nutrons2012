@@ -17,7 +17,7 @@ public class Hood extends PIDSubsystem {
     // Constants.
     public static final double MANUAL_POWER = 1;
     // TODO: tune PID.
-    private static final double kp = 20.0;
+    private static final double kp = 15.0;
     private static final double ki = 0.0;
     private static final double kd = 0.0;
     private final double POWER_SCALE = 0.5;

@@ -15,19 +15,19 @@ import edu.wpi.first.wpilibj.image.*;
  */
 public class Tracker {
 
-    private final int redLow = 25;
-    private final int redHigh = 120;
-    private final int greenLow = 10;
-    private final int greenHigh = 40;
+    private final int redLow = 32;
+    private final int redHigh = 82;
+    private final int greenLow = 3;
+    private final int greenHigh = 33;
     private final int blueLow = 0;
-    private final int blueHigh = 30;
-    private final int bboxWidthMin = 24;
-    private final int bboxHeightMin = 18;
-    private final float inertiaXMin = .32f;
-    private final float inertiaYMin = .18f;
-    private final double ratioMin = 1;
-    private final double ratioMax = 2;
-    private final double rectitudeMin = 0.75;
+    private final int blueHigh = 26;
+    private final int bboxWidthMin = 20;
+    private final int bboxHeightMin = 15;
+    private final float inertiaXMin = 0.32f;
+    private final float inertiaYMin = 0.18f;
+    private final double ratioMin = 1.0;
+    private final double ratioMax = 3.0;
+    private final double rectitudeMin = 0.5;
     private final int camBrightness = 10;
     private final int camColor = 100;
     private final WhiteBalanceT camWhiteBalance = WhiteBalanceT.hold;
@@ -83,6 +83,7 @@ public class Tracker {
         if(success) {
             try {
                 ColorImage im = cam.getImage();
+                // Look for target color.
                 BinaryImage thresholdIm = im.thresholdRGB(redLow, redHigh,
                                                           greenLow, greenHigh,
                                                           blueLow, blueHigh);

@@ -33,7 +33,7 @@ public abstract class TimedEndConditionCmd extends CommandBase {
     // Make this return true when this Command no longer needs to run execute()
     protected final boolean isFinished() {
         boolean ending = returnEndCondition();
-        startEnding.set(ending);
+        startEnding.feed(ending);
         if(startEnding.get()) {
             t.start();
         }

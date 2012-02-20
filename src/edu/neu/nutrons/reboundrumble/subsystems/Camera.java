@@ -1,5 +1,6 @@
 package edu.neu.nutrons.reboundrumble.subsystems;
 
+import com.sun.squawk.util.MathUtils;
 import edu.neu.nutrons.reboundrumble.RobotMap;
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
 import edu.neu.nutrons.reboundrumble.commands.camera.CamManualCmd;
@@ -16,13 +17,16 @@ public class Camera extends PIDSubsystem {
 
     // Constants.
     // TODO: tune PID more.
-    private static final double kp = 0.125;
+    private static final double kp = 0.3;
     private static final double ki = 0;
     private static final double kd = 0;
 
     // Actual robot parts.
     public final Tracker tracker = new Tracker(); // Axis camera is in here.
     private final Servo servo = new Servo(RobotMap.CAM_SERVO);
+
+    // Other variables.
+    private double lastAngle = 0;
 
     public Camera() {
         super(kp, ki, kd);
@@ -48,8 +52,13 @@ public class Camera extends PIDSubsystem {
     }
 
     protected void usePIDOutput(double output) {
-        // Change position by PID output.
-        setPos(getPos() + output - (CommandBase.dt.yawGyro.getAbsoluteAngle() / 90.0));
+        // Change position by PID output if we see the target.
+        double curAngle = CommandBase.dt.yawGyro.getAbsoluteAngle();
+        double delta = curAngle - lastAngle;
+        lastAngle = curAngle;
+        if(tracker.getTarget1().isNotNull()) {
+            setPos(getPos() + MathUtils.asin(output) + delta / 70.0);
+        }
     }
 
     public double getAngle() {

@@ -1,5 +1,7 @@
 package edu.neu.nutrons.reboundrumble.commands.elevator;
 
+import edu.neu.nutrons.reboundrumble.subsystems.Elevator;
+
 /**
  * Drives elevator belts in opposite directions.
  *
@@ -13,6 +15,6 @@ public class ElevatorSpitCmd extends ElevatorShooterCmd {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        elev.setPowerFB(sign * .85, sign * -.55);
+        elev.setPowerFB(sign * Elevator.F_SPIT_POWER, sign * -Elevator.B_SPIT_POWER);
     }
 }

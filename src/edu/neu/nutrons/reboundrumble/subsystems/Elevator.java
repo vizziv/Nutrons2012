@@ -17,6 +17,9 @@ public class Elevator extends Subsystem {
     private final double PRESSURE_SCALE = 1.0;
     public static final double F_POWER = 0.45;
     public static final double B_POWER = 0.85;
+    public static final double F_SPIT_POWER = 0.85;
+    public static final double B_SPIT_POWER = 0.55;
+    public static final double MEASURING_POWER_SCALE = 0.2;
 
     // Actual robot parts.
     private final Jaguar fMot = new Jaguar(RobotMap.F_ELEV_MOTOR);

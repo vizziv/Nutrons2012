@@ -1,5 +1,7 @@
 package edu.neu.nutrons.lib;
 
+import com.sun.squawk.util.MathUtils;
+
 /**
  * Various useful functions.
  *
@@ -16,5 +18,10 @@ public class Utils {
         // (Java's modulo isn't mathematically pretty in this way.)
         double sign = (base < 0) ? -1 : 1;
         return sign * (Math.abs(x) % Math.abs(base));
+    }
+
+    public static double absPow(double base, double exp) {
+        int sign = (base >= 0) ? 1 : -1;
+        return sign * MathUtils.pow(Math.abs(base), Math.abs(exp));
     }
 }

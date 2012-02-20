@@ -9,28 +9,15 @@ import edu.neu.nutrons.reboundrumble.commands.CommandBase;
  */
 public class DTTurnToTargetCmd extends CommandBase {
 
-    private static final double TOLERANCE = .05;
-    private static final double kp = 1.5;
-    private static final double servoKpScale = 1;
+    private static final double TOLERANCE = .025;
+    private static final double kp = 5.0;
+    private static final double servoKpScale = 1.0;
 
-    private boolean useCamServo = false;
+    private boolean rightSide = false;
 
-    public DTTurnToTargetCmd() {
+    public DTTurnToTargetCmd(boolean rightSide) {
+        this.rightSide = rightSide;
         requires(dt);
-    }
-
-    public DTTurnToTargetCmd(boolean useCamServo) {
-        this.useCamServo = useCamServo;
-        requires(dt);
-    }
-
-    private double posError() {
-        if(useCamServo) {
-            return servoKpScale * cam.getPos();
-        }
-        else {
-            return cam.tracker.getTarget1().centerX;
-        }
     }
 
     // Called just before this Command runs the first time
@@ -39,7 +26,13 @@ public class DTTurnToTargetCmd extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        dt.driveCar(0, kp * posError());
+        double power = kp * posError() / 2.0;
+        if(rightSide) {
+            dt.driveCar(-power, power);
+        }
+        else {
+            dt.driveCar(power, power);
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -57,5 +50,9 @@ public class DTTurnToTargetCmd extends CommandBase {
     // subsystems is scheduled to run
     protected void interrupted() {
         end();
+    }
+
+    private double posError() {
+        return cam.tracker.getTarget1().centerX;
     }
 }

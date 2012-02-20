@@ -50,8 +50,8 @@ public class Shooter extends PIDSubsystem {
 
     public void setPower(double power) {
         this.power = Utils.limit(power, -1.0, 1.0);
-        mot1.set(this.power);
-        mot2.set(this.power);
+        mot1.set(-this.power);
+        mot2.set(-this.power);
     }
 
     public double getPower() {

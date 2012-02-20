@@ -26,12 +26,13 @@ public class RobotMap {
     public static final int PAD_OPERATOR = 2;
 
     // Sensors.
-    public static final int L_DRIVE_ENC_A = 2;
-    public static final int L_DRIVE_ENC_B = 1;
-    public static final int R_DRIVE_ENC_A = 4;
-    public static final int R_DRIVE_ENC_B = 3;
+    public static final int L_DRIVE_ENC_A = 3;
+    public static final int L_DRIVE_ENC_B = 4;
+    public static final int R_DRIVE_ENC_A = 2;
+    public static final int R_DRIVE_ENC_B = 1;
     public static final int H_GYRO = 1;
     public static final int V_GYRO = 2;
+    public static final int TEMPERATURE = 5;
     public static final int SHOOTER_ENC_A = 6;
     public static final int SHOOTER_ENC_B = 7;
     public static final int HOOD_POT = 3;

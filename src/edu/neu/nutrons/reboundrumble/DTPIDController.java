@@ -1,7 +1,6 @@
 package edu.neu.nutrons.reboundrumble;
 
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
-import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.smartdashboard.SendablePIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

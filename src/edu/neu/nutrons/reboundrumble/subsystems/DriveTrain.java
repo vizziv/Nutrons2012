@@ -18,8 +18,10 @@ public class DriveTrain extends Subsystem {
     // Constants.
     private final double HIGH_GEAR_T_SENS = 1.7;
     private final double LOW_GEAR_T_SENS = 1.36;
-    private final double ENC_SCALE = 1.0;
+    private final double ENC_SCALE = .01265;
+    public static final double DIS_SETTLE_TIME = 1.0;
     public static final double YAW_SETTLE_TIME = 1.0;
+    public static final double PITCH_SETTLE_TIME = 1.0;
 
     // Actual robot parts.
     private final LinearVictor lMot = new LinearVictor(RobotMap.L_DRIVE_MOTOR);

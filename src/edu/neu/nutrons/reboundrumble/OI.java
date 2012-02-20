@@ -1,6 +1,12 @@
 package edu.neu.nutrons.reboundrumble;
 
+import edu.neu.nutrons.lib.ToggleButton;
+import edu.neu.nutrons.reboundrumble.commands.camera.CamPointAtTargetCmd;
+import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTDriveDistanceCmd;
+import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTSpinToTargetWithCamServoCmd;
+import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTTurnToTargetCmd;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorHopperCmd;
+import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorMeasureCmd;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorShooterCmd;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorSpitCmd;
 import edu.neu.nutrons.reboundrumble.commands.group.PrepareHoodAndShooterCmd;
@@ -29,6 +35,7 @@ public class OI {
     // Driver.
     private Joystick driverPad = new Joystick(RobotMap.PAD_DRIVER);
     private Button shift = new JoystickButton(driverPad, 5);
+    private Button driveFoot = new JoystickButton(driverPad, 4);
 
     // Operator.
     private Joystick opPad = new Joystick(RobotMap.PAD_OPERATOR);
@@ -40,23 +47,33 @@ public class OI {
     private Button elevHopperUp = new JoystickButton(opPad, 5);
     private Button hoodUp = new JoystickButton(opPad, 7);
     private Button hoodDown = new JoystickButton(opPad, 8);
+    //private Button dtToTargetLeft = new JoystickButton(opPad, 7);
+    //private Button dtToTargetRight = new JoystickButton(opPad, 8);
     private Button prepareFender = new JoystickButton(opPad, 9);
     private Button prepareLong = new JoystickButton(opPad, 10);
+    private Button cameraTrack = new ToggleButton(new JoystickButton(opPad, 11));
+    private Button dtToTargetSpin = new JoystickButton(opPad, 12);
 
     public OI(){
         // When shift is held, go into the non-default gear.
         // (We don't know which it will be, yet.)
         shift.whileHeld(new ShifterStaticCmd(!Shifter.DEFAULT));
+        driveFoot.whenPressed(new DTDriveDistanceCmd(1));
         shooterZero.whenPressed(new ShooterSetPowerCmd(0));
         shooterPlus.whenPressed(new ShooterDeltaPowerCmd(Shooter.MANUAL_INC));
         shooterMinus.whenPressed(new ShooterDeltaPowerCmd(-Shooter.MANUAL_INC));
         elevShooterUp.whileHeld(new ElevatorShooterCmd(true));
+        //elevShooterUp.whileHeld(new ElevatorMeasureCmd());
         elevHopperUp.whileHeld(new ElevatorHopperCmd(true));
         elevSpitDown.whileHeld(new ElevatorSpitCmd(false));
-        prepareFender.whenPressed(new PrepareHoodAndShooterCmd(Shooter.FENDER_POWER, Hood.FENDER_POS));
-        prepareLong.whenPressed(new PrepareHoodAndShooterCmd(Shooter.LONG_POWER, Hood.LONG_POS));
         hoodUp.whileHeld(new HoodSetPowerCmd(Hood.MANUAL_POWER));
         hoodDown.whileHeld(new HoodSetPowerCmd(-Hood.MANUAL_POWER));
+        //dtToTargetLeft.whileHeld(new DTTurnToTargetCmd(false));
+        //dtToTargetRight.whileHeld(new DTTurnToTargetCmd(true));
+        prepareFender.whenPressed(new PrepareHoodAndShooterCmd(Shooter.FENDER_POWER, Hood.FENDER_POS));
+        prepareLong.whenPressed(new PrepareHoodAndShooterCmd(Shooter.LONG_POWER, Hood.LONG_POS));
+        cameraTrack.whileHeld(new CamPointAtTargetCmd());
+        dtToTargetSpin.whileHeld(new DTSpinToTargetWithCamServoCmd());
     }
 
     // On driverPad.
@@ -83,7 +100,7 @@ public class OI {
     // On opPad.
 
     public double getCamDelta() {
-        return CAM_JS_SCALE * opPad.getRawAxis(3);
+        return CAM_JS_SCALE * opPad.getRawAxis(1);
     }
 
     public boolean getHoodUp() {
