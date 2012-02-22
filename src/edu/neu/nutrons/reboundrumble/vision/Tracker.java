@@ -1,5 +1,6 @@
 package edu.neu.nutrons.reboundrumble.vision;
 
+import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
 import edu.wpi.first.wpilibj.camera.AxisCamera.ExposureT;
 import edu.wpi.first.wpilibj.camera.AxisCamera.WhiteBalanceT;
@@ -13,21 +14,23 @@ import edu.wpi.first.wpilibj.image.*;
  *
  * @author Ziv
  */
-public class Tracker {
+public class Tracker implements PIDSource {
 
+    // Constants.
     private final int redLow = 32;
-    private final int redHigh = 82;
-    private final int greenLow = 3;
-    private final int greenHigh = 33;
+    private final int redHigh = 255;
+    private final int greenLow = 1;
+    private final int greenHigh = 76;
     private final int blueLow = 0;
-    private final int blueHigh = 26;
-    private final int bboxWidthMin = 20;
-    private final int bboxHeightMin = 15;
+    private final int blueHigh = 42;
+    //private final int bboxWidthMin = 20;
+    //private final int bboxHeightMin = 15;
     private final float inertiaXMin = 0.32f;
     private final float inertiaYMin = 0.18f;
     private final double ratioMin = 1.0;
     private final double ratioMax = 3.0;
-    private final double rectitudeMin = 0.5;
+    private final double rectitudeMin = 0.75;
+    private final double areaMin = 600;
     private final int camBrightness = 10;
     private final int camColor = 100;
     private final WhiteBalanceT camWhiteBalance = WhiteBalanceT.hold;
@@ -35,27 +38,30 @@ public class Tracker {
     public static final int IMAGE_WIDTH = 320;
     public static final int IMAGE_HEIGHT = 240;
 
-    //private AxisCamera cam = AxisCamera.getInstance();
+    // Actual robot part.
+    private final  AxisCamera cam = AxisCamera.getInstance();
+
+    // Other objects.
     private Target highTarget = Target.NullTarget;
     private Target target1 = Target.NullTarget;
     private Target target2 = Target.NullTarget;
     private Target target3 = Target.NullTarget;
     private Target target4 = Target.NullTarget;
-    private CriteriaCollection boxCriteriaX = new CriteriaCollection();
-    private CriteriaCollection boxCriteriaY = new CriteriaCollection();
-    private CriteriaCollection inertiaCriteriaX = new CriteriaCollection();
-    private CriteriaCollection inertiaCriteriaY = new CriteriaCollection();
+    //private final CriteriaCollection boxCriteriaX = new CriteriaCollection();
+    //private final CriteriaCollection boxCriteriaY = new CriteriaCollection();
+    private final CriteriaCollection inertiaCriteriaX = new CriteriaCollection();
+    private final CriteriaCollection inertiaCriteriaY = new CriteriaCollection();
 
-    /*public Tracker() {
+    public Tracker() {
         cam.writeResolution(AxisCamera.ResolutionT.k320x240);
         cam.writeBrightness(camBrightness);
         cam.writeColorLevel(camColor);
         cam.writeWhiteBalance(camWhiteBalance);
         cam.writeExposureControl(camExposure);
-        boxCriteriaX.addCriteria(NIVision.MeasurementType.IMAQ_MT_BOUNDING_RECT_WIDTH,
-                             0, bboxWidthMin, true);
-        boxCriteriaY.addCriteria(NIVision.MeasurementType.IMAQ_MT_BOUNDING_RECT_HEIGHT,
-                             0, bboxHeightMin, true);
+        //boxCriteriaX.addCriteria(NIVision.MeasurementType.IMAQ_MT_BOUNDING_RECT_WIDTH,
+        //                     0, bboxWidthMin, true);
+        //boxCriteriaY.addCriteria(NIVision.MeasurementType.IMAQ_MT_BOUNDING_RECT_HEIGHT,
+        //                     0, bboxHeightMin, true);
         inertiaCriteriaX.addCriteria(NIVision.MeasurementType.IMAQ_MT_NORM_MOMENT_OF_INERTIA_XX,
                              0, inertiaXMin, true);
         inertiaCriteriaY.addCriteria(NIVision.MeasurementType.IMAQ_MT_NORM_MOMENT_OF_INERTIA_YY,
@@ -93,9 +99,9 @@ public class Tracker {
                 // -Bounding box at least 24x18.
                 // -Moment of inertias are at least .32 (x^2) and .18 (y^2).
                 //  (This selects for hollow particles.)
-                BinaryImage filteredIm1 = thresholdIm.particleFilter(boxCriteriaX);
-                BinaryImage filteredIm2 = filteredIm1.particleFilter(boxCriteriaY);
-                BinaryImage filteredIm3 = filteredIm2.particleFilter(inertiaCriteriaX);
+                //BinaryImage filteredIm1 = thresholdIm.particleFilter(boxCriteriaX);
+                //BinaryImage filteredIm2 = filteredIm1.particleFilter(boxCriteriaY);
+                BinaryImage filteredIm3 = thresholdIm.particleFilter(inertiaCriteriaX);
                 BinaryImage filteredIm4 = filteredIm3.particleFilter(inertiaCriteriaY);
                 // Look at convex hull of what's left. As well as convex area
                 // being useful (see below), taking the convex hull of every
@@ -119,7 +125,7 @@ public class Tracker {
                 for(int i=0; i < particles.length; i++) {
                     Target t = new Target(i, particles[i]);
                     if(t.ratio > ratioMin && t.ratio < ratioMax &&
-                           t.rectitude > rectitudeMin) {
+                           t.rectitude > rectitudeMin && t.rawArea > areaMin) {
                         addTarget(t);
                         if(t.centerY <= minY) {
                             highTarget = t;
@@ -129,8 +135,8 @@ public class Tracker {
                 // Free memory used by images.
                 im.free();
                 thresholdIm.free();
-                filteredIm1.free();
-                filteredIm2.free();
+                //filteredIm1.free();
+                //filteredIm2.free();
                 filteredIm3.free();
                 filteredIm4.free();
                 convexHullIm.free();
@@ -143,7 +149,7 @@ public class Tracker {
             }
         }
         return success;
-    }*/
+    }
 
     public Target getHighestTarget() {
         return highTarget;
@@ -159,5 +165,9 @@ public class Tracker {
     }
     public Target getTarget4() {
         return target4;
+    }
+
+    public double pidGet() {
+        return -getTarget1().centerX;
     }
 }

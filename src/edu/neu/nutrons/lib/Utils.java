@@ -24,4 +24,9 @@ public class Utils {
         int sign = (base >= 0) ? 1 : -1;
         return sign * MathUtils.pow(Math.abs(base), Math.abs(exp));
     }
+
+    public static double deadband(double value, double deadband, double center) {
+        return (value < (center + deadband) && value > (center - deadband))
+                ? center : value;
+    }
 }

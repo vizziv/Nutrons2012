@@ -23,7 +23,7 @@ public class ElevatorShooterCmd extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        elev.setPowerFB(sign * Elevator.F_POWER, sign * Elevator.B_POWER);
+        elev.setPowerFB(sign * Elevator.B_SHOOTER_POWER, sign * Elevator.B_SHOOTER_POWER);
     }
 
     // Make this return true when this Command no longer needs to run execute()

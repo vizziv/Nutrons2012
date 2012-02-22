@@ -7,7 +7,6 @@
 
 package edu.neu.nutrons.reboundrumble;
 
-import edu.neu.nutrons.lib.Log;
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
 import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualCheesyCmd;
 import edu.wpi.first.wpilibj.Compressor;
@@ -26,7 +25,6 @@ public class Nutrons2012 extends IterativeRobot {
 
     private Command autonomousCommand;
     private Compressor comp = new Compressor(RobotMap.AIR_PRESSURE, RobotMap.COMPRESSOR);
-    private Log encLog = new Log("encLog.txt");
 
     /**
      * This function is run when the robot is first started up and should be
@@ -42,7 +40,6 @@ public class Nutrons2012 extends IterativeRobot {
 
     public void disabledInit() {
         comp.stop();
-        encLog.save();
     }
 
     public void autonomousInit() {
@@ -66,12 +63,11 @@ public class Nutrons2012 extends IterativeRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
         Dashboards.getInstance().sendPeriodicData();
-        encLog.put(CommandBase.dt.getRightPos());
     }
 
     public void teleopContinuous() {
         // Do camera processing and dashboard communication separately.
-        //CommandBase.cam.tracker.processImage();
+        CommandBase.cam.tracker.processImage();
         Dashboards.getInstance().sendContinuousData();
     }
 }

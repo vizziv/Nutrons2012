@@ -18,6 +18,7 @@ public class Dashboards {
     private static Dashboards instance = null;
 
     private Dashboards() {
+        SmartDashboard.putDouble("Cam turn kp", 0);
     }
 
     public static Dashboards getInstance() {
@@ -62,7 +63,7 @@ public class Dashboards {
     }
 
     public void sendPeriodicData() {
-        // SmartDashboard stuff.
+        // SmartDashboard output stuff.
         SmartDashboard.putDouble("Force Sensor Value", CommandBase.elev.getPressure());
         SmartDashboard.putDouble("Yaw position", CommandBase.dt.yawGyro.getAngle());
         SmartDashboard.putDouble("Target1 X", CommandBase.cam.tracker.getTarget1().centerX);
@@ -71,5 +72,8 @@ public class Dashboards {
         SmartDashboard.putDouble("Hood position", CommandBase.hood.getPos());
         SmartDashboard.putDouble("DT left", CommandBase.dt.getLeftPos());
         SmartDashboard.putDouble("DT right", CommandBase.dt.getRightPos());
+        SmartDashboard.putDouble("Throttle", CommandBase.oi.getDriveThrottle());
+        SmartDashboard.putDouble("Wheel", CommandBase.oi.getDriveWheel());
+        SmartDashboard.putDouble("Cam delta", CommandBase.oi.getCamDelta());
     }
 }

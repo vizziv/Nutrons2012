@@ -41,6 +41,11 @@ public abstract class TimedEndConditionCmd extends CommandBase {
             t.stop();
             t.reset();
         }
-        return ending && settleTime < t.get();
+        return override() || ending && settleTime < t.get();
+    }
+
+    // Make this return true to end the command immediately.
+    protected boolean override() {
+        return false;
     }
 }

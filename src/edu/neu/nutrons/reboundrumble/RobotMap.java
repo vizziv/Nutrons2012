@@ -34,8 +34,8 @@ public class RobotMap {
     public static final int V_GYRO = 2;
     public static final int TEMPERATURE = 5;
     public static final int SHOOTER_ENC_A = 6;
-    public static final int SHOOTER_ENC_B = 7;
+    public static final int SHOOTER_ENC_B = 5;
     public static final int HOOD_POT = 3;
     public static final int SQUISHINESS = 4;
-    public static final int AIR_PRESSURE = 8;
+    public static final int AIR_PRESSURE = 7;
 }

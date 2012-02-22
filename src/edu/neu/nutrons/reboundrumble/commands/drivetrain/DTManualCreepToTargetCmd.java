@@ -3,41 +3,31 @@ package edu.neu.nutrons.reboundrumble.commands.drivetrain;
 import edu.neu.nutrons.lib.Utils;
 import edu.neu.nutrons.reboundrumble.commands.TimedEndConditionCmd;
 import edu.neu.nutrons.reboundrumble.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Turns robot to face target.
  *
- * @deprecated Not going to use so gains aren't suited for it.
- *
  * @author Ziv
  */
-public class DTTurnToTargetCmd extends TimedEndConditionCmd {
+public class DTManualCreepToTargetCmd extends TimedEndConditionCmd {
 
-    private boolean rightSide = false;
-
-    public DTTurnToTargetCmd(boolean rightSide) {
+    public DTManualCreepToTargetCmd() {
         super(1.0);
-        this.rightSide = rightSide;
         requires(dt);
         requires(cam);
-        requires(shifter);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        shifter.shift(false);
         dtPID.enableCam();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        double power = Utils.absPow(dtPID.camOut.get(), .5);
-        if(rightSide) {
-            dt.driveCar(-power, power); // Will only move right side.
-        }
-        else {
-            dt.driveCar(power, power); // Will only move left side.
-        }
+        double wheel = Utils.absPow(cam.tracker.getTarget1().rawBboxWidth * dtPID.camOut.get(), .65);
+        SmartDashboard.putDouble("Cam turning power", wheel);
+        dt.driveCar(.6125 * oi.getDriveThrottle(), Math.abs(Utils.absPow(oi.getDriveThrottle(), .3)) * wheel);
     }
 
     protected boolean returnEndCondition() {

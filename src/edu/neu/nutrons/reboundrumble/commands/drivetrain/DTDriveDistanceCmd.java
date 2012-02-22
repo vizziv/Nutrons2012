@@ -4,6 +4,7 @@ import edu.neu.nutrons.reboundrumble.commands.TimedEndConditionCmd;
 import edu.neu.nutrons.reboundrumble.subsystems.DriveTrain;
 
 /**
+ * Drive straight a given distance.
  *
  * @author Ziv
  */
@@ -20,7 +21,7 @@ public class DTDriveDistanceCmd extends TimedEndConditionCmd {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        dtPID.enableDistance(feet);
+        dtPID.enableDistance(dt.disEncAvg.get() + feet);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -30,6 +31,10 @@ public class DTDriveDistanceCmd extends TimedEndConditionCmd {
 
     protected boolean returnEndCondition() {
         return Math.abs(dt.disEncAvg.get() - feet) < TOLERANCE;
+    }
+
+    protected boolean override() {
+        return oi.getDriveManual();
     }
 
     // Called once after isFinished returns true

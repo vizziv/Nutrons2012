@@ -26,7 +26,7 @@ public class ElevatorMeasureCmd extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         scale = Utils.limit(Utils.absPow(1 - elev.getPressure() / 3.25, 4), 0, scale);
-        elev.setPowerFB(scale * Elevator.F_POWER, scale * Elevator.B_POWER);
+        elev.setPowerFB(scale * Elevator.F_SHOOTER_POWER, scale * Elevator.B_SHOOTER_POWER);
     }
 
     // Make this return true when this Command no longer needs to run execute()

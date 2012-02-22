@@ -23,17 +23,23 @@ public class DTPIDController {
     private static final double pitchKp = 0;
     private static final double pitchKi = 0;
     private static final double pitchKd = 0;
+    private static final double camKp = 0.007;
+    private static final double camKi = 0;
+    private static final double camKd = 0;
 
     // PID-related objects.
     public Output disOut = new Output();
     public Output yawOut = new Output();
     public Output pitchOut = new Output();
+    public Output camOut = new Output();
     private SendablePIDController disPID = new SendablePIDController(disKp, disKi, disKd,
                                             CommandBase.dt.disEncAvg, disOut);
     private SendablePIDController yawPID = new SendablePIDController(yawKp, yawKi, yawKd,
                                             CommandBase.dt.yawGyro, yawOut);
     private SendablePIDController pitchPID = new SendablePIDController(pitchKp, pitchKi, pitchKd,
                                             CommandBase.dt.pitchGyro, pitchOut);
+    private SendablePIDController camPID = new SendablePIDController(camKp, camKi, camKd,
+                                            CommandBase.cam.tracker, camOut);
 
     public DTPIDController() {
         yawPID.setInputRange(-180, 180);
@@ -41,6 +47,7 @@ public class DTPIDController {
         SmartDashboard.putData("Distance PID", disPID);
         SmartDashboard.putData("Yaw PID", yawPID);
         SmartDashboard.putData("Pitch PID", pitchPID);
+        SmartDashboard.putData("Cam PID", camPID);
     }
 
     public void enableDistance(double setpoint) {
@@ -58,6 +65,11 @@ public class DTPIDController {
         pitchPID.setSetpoint(setpoint);
     }
 
+    public void enableCam() {
+        camPID.enable();
+        camPID.setSetpoint(0);
+    }
+
     public void disableDistance() {
         disPID.disable();
     }
@@ -70,10 +82,15 @@ public class DTPIDController {
         pitchPID.disable();
     }
 
+    public void disableCam() {
+        pitchPID.disable();
+    }
+
     public void disableAll() {
         disablePitch();
         disableYaw();
         disablePitch();
+        disableCam();
     }
 
     public double getDisSetpoint() {
@@ -86,6 +103,10 @@ public class DTPIDController {
 
     public double getPitchSetpoint() {
         return pitchPID.getSetpoint();
+    }
+
+    public double getCamSetpoint() {
+        return camPID.getSetpoint();
     }
 
     public final class Output implements PIDOutput {

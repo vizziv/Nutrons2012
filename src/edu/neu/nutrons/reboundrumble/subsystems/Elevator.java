@@ -15,8 +15,10 @@ public class Elevator extends Subsystem {
 
     // Constants.
     private final double PRESSURE_SCALE = 1.0;
-    public static final double F_POWER = 0.45;
-    public static final double B_POWER = 0.85;
+    public static final double F_SHOOTER_POWER = 0.15;
+    public static final double B_SHOOTER_POWER = 0.85;
+    public static final double F_HOPPER_POWER = 0.45;
+    public static final double B_HOPPER_POWER = 0.85;
     public static final double F_SPIT_POWER = 0.85;
     public static final double B_SPIT_POWER = 0.55;
     public static final double MEASURING_POWER_SCALE = 0.2;

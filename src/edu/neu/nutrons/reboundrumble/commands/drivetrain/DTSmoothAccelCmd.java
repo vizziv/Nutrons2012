@@ -4,7 +4,7 @@ import edu.neu.nutrons.reboundrumble.commands.CommandBase;
 import edu.neu.nutrons.reboundrumble.subsystems.DriveTrain;
 
 /**
- * Drive with given values, car-style.
+ * Smoothly accelerate to given values.
  *
  * @author Ziv
  */
@@ -13,10 +13,12 @@ public class DTSmoothAccelCmd extends CommandBase {
     private double throttle = 0;
     private double wheel = 0;
     private double power = 0;
+    private int sign = 1;
 
     public DTSmoothAccelCmd(double throttle, double wheel) {
         this.throttle = throttle;
         this.wheel = wheel;
+        sign  = throttle > 0 ? 1 : -1;
         requires(dt);
     }
 
@@ -27,7 +29,7 @@ public class DTSmoothAccelCmd extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if(power < throttle) {
+        if(sign * power < throttle) {
             power += throttle / DriveTrain.SMOOTHING_CYCLES;
         }
         dt.driveCar(power, wheel);
@@ -35,7 +37,7 @@ public class DTSmoothAccelCmd extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return oi.getDriveManual();
     }
 
     // Called once after isFinished returns true

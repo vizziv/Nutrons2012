@@ -15,6 +15,7 @@ public class Target {
     public final double rawBboxCornerY;
     public final double rawBboxWidth;
     public final double rawBboxHeight;
+    public final double rawArea;
     // Calculated values.
     public final double centerX;
     public final double centerY;
@@ -32,6 +33,7 @@ public class Target {
         rawBboxCornerY = bboxCornerY;
         rawBboxWidth = bboxWidth;
         rawBboxHeight = bboxHeight;
+        rawArea = area;
         // If we have a valid target, calculate various useful values.
         // Otherwise, don't bother, avoiding possible division by 0 shenanigans.
         if(index >= 0) {

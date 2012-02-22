@@ -18,11 +18,14 @@ public class DriveTrain extends Subsystem {
     // Constants.
     private final double HIGH_GEAR_T_SENS = 1.7;
     private final double LOW_GEAR_T_SENS = 1.36;
-    private final double ENC_SCALE = .01265;
+    private final double ENC_SCALE = 0.01265;
+    private final double LEFT_SCALE = 1.0;
+    private final double RIGHT_SCALE = 1.0;
     public static final double DIS_SETTLE_TIME = 1.0;
     public static final double YAW_SETTLE_TIME = 1.0;
     public static final double PITCH_SETTLE_TIME = 1.0;
-    public static double SMOOTHING_CYCLES = 40;
+    public static final double SMOOTHING_CYCLES = 40;
+    public static final double CAM_TOLERANCE = 0.0125;
 
     // Actual robot parts.
     private final LinearVictor lMot = new LinearVictor(RobotMap.L_DRIVE_MOTOR);
@@ -46,8 +49,8 @@ public class DriveTrain extends Subsystem {
     }
 
     public void driveLR(double lPower, double rPower) {
-        lMot.set(-lPower);
-        rMot.set(rPower);
+        lMot.set(LEFT_SCALE * -lPower);
+        rMot.set(RIGHT_SCALE * rPower);
     }
 
     public void setTSens(boolean highGear) {
@@ -113,13 +116,16 @@ public class DriveTrain extends Subsystem {
     public final class RelativeEncoderAvg implements PIDSource {
         private double initialSum;
         public double get() {
-            return (getLeftPos() + getRightPos() - initialSum) / 2.0;
+            return getRightPos() - initialSum; //(getLeftPos() + getRightPos() - initialSum) / 2.0;
+        }
+        public double getAbsolute() {
+            return get() + initialSum;
         }
         public double pidGet() {
             return get();
         }
         public void reset() {
-            initialSum = getLeftPos() + getRightPos();
+            initialSum = getRightPos(); //getLeftPos() + getRightPos();
         }
     }
 }
