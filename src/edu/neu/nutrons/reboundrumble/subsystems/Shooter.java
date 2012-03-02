@@ -3,7 +3,7 @@ package edu.neu.nutrons.reboundrumble.subsystems;
 import edu.neu.nutrons.lib.MovingAverage;
 import edu.neu.nutrons.lib.Utils;
 import edu.neu.nutrons.reboundrumble.RobotMap;
-import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterMaintainPowerCmd;
+import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterSetPowerCmd;
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Jaguar;
@@ -24,6 +24,8 @@ public class Shooter extends PIDSubsystem {
     private static final double kd = 0.0;
     private final double ENC_SCALE = 1.0;
     private final int MOVING_AVG_LENGTH = 1;
+    public static final double RATE_SETTLE_TIME = 1.0;
+    public static final double RATE_TOLERANCE = 1.0;
 
     // Actual robot parts.
     private final Jaguar mot1 = new Jaguar(RobotMap.SHOOTER_MOTOR_1);
@@ -42,7 +44,7 @@ public class Shooter extends PIDSubsystem {
 
     public void initDefaultCommand() {
         disable();
-        setDefaultCommand(new ShooterMaintainPowerCmd());
+        setDefaultCommand(new ShooterSetPowerCmd(0));
     }
 
     public void setPower(double power) {

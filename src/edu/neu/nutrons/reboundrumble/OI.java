@@ -10,6 +10,7 @@ import edu.neu.nutrons.reboundrumble.subsystems.Shooter;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.StartCommand;
 
 /**
  * Contains physical operator interface buttons and joysticks and links buttons
@@ -37,9 +38,9 @@ public class OI {
         // When shift is held, go into the non-default gear.
         // (We don't know which it will be, yet.)
         shift.whileHeld(new ShifterStaticCmd(!Shifter.DEFAULT));
-        shooterZero.whenPressed(new ShooterSetPowerCmd(0));
-        shooterPlus.whenPressed(new ShooterDeltaPowerCmd(Shooter.MANUAL_INC));
-        shooterMinus.whenPressed(new ShooterDeltaPowerCmd(-Shooter.MANUAL_INC));
+        shooterZero.whenPressed(new StartCommand(new ShooterSetPowerCmd(Shooter.MANUAL_INC)));
+        shooterPlus.whenPressed(new StartCommand(new ShooterDeltaPowerCmd(Shooter.MANUAL_INC)));
+        shooterMinus.whenPressed(new StartCommand(new ShooterDeltaPowerCmd(Shooter.MANUAL_INC)));
         elevShooterUp.whileHeld(new ElevatorShooterCmd(true));
         elevShooterDown.whileHeld(new ElevatorShooterCmd(false));
         elevHopperUp.whileHeld(new ElevatorHopperCmd(true));

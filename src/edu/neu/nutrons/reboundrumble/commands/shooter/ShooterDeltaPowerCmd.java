@@ -15,7 +15,7 @@ public class ShooterDeltaPowerCmd extends ShooterSetPowerCmd {
     }
 
     protected void initialize() {
-        power = shooter.getPower() + deltaPower;
         super.initialize();
+        setPower(shooter.getPower() + deltaPower);
     }
 }

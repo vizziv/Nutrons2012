@@ -9,26 +9,30 @@ import edu.neu.nutrons.reboundrumble.commands.CommandBase;
  */
 public class ShooterSetPowerCmd extends CommandBase {
 
-    double power = 0;
+    private double power = 0;
 
     public ShooterSetPowerCmd(double power) {
         this.power = power;
         requires(shooter);
     }
 
+    protected void setPower(double power) {
+        this.power = power;
+    }
+
     // Called just before this Command runs the first time
     protected void initialize() {
         shooter.disable();
-        shooter.setPower(power);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        shooter.setPower(power);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true
