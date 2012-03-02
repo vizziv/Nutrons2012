@@ -16,10 +16,6 @@ public class ShooterSetPowerCmd extends CommandBase {
         requires(shooter);
     }
 
-    protected void setPower(double power) {
-        this.power = power;
-    }
-
     // Called just before this Command runs the first time
     protected void initialize() {
         shooter.disable();

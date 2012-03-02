@@ -14,6 +14,7 @@ import edu.neu.nutrons.reboundrumble.commands.hood.HoodSetPowerCmd;
 import edu.neu.nutrons.reboundrumble.commands.shifter.ShifterStaticCmd;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterDeltaPowerCmd;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterSetPowerCmd;
+import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterSetRateCmd;
 import edu.neu.nutrons.reboundrumble.subsystems.Hood;
 import edu.neu.nutrons.reboundrumble.subsystems.Shifter;
 import edu.neu.nutrons.reboundrumble.subsystems.Shooter;
@@ -37,8 +38,6 @@ public class OI {
     // Driver.
     private Joystick driverPad = new Joystick(RobotMap.PAD_DRIVER);
     private Button shift = new JoystickButton(driverPad, 5);
-    //private Button hopForward = new JoystickButton(driverPad, 4);
-    //private Button hopBackward = new JoystickButton(driverPad, 2);
     private Button dtToTargetLeft = new JoystickButton(driverPad, 7);
     private Button dtToTargetRight = new JoystickButton(driverPad, 8);
 
@@ -47,7 +46,8 @@ public class OI {
     private Button shooterZero = new JoystickButton(opPad, 1);
     private Button shooterPlus = new JoystickButton(opPad, 4);
     private Button shooterMinus = new JoystickButton(opPad, 2);
-    private Button elevShooterUp = new JoystickButton(opPad, 3);
+    private Button shooterPID = new JoystickButton(opPad, 3);
+    //private Button elevShooterUp = new JoystickButton(opPad, 3);
     private Button elevSpitDown = new JoystickButton(opPad, 6);
     private Button elevHopperUp = new JoystickButton(opPad, 5);
     private Button hoodUp = new JoystickButton(opPad, 7);
@@ -61,12 +61,11 @@ public class OI {
         // When shift is held, go into the non-default gear.
         // (We don't know which it will be, yet.)
         shift.whileHeld(new ShifterStaticCmd(!Shifter.DEFAULT));
-        //hopForward.whenPressed(new DTDriveDistanceCmd(3));
-        //hopBackward.whenPressed(new DTDriveDistanceCmd(-3));
         shooterZero.whenPressed(new StartCommand(new ShooterSetPowerCmd(Shooter.MANUAL_INC)));
         shooterPlus.whenPressed(new StartCommand(new ShooterDeltaPowerCmd(Shooter.MANUAL_INC)));
         shooterMinus.whenPressed(new StartCommand(new ShooterDeltaPowerCmd(Shooter.MANUAL_INC)));
-        elevShooterUp.whileHeld(new ElevatorShooterCmd(true));
+        shooterPID.whenPressed(new ShooterSetRateCmd(0));
+        //elevShooterUp.whileHeld(new ElevatorShooterCmd(true));
         elevHopperUp.whileHeld(new ElevatorHopperCmd(true));
         elevSpitDown.whileHeld(new ElevatorSpitCmd(false));
         hoodUp.whileHeld(new HoodSetPowerCmd(Hood.MANUAL_POWER));

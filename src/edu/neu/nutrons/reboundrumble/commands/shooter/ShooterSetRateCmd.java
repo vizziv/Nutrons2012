@@ -1,7 +1,6 @@
 package edu.neu.nutrons.reboundrumble.commands.shooter;
 
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
-import edu.neu.nutrons.reboundrumble.subsystems.Shooter;
 
 /**
  * Set rate on the shooter. Closed loop.
@@ -13,6 +12,7 @@ public class ShooterSetRateCmd extends CommandBase {
     private double rate = 0;
 
     public ShooterSetRateCmd(double rate) {
+        this.rate = rate;
         requires(shooter);
     }
 

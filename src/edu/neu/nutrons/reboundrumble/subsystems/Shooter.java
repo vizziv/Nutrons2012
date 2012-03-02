@@ -18,6 +18,7 @@ public class Shooter extends PIDSubsystem {
 
     // Constants.
     public static final double MANUAL_INC = 0.02;
+    public static final double RAMP_INC = 0.002;
     // TODO: tune PID.
     private static final double kp = 0.0;
     private static final double ki = 0.0;
@@ -47,7 +48,7 @@ public class Shooter extends PIDSubsystem {
 
     public void initDefaultCommand() {
         disable();
-        setDefaultCommand(new ShooterSetPowerCmd(0));
+        setDefaultCommand(new ShooterSetPowerCmd(.1));
     }
 
     public void setPower(double power) {
