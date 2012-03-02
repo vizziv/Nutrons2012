@@ -1,30 +1,29 @@
 package edu.neu.nutrons.reboundrumble.commands.shooter;
 
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
+import edu.neu.nutrons.reboundrumble.subsystems.Shooter;
 
 /**
- * Maintains current shooter power if and only if PID is disabled.
+ * Set rate on the shooter. Closed loop.
  *
  * @author Nutrons Pros
  */
-public class ShooterMaintainPowerCmd extends CommandBase {
+public class ShooterSetRateCmd extends CommandBase {
 
-    private double power = 0;
+    private double rate = 0;
 
-    public ShooterMaintainPowerCmd() {
+    public ShooterSetRateCmd(double rate) {
         requires(shooter);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        power = shooter.getPower();
+        shooter.enable();
+        shooter.setSetpoint(rate);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if(!shooter.isEnabled()) {
-            shooter.setPower(power);
-        }
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -20,6 +20,7 @@ import edu.neu.nutrons.reboundrumble.subsystems.Shooter;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.StartCommand;
 
 /**
  * Contains physical operator interface buttons and joysticks and links buttons
@@ -62,9 +63,9 @@ public class OI {
         shift.whileHeld(new ShifterStaticCmd(!Shifter.DEFAULT));
         //hopForward.whenPressed(new DTDriveDistanceCmd(3));
         //hopBackward.whenPressed(new DTDriveDistanceCmd(-3));
-        shooterZero.whenPressed(new ShooterSetPowerCmd(0));
-        shooterPlus.whenPressed(new ShooterDeltaPowerCmd(Shooter.MANUAL_INC));
-        shooterMinus.whenPressed(new ShooterDeltaPowerCmd(-Shooter.MANUAL_INC));
+        shooterZero.whenPressed(new StartCommand(new ShooterSetPowerCmd(Shooter.MANUAL_INC)));
+        shooterPlus.whenPressed(new StartCommand(new ShooterDeltaPowerCmd(Shooter.MANUAL_INC)));
+        shooterMinus.whenPressed(new StartCommand(new ShooterDeltaPowerCmd(Shooter.MANUAL_INC)));
         elevShooterUp.whileHeld(new ElevatorShooterCmd(true));
         elevHopperUp.whileHeld(new ElevatorHopperCmd(true));
         elevSpitDown.whileHeld(new ElevatorSpitCmd(false));
