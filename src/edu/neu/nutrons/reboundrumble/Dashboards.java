@@ -56,8 +56,8 @@ public class Dashboards {
                 lowDash.addInt((int)CommandBase.cam.tracker.getTarget4().rawBboxHeight);
             lowDash.finalizeCluster();
             // Shooter.
-            lowDash.addDouble(CommandBase.shooter.getRate(false));
-            lowDash.addDouble(CommandBase.hood.getPos(false));
+            lowDash.addDouble(CommandBase.shooter.getRate());
+            lowDash.addDouble(CommandBase.hood.getPos());
         lowDash.finalizeCluster();
         lowDash.commit();
     }

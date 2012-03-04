@@ -24,6 +24,7 @@ public class DriveTrain extends Subsystem {
     public static final double DIS_SETTLE_TIME = 1.0;
     public static final double YAW_SETTLE_TIME = 1.0;
     public static final double PITCH_SETTLE_TIME = 1.0;
+    public static final double CAM_SETTLE_TIME = 1.0;
     public static final double SMOOTHING_CYCLES = 40;
     public static final double CAM_TOLERANCE = 0.0125;
 

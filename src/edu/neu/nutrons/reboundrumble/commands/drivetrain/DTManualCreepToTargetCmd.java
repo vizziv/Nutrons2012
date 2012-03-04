@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DTManualCreepToTargetCmd extends TimedEndConditionCmd {
 
     public DTManualCreepToTargetCmd() {
-        super(1.0);
+        super(DriveTrain.CAM_SETTLE_TIME);
         requires(dt);
         requires(cam);
     }
