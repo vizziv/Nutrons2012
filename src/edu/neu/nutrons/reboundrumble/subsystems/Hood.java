@@ -47,9 +47,12 @@ public class Hood extends PIDSubsystem {
         setDefaultCommand(new HoodSetPowerCmd(0));
     }
 
+    public void processSensors() {
+        potFilter.feed((pot.getVoltage() - POT_MIN) / POT_RANGE);
+    }
+
     public void setPower(double power) {
-        // If PID is enabled, then we don't need to refresh the pot filter.
-        double pos = getPos(!enabled);
+        double pos = getPos();
         boolean tooLow = (pos < 0) && (power < 0);
         boolean tooHigh = (pos > 1) && (power > 0);
         if(tooLow || tooHigh) {
@@ -60,20 +63,12 @@ public class Hood extends PIDSubsystem {
         }
     }
 
-    public double getPos(boolean refresh) {
-        // Transforms from voltage to (approximately) the interval [0,1].
-        if(refresh) {
-            potFilter.feed((pot.getVoltage() - POT_MIN) / POT_RANGE);
-        }
+    public double getPos() {
         return potFilter.get();
     }
 
-    public double getPos() {
-        return getPos(true);
-    }
-
     public boolean atSetpoint() {
-        return Math.abs(getPos(false) - getSetpoint()) < TOLERANCE;
+        return Math.abs(getPos() - getSetpoint()) < TOLERANCE;
     }
 
     protected double returnPIDInput() {

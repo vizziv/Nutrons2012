@@ -1,6 +1,7 @@
 package edu.neu.nutrons.reboundrumble;
 
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
+import edu.neu.nutrons.reboundrumble.subsystems.Shooter;
 import edu.wpi.first.wpilibj.Dashboard;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,6 +20,7 @@ public class Dashboards {
 
     private Dashboards() {
         SmartDashboard.putDouble("Cam turn kp", 0);
+        SmartDashboard.putDouble("Shooter auto increment", Shooter.AUTO_INC);
     }
 
     public static Dashboards getInstance() {
@@ -56,8 +58,8 @@ public class Dashboards {
                 lowDash.addInt((int)CommandBase.cam.tracker.getTarget4().rawBboxHeight);
             lowDash.finalizeCluster();
             // Shooter.
-            lowDash.addDouble(CommandBase.shooter.getRate(false));
-            lowDash.addDouble(CommandBase.hood.getPos(false));
+            lowDash.addDouble(CommandBase.shooter.getRate());
+            lowDash.addDouble(CommandBase.hood.getPos());
         lowDash.finalizeCluster();
         lowDash.commit();
     }
@@ -72,6 +74,7 @@ public class Dashboards {
         SmartDashboard.putDouble("Hood position", CommandBase.hood.getPos());
         SmartDashboard.putDouble("DT left", CommandBase.dt.getLeftPos());
         SmartDashboard.putDouble("DT right", CommandBase.dt.getRightPos());
+        SmartDashboard.putDouble("Shooter power", CommandBase.shooter.getPower());
         SmartDashboard.putDouble("Throttle", CommandBase.oi.getDriveThrottle());
         SmartDashboard.putDouble("Wheel", CommandBase.oi.getDriveWheel());
         SmartDashboard.putDouble("Cam delta", CommandBase.oi.getCamDelta());

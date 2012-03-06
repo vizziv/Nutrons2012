@@ -1,12 +1,11 @@
 package edu.neu.nutrons.reboundrumble.subsystems;
 
-import edu.neu.nutrons.lib.Derivative;
-import edu.neu.nutrons.lib.MovingAverage;
-import edu.neu.nutrons.lib.Utils;
+import edu.neu.nutrons.lib.*;
 import edu.neu.nutrons.reboundrumble.RobotMap;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterSetPowerCmd;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Jaguar;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 
 /**
@@ -16,30 +15,39 @@ import edu.wpi.first.wpilibj.command.PIDSubsystem;
  */
 public class Shooter extends PIDSubsystem {
 
-    // Constants.
     public static final double MANUAL_INC = 0.02;
     public static final double RAMP_INC = 0.002;
     // TODO: tune PID.
-    private static final double kp = 0.0;
+    private static final double kp = 2.75E-6;
     private static final double ki = 0.0;
-    private static final double kd = 0.0;
-    public static final double FENDER_POWER = .28;
-    public static final double LONG_POWER = .60;
+    private static final double kd = 2.95E-5;
+    public static final double MANUAL_POWER_INC = 0.02;
+    public static final double MANUAL_RATE_INC = 50.0;
+    public static final double AUTO_INC = 0.0012;
+    public static final double FENDER_POWER = 0.28;
+    public static final double LONG_POWER = 0.60;
     private final double ENC_SCALE = -1.0;
     private final int MOVING_AVG_LENGTH = 20;
     public static final double RATE_SETTLE_TIME = 1.0;
     public static final double RATE_TOLERANCE = 1.0;
+    private final int ENC_AVG_LENGTH = 10;
+    private final int POWER_AVG_LENGTH = 15;
+    private final double MAX_BACKWARD_POWER = 0.2;
+    private final double GUESS_POWER_SCALE = .000064;
 
     // Actual robot parts.
-    private final Jaguar mot1 = new Jaguar(RobotMap.SHOOTER_MOTOR_1);
-    private final Jaguar mot2 = new Jaguar(RobotMap.SHOOTER_MOTOR_2);
+    private final SpeedController mot1 = new Jaguar(RobotMap.SHOOTER_MOTOR_1);
+    private final SpeedController mot2 = new Jaguar(RobotMap.SHOOTER_MOTOR_2);
     private final Encoder enc = new Encoder(RobotMap.SHOOTER_ENC_A, RobotMap.SHOOTER_ENC_B);
 
     // Other variables.
     private double power = 0;
     private boolean enabled = false;
-    private MovingAverage encFilter = new MovingAverage(MOVING_AVG_LENGTH);
-    private Derivative dEnc = new Derivative();
+    private Integral pidInt = new Integral();
+    private MovingAverage powerAvg = new MovingAverage(POWER_AVG_LENGTH);
+    private ComposedFilter dEncAvg = new ComposedFilter(new MovingAverage(ENC_AVG_LENGTH),
+                                                        new DerivativeTimed());
+    private final double TOLERANCE = 100;
 
     public Shooter() {
         super(kp, ki, kd);
@@ -51,27 +59,33 @@ public class Shooter extends PIDSubsystem {
         setDefaultCommand(new ShooterSetPowerCmd(.1));
     }
 
+    public void processSensors() {
+        dEncAvg.feed(ENC_SCALE * enc.get());
+    }
+
     public void setPower(double power) {
-        this.power = Utils.limit(power, -1.0, 1.0);
-        mot1.set(-this.power);
-        mot2.set(-this.power);
+        // Moving average stops sudden changes in motor speed, which in turn
+        // (hopefully) stops the shooter from breaking or catching fire.
+        this.power = Utils.limit(power, -MAX_BACKWARD_POWER, 1.0);
+        powerAvg.feed(this.power);
+        mot1.set(-powerAvg.get());
+        mot2.set(-powerAvg.get());
     }
 
     public double getPower() {
         return power;
     }
 
-    public double getRate(boolean refresh) {
-        // We want to control how frequently we refresh, so it's optional.
-        if(refresh) {
-            dEnc.feed(enc.get());
-            encFilter.feed(dEnc.get());
-        }
-        return ENC_SCALE * encFilter.get();
+    public double getRate() {
+        return dEncAvg.get();
     }
 
-    public double getRate() {
-        return getRate(true);
+    public boolean atSetpoint() {
+        return Math.abs(getRate() - getSetpoint()) < TOLERANCE;
+    }
+
+    private double guessPower(double setpoint) {
+        return GUESS_POWER_SCALE * setpoint;
     }
 
     public void enable() {
@@ -81,6 +95,7 @@ public class Shooter extends PIDSubsystem {
 
     public void disable() {
         enabled = false;
+        pidInt.reset();
         super.disable();
     }
 

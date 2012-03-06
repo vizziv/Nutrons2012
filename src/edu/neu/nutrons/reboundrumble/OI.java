@@ -48,6 +48,8 @@ public class OI {
     private Button shooterMinus = new JoystickButton(opPad, 2);
     private Button shooterPID = new JoystickButton(opPad, 3);
     //private Button elevShooterUp = new JoystickButton(opPad, 3);
+    private Button elevShooterUp = new JoystickButton(opPad, 3);
+    //private Button shooterPID = new JoystickButton(opPad, 3);
     private Button elevSpitDown = new JoystickButton(opPad, 6);
     private Button elevHopperUp = new JoystickButton(opPad, 5);
     private Button hoodUp = new JoystickButton(opPad, 7);
@@ -66,6 +68,13 @@ public class OI {
         shooterMinus.whenPressed(new StartCommand(new ShooterDeltaPowerCmd(Shooter.MANUAL_INC)));
         shooterPID.whenPressed(new ShooterSetRateCmd(0));
         //elevShooterUp.whileHeld(new ElevatorShooterCmd(true));
+        //hopForward.whenPressed(new DTDriveDistanceCmd(3));
+        //hopBackward.whenPressed(new DTDriveDistanceCmd(-3));
+        shooterZero.whenPressed(new ShooterSetPowerCmd(0));
+        shooterPlus.whenPressed(new ShooterDeltaPowerCmd(Shooter.MANUAL_RATE_INC));
+        shooterMinus.whenPressed(new ShooterDeltaPowerCmd(-Shooter.MANUAL_RATE_INC));
+        elevShooterUp.whileHeld(new ElevatorShooterCmd(true));
+        //shooterPID.whenPressed(new ShooterSetRateCmd(9000.125));
         elevHopperUp.whileHeld(new ElevatorHopperCmd(true));
         elevSpitDown.whileHeld(new ElevatorSpitCmd(false));
         hoodUp.whileHeld(new HoodSetPowerCmd(Hood.MANUAL_POWER));
