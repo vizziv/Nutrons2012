@@ -5,8 +5,8 @@ import edu.neu.nutrons.reboundrumble.RobotMap;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterMaintainPowerCmd;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Jaguar;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Single-wheel shooter.
@@ -17,10 +17,12 @@ public class Shooter extends PIDSubsystem {
 
     // Constants.
     // TODO: tune PID.
-    private static final double kp = 0.0;
+    private static final double kp = 2.75E-6;
     private static final double ki = 0.0;
-    private static final double kd = 0.0;
-    public static final double MANUAL_INC = 0.02;
+    private static final double kd = 2.95E-5;
+    public static final double MANUAL_POWER_INC = 0.02;
+    public static final double MANUAL_RATE_INC = 50.0;
+    public static final double AUTO_INC = 0.0012;
     public static final double FENDER_POWER = 0.28;
     public static final double LONG_POWER = 0.60;
     private final double ENC_SCALE = -1.0;
@@ -30,8 +32,8 @@ public class Shooter extends PIDSubsystem {
     private final double GUESS_POWER_SCALE = .000064;
 
     // Actual robot parts.
-    private final Jaguar mot1 = new Jaguar(RobotMap.SHOOTER_MOTOR_1);
-    private final Jaguar mot2 = new Jaguar(RobotMap.SHOOTER_MOTOR_2);
+    private final SpeedController mot1 = new Jaguar(RobotMap.SHOOTER_MOTOR_1);
+    private final SpeedController mot2 = new Jaguar(RobotMap.SHOOTER_MOTOR_2);
     private final Encoder enc = new Encoder(RobotMap.SHOOTER_ENC_A, RobotMap.SHOOTER_ENC_B);
 
     // Other variables.
@@ -102,6 +104,6 @@ public class Shooter extends PIDSubsystem {
     }
 
     protected void usePIDOutput(double output) {
-        setPower(getPower() + Utils.absPow(output, SmartDashboard.getDouble("ShooterPIDExp", 1)));
+        setPower(getPower() + output);
     }
 }
