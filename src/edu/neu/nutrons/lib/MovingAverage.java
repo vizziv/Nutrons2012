@@ -5,7 +5,7 @@ package edu.neu.nutrons.lib;
  *
  * @author Ziv
  */
-public class MovingAverage implements Filter {
+public class MovingAverage extends Filter {
 
     private double[] data;
     private double sum = 0;

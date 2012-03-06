@@ -6,7 +6,7 @@ package edu.neu.nutrons.lib;
  *
  * @author Ziv
  */
-public class ComposedFilter implements Filter {
+public class ComposedFilter extends Filter {
 
     private Filter f1;
     private Filter f2;
@@ -23,5 +23,10 @@ public class ComposedFilter implements Filter {
 
     public double get() {
         return f1.get();
+    }
+
+    public void reset() {
+        f1.reset();
+        f2.reset();
     }
 }

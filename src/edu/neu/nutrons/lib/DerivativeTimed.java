@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Timer;
  *
  * @author Ziv
  */
-public class DerivativeTimed implements Filter {
+public class DerivativeTimed extends Filter {
 
     private double x = 0;
     private double t = 0;

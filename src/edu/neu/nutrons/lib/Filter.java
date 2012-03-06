@@ -5,8 +5,10 @@ package edu.neu.nutrons.lib;
  *
  * @author Ziv
  */
-public interface Filter {
+public abstract class Filter {
 
-    public void feed(double in);
-    public double get();
+    public abstract void feed(double in);
+    public abstract double get();
+
+    public void reset() {}
 }

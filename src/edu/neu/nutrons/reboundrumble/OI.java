@@ -14,6 +14,7 @@ import edu.neu.nutrons.reboundrumble.commands.hood.HoodSetPowerCmd;
 import edu.neu.nutrons.reboundrumble.commands.shifter.ShifterStaticCmd;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterDeltaPowerCmd;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterSetPowerCmd;
+import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterSetRateCmd;
 import edu.neu.nutrons.reboundrumble.subsystems.Hood;
 import edu.neu.nutrons.reboundrumble.subsystems.Shifter;
 import edu.neu.nutrons.reboundrumble.subsystems.Shooter;
@@ -46,7 +47,8 @@ public class OI {
     private Button shooterZero = new JoystickButton(opPad, 1);
     private Button shooterPlus = new JoystickButton(opPad, 4);
     private Button shooterMinus = new JoystickButton(opPad, 2);
-    private Button elevShooterUp = new JoystickButton(opPad, 3);
+    //private Button elevShooterUp = new JoystickButton(opPad, 3);
+    private Button shooterPID = new JoystickButton(opPad, 3);
     private Button elevSpitDown = new JoystickButton(opPad, 6);
     private Button elevHopperUp = new JoystickButton(opPad, 5);
     private Button hoodUp = new JoystickButton(opPad, 7);
@@ -65,7 +67,8 @@ public class OI {
         shooterZero.whenPressed(new ShooterSetPowerCmd(0));
         shooterPlus.whenPressed(new ShooterDeltaPowerCmd(Shooter.MANUAL_INC));
         shooterMinus.whenPressed(new ShooterDeltaPowerCmd(-Shooter.MANUAL_INC));
-        elevShooterUp.whileHeld(new ElevatorShooterCmd(true));
+        //elevShooterUp.whileHeld(new ElevatorShooterCmd(true));
+        shooterPID.whenPressed(new ShooterSetRateCmd(9001));
         elevHopperUp.whileHeld(new ElevatorHopperCmd(true));
         elevSpitDown.whileHeld(new ElevatorSpitCmd(false));
         hoodUp.whileHeld(new HoodSetPowerCmd(Hood.MANUAL_POWER));

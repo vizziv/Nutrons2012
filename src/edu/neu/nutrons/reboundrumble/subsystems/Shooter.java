@@ -1,14 +1,12 @@
 package edu.neu.nutrons.reboundrumble.subsystems;
 
-import edu.neu.nutrons.lib.ComposedFilter;
-import edu.neu.nutrons.lib.DerivativeTimed;
-import edu.neu.nutrons.lib.MovingAverage;
-import edu.neu.nutrons.lib.Utils;
+import edu.neu.nutrons.lib.*;
 import edu.neu.nutrons.reboundrumble.RobotMap;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterMaintainPowerCmd;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Single-wheel shooter.
@@ -26,9 +24,10 @@ public class Shooter extends PIDSubsystem {
     public static final double FENDER_POWER = 0.28;
     public static final double LONG_POWER = 0.60;
     private final double ENC_SCALE = -1.0;
-    private final int ENC_AVG_LENGTH = 20;
-    private final int POWER_AVG_LENGTH = 20;
-    private final double MAX_BACKWARD_POW = 0.2;
+    private final int ENC_AVG_LENGTH = 10;
+    private final int POWER_AVG_LENGTH = 15;
+    private final double MAX_BACKWARD_POWER = 0.2;
+    private final double GUESS_POWER_SCALE = .000064;
 
     // Actual robot parts.
     private final Jaguar mot1 = new Jaguar(RobotMap.SHOOTER_MOTOR_1);
@@ -38,10 +37,11 @@ public class Shooter extends PIDSubsystem {
     // Other variables.
     private double power = 0;
     private boolean enabled = false;
+    private Integral pidInt = new Integral();
     private MovingAverage powerAvg = new MovingAverage(POWER_AVG_LENGTH);
-    private ComposedFilter dEncAvg = new ComposedFilter(new DerivativeTimed(),
-                                                        new MovingAverage(ENC_AVG_LENGTH));
-    private double TOLERANCE = 100;
+    private ComposedFilter dEncAvg = new ComposedFilter(new MovingAverage(ENC_AVG_LENGTH),
+                                                        new DerivativeTimed());
+    private final double TOLERANCE = 100;
 
     public Shooter() {
         super(kp, ki, kd);
@@ -54,16 +54,16 @@ public class Shooter extends PIDSubsystem {
     }
 
     public void processSensors() {
-        dEncAvg.feed(enc.get());
+        dEncAvg.feed(ENC_SCALE * enc.get());
     }
 
     public void setPower(double power) {
         // Moving average stops sudden changes in motor speed, which in turn
         // (hopefully) stops the shooter from breaking or catching fire.
-        powerAvg.feed(Utils.limit(power, -MAX_BACKWARD_POW, 1.0));
-        this.power = powerAvg.get();
-        mot1.set(-this.power);
-        mot2.set(-this.power);
+        this.power = Utils.limit(power, -MAX_BACKWARD_POWER, 1.0);
+        powerAvg.feed(this.power);
+        mot1.set(-powerAvg.get());
+        mot2.set(-powerAvg.get());
     }
 
     public double getPower() {
@@ -78,6 +78,10 @@ public class Shooter extends PIDSubsystem {
         return Math.abs(getRate() - getSetpoint()) < TOLERANCE;
     }
 
+    private double guessPower(double setpoint) {
+        return GUESS_POWER_SCALE * setpoint;
+    }
+
     public void enable() {
         enabled = true;
         super.enable();
@@ -85,6 +89,7 @@ public class Shooter extends PIDSubsystem {
 
     public void disable() {
         enabled = false;
+        pidInt.reset();
         super.disable();
     }
 
@@ -97,6 +102,6 @@ public class Shooter extends PIDSubsystem {
     }
 
     protected void usePIDOutput(double output) {
-        setPower(getPower() + output);
+        setPower(getPower() + Utils.absPow(output, SmartDashboard.getDouble("ShooterPIDExp", 1)));
     }
 }
