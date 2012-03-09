@@ -59,7 +59,6 @@ public class Dashboards {
             lowDash.finalizeCluster();
             // Shooter.
             lowDash.addDouble(CommandBase.shooter.getRate());
-            lowDash.addDouble(CommandBase.hood.getPos());
         lowDash.finalizeCluster();
         lowDash.commit();
     }
@@ -71,7 +70,6 @@ public class Dashboards {
         SmartDashboard.putDouble("Target1 X", CommandBase.cam.tracker.getTarget1().centerX);
         SmartDashboard.putDouble("Cam servo", CommandBase.cam.getPos());
         SmartDashboard.putDouble("Shooter rate", CommandBase.shooter.getRate());
-        SmartDashboard.putDouble("Hood position", CommandBase.hood.getPos());
         SmartDashboard.putDouble("DT left", CommandBase.dt.getLeftPos());
         SmartDashboard.putDouble("DT right", CommandBase.dt.getRightPos());
         SmartDashboard.putDouble("Shooter power", CommandBase.shooter.getPower());

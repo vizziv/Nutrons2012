@@ -1,30 +1,24 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.neu.nutrons.reboundrumble.commands.hood;
 
-import edu.neu.nutrons.reboundrumble.commands.TimedEndConditionCmd;
-import edu.neu.nutrons.reboundrumble.subsystems.Hood;
+import edu.neu.nutrons.reboundrumble.commands.CommandBase;
 
 /**
+ * Sets hood to be up or down.
  *
- * @author Ziv
+ * @author Nutrons Pros
  */
-public class HoodSetPosCmd extends TimedEndConditionCmd {
+public class HoodSetPosCmd extends CommandBase {
 
-    private double setpoint = 0;
+    private boolean up = false;
 
-    public HoodSetPosCmd(double setpoint) {
-        super(Hood.SETTLE_TIME);
-        this.setpoint = setpoint;
+    public HoodSetPosCmd(boolean up) {
+        this.up = up;
         requires(hood);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        hood.enable();
-        hood.setSetpoint(setpoint);
+        hood.setPos(up);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -32,8 +26,8 @@ public class HoodSetPosCmd extends TimedEndConditionCmd {
     }
 
     // Make this return true when this Command no longer needs to run execute()
-    protected boolean returnEndCondition() {
-        return hood.atSetpoint();
+    protected boolean isFinished() {
+        return false;
     }
 
     // Called once after isFinished returns true

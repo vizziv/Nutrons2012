@@ -7,15 +7,13 @@ import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualCreepToTargetCm
 import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTSpinToTargetWithCamServoCmd;
 import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTTurnToTargetCmd;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorHopperCmd;
-import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorShooterCmd;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorSpitCmd;
 import edu.neu.nutrons.reboundrumble.commands.group.PrepareHoodAndShooterCmd;
-import edu.neu.nutrons.reboundrumble.commands.hood.HoodSetPowerCmd;
+import edu.neu.nutrons.reboundrumble.commands.hood.HoodSetPosCmd;
 import edu.neu.nutrons.reboundrumble.commands.shifter.ShifterStaticCmd;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterDeltaPowerCmd;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterSetPowerCmd;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterSetRateCmd;
-import edu.neu.nutrons.reboundrumble.subsystems.Hood;
 import edu.neu.nutrons.reboundrumble.subsystems.Shifter;
 import edu.neu.nutrons.reboundrumble.subsystems.Shooter;
 import edu.wpi.first.wpilibj.Joystick;
@@ -48,7 +46,7 @@ public class OI {
     private Button shooterMinus = new JoystickButton(opPad, 2);
     private Button shooterPID = new JoystickButton(opPad, 3);
     //private Button elevShooterUp = new JoystickButton(opPad, 3);
-    private Button elevShooterUp = new JoystickButton(opPad, 3);
+    //private Button elevShooterUp = new JoystickButton(opPad, 3);
     //private Button shooterPID = new JoystickButton(opPad, 3);
     private Button elevSpitDown = new JoystickButton(opPad, 6);
     private Button elevHopperUp = new JoystickButton(opPad, 5);
@@ -66,23 +64,23 @@ public class OI {
         shooterZero.whenPressed(new StartCommand(new ShooterSetPowerCmd(Shooter.MANUAL_INC)));
         shooterPlus.whenPressed(new StartCommand(new ShooterDeltaPowerCmd(Shooter.MANUAL_INC)));
         shooterMinus.whenPressed(new StartCommand(new ShooterDeltaPowerCmd(Shooter.MANUAL_INC)));
-        shooterPID.whenPressed(new ShooterSetRateCmd(0));
+        shooterPID.whenPressed(new ShooterSetRateCmd(16000));
         //elevShooterUp.whileHeld(new ElevatorShooterCmd(true));
         //hopForward.whenPressed(new DTDriveDistanceCmd(3));
         //hopBackward.whenPressed(new DTDriveDistanceCmd(-3));
-        shooterZero.whenPressed(new ShooterSetPowerCmd(0));
-        shooterPlus.whenPressed(new ShooterDeltaPowerCmd(Shooter.MANUAL_RATE_INC));
-        shooterMinus.whenPressed(new ShooterDeltaPowerCmd(-Shooter.MANUAL_RATE_INC));
-        elevShooterUp.whileHeld(new ElevatorShooterCmd(true));
+        /*shooterZero.whenPressed(new ShooterSetPowerCmd(0));
+        shooterPlus.whenPressed(new ShooterDeltaPowerCmd(Shooter.MANUAL_POWER_INC));
+        shooterMinus.whenPressed(new ShooterDeltaPowerCmd(-Shooter.MANUAL_POWER_INC));*/
+        //elevShooterUp.whileHeld(new ElevatorShooterCmd(true));
         //shooterPID.whenPressed(new ShooterSetRateCmd(9000.125));
         elevHopperUp.whileHeld(new ElevatorHopperCmd(true));
         elevSpitDown.whileHeld(new ElevatorSpitCmd(false));
-        hoodUp.whileHeld(new HoodSetPowerCmd(Hood.MANUAL_POWER));
-        hoodDown.whileHeld(new HoodSetPowerCmd(-Hood.MANUAL_POWER));
+        hoodUp.whenPressed(new HoodSetPosCmd(true));
+        hoodDown.whenPressed(new HoodSetPosCmd(false));
         dtToTargetLeft.whileHeld(new DTTurnToTargetCmd(false));
         dtToTargetRight.whileHeld(new DTManualCreepToTargetCmd());
-        prepareFender.whenPressed(new PrepareHoodAndShooterCmd(Shooter.FENDER_POWER, Hood.FENDER_POS));
-        prepareLong.whenPressed(new PrepareHoodAndShooterCmd(Shooter.LONG_POWER, Hood.LONG_POS));
+        prepareFender.whenPressed(new PrepareHoodAndShooterCmd(Shooter.FENDER_POWER, false));
+        prepareLong.whenPressed(new PrepareHoodAndShooterCmd(Shooter.LONG_POWER, true));
         cameraTrack.whileHeld(new CamPointAtTargetCmd());
         dtToTargetSpin.whileHeld(new DTSpinToTargetWithCamServoCmd());
     }

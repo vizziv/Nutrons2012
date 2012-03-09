@@ -13,13 +13,14 @@ public class RobotMap {
     public static final int SHIFTER = 8;
     public static final int SHOOTER_MOTOR_1 = 9;
     public static final int SHOOTER_MOTOR_2 = 10;
-    public static final int HOOD_MOTOR = 3;
+    public static final int HOOD = 3;
     public static final int CAM_SERVO = 6;
     public static final int F_ELEV_MOTOR = 4;
     public static final int B_ELEV_MOTOR = 5;
     public static final int INTAKE = 8;
     public static final int DROP_DOWN = 7;
     public static final int COMPRESSOR = 1;
+    public static final int SOLENOID = 11;
 
     // Input.
     public static final int PAD_DRIVER = 1;

@@ -62,7 +62,6 @@ public class Nutrons2012 extends IterativeRobot {
 
     public void teleopPeriodic() {
         CommandBase.shooter.processSensors();
-        CommandBase.hood.processSensors();
         Scheduler.getInstance().run();
         Dashboards.getInstance().sendPeriodicData();
     }
