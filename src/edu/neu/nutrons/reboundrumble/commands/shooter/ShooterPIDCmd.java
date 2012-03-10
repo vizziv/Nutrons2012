@@ -1,33 +1,36 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package edu.neu.nutrons.reboundrumble.commands.shooter;
 
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
 
 /**
+ * If PID is enabled, do that; otherwise, set shooter power to 0.
  *
- * @author Ziv
+ * @author Nutrons Pros
  */
-public class ShooterDeltaRateCmd extends CommandBase {
+public class ShooterPIDCmd extends CommandBase {
 
-    private double delta = 0;
-
-    public ShooterDeltaRateCmd(double delta) {
-        this.delta = delta;
+    public ShooterPIDCmd() {
         requires(shooter);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        shooter.enable();
-        shooter.setSetpoint(shooter.getSetpoint() + delta);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        if(!shooter.isEnabled()) {
+            shooter.setPower(0);
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true

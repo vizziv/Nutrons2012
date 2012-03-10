@@ -40,6 +40,7 @@ public class Nutrons2012 extends IterativeRobot {
 
     public void disabledInit() {
         comp.stop();
+        CommandBase.shooter.setPower(0);
     }
 
     public void autonomousInit() {

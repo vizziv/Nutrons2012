@@ -1,7 +1,6 @@
 package edu.neu.nutrons.reboundrumble;
 
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
-import edu.neu.nutrons.reboundrumble.subsystems.Shooter;
 import edu.wpi.first.wpilibj.Dashboard;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,7 +19,6 @@ public class Dashboards {
 
     private Dashboards() {
         SmartDashboard.putDouble("Cam turn kp", 0);
-        SmartDashboard.putDouble("Shooter auto increment", Shooter.AUTO_INC);
     }
 
     public static Dashboards getInstance() {

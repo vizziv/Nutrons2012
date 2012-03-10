@@ -1,7 +1,6 @@
 package edu.neu.nutrons.reboundrumble.commands.shooter;
 
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
-import edu.neu.nutrons.reboundrumble.subsystems.Shooter;
 
 /**
  * Changes the power sent to the shooter. Open loop.
@@ -28,15 +27,11 @@ public class ShooterDeltaPowerCmd extends CommandBase {
     }
 
     protected void execute() {
-        /*if((sign > 0 && power < initPower + deltaPower) ||
-                (sign < 0 && power > initPower + deltaPower)) {
-            power += sign * Shooter.RAMP_INC;
-        }*/
         shooter.setPower(initPower + deltaPower);
     }
 
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     protected void end() {
