@@ -3,22 +3,18 @@ package edu.neu.nutrons.reboundrumble.commands.hood;
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
 
 /**
- * Sets hood to be up or down.
+ * Does nothing. Yes, very interesting.
  *
  * @author Nutrons Pros
  */
-public class HoodSetPosCmd extends CommandBase {
+public class HoodHoldPosCmd extends CommandBase {
 
-    private boolean up = false;
-
-    public HoodSetPosCmd(boolean up) {
-        this.up = up;
+    public HoodHoldPosCmd() {
         requires(hood);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        hood.setPos(up);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -27,7 +23,7 @@ public class HoodSetPosCmd extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true

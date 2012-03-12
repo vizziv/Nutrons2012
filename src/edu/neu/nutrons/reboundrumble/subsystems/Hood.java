@@ -1,7 +1,7 @@
 package edu.neu.nutrons.reboundrumble.subsystems;
 
 import edu.neu.nutrons.reboundrumble.RobotMap;
-import edu.neu.nutrons.reboundrumble.commands.hood.HoodSetPosCmd;
+import edu.neu.nutrons.reboundrumble.commands.hood.HoodHoldPosCmd;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -13,12 +13,18 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Hood extends Subsystem {
 
     private final Solenoid hood = new Solenoid(RobotMap.HOOD);
+    private boolean up = false;
 
     public void setPos(boolean up){
-        hood.set(up);
+        this.up = up;
+        hood.set(this.up);
+    }
+
+    public boolean getPos() {
+        return up;
     }
 
     protected void initDefaultCommand() {
-        setDefaultCommand(new HoodSetPosCmd(true));
+        setDefaultCommand(new HoodHoldPosCmd());
     }
 }

@@ -1,9 +1,11 @@
 package edu.neu.nutrons.reboundrumble.subsystems;
 
-import edu.neu.nutrons.lib.*;
+import edu.neu.nutrons.lib.ComposedFilter;
+import edu.neu.nutrons.lib.DerivativeTimed;
+import edu.neu.nutrons.lib.MovingAverage;
+import edu.neu.nutrons.lib.Utils;
 import edu.neu.nutrons.reboundrumble.RobotMap;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterPIDCmd;
-import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterSetPowerCmd;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -23,7 +25,9 @@ public class Shooter extends PIDSubsystem {
     public static final double MANUAL_POWER_INC = 0.02;
     public static final double MANUAL_RATE_INC = 300.0;
     public static final double FENDER_POWER = 0.56;
-    public static final double LONG_POWER = 0.94;
+    public static final double KEY_POWER = 0.94;
+    public static final double FENDER_RATE = 9000.125;
+    public static final double KEY_RATE = 16000.0;
     private final double ENC_SCALE = -1.0;
     public static final double RATE_SETTLE_TIME = 1.0;
     public static final double RATE_TOLERANCE = 1.0;

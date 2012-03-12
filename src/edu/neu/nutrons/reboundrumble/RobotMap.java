@@ -39,4 +39,5 @@ public class RobotMap {
     public static final int HOOD_POT = 3;
     public static final int SQUISHINESS = 4;
     public static final int AIR_PRESSURE = 7;
+    public static final int BALL_SWITCH = 8;
 }

@@ -53,7 +53,7 @@ public class OI {
     private Button hoodUp = new JoystickButton(opPad, 7);
     private Button hoodDown = new JoystickButton(opPad, 8);
     private Button prepareFender = new JoystickButton(opPad, 9);
-    private Button prepareLong = new JoystickButton(opPad, 10);
+    private Button prepareKey = new JoystickButton(opPad, 10);
     private Button cameraTrack = new ToggleButton(new JoystickButton(opPad, 11));
     private Button dtToTargetSpin = new JoystickButton(opPad, 12);
 
@@ -72,8 +72,8 @@ public class OI {
         hoodDown.whenPressed(new HoodSetPosCmd(false));
         dtToTargetLeft.whileHeld(new DTTurnToTargetCmd(false));
         dtToTargetRight.whileHeld(new DTManualCreepToTargetCmd());
-        prepareFender.whenPressed(new PrepareHoodAndShooterCmd(Shooter.FENDER_POWER, false));
-        prepareLong.whenPressed(new PrepareHoodAndShooterCmd(Shooter.LONG_POWER, true));
+        prepareFender.whenPressed(new PrepareHoodAndShooterCmd(Shooter.FENDER_RATE, false));
+        prepareKey.whenPressed(new PrepareHoodAndShooterCmd(Shooter.KEY_RATE, true));
         cameraTrack.whileHeld(new CamPointAtTargetCmd());
         dtToTargetSpin.whileHeld(new DTSpinToTargetWithCamServoCmd());
     }

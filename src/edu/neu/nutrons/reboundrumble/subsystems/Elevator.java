@@ -3,6 +3,7 @@ package edu.neu.nutrons.reboundrumble.subsystems;
 import edu.neu.nutrons.reboundrumble.RobotMap;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorIdleCmd;
 import edu.wpi.first.wpilibj.AnalogChannel;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -27,6 +28,7 @@ public class Elevator extends Subsystem {
     private final Jaguar fMot = new Jaguar(RobotMap.F_ELEV_MOTOR);
     private final Jaguar bMot = new Jaguar(RobotMap.B_ELEV_MOTOR);
     private final AnalogChannel pressure = new AnalogChannel(RobotMap.SQUISHINESS);
+    private final DigitalInput ballSwitch = new DigitalInput(RobotMap.BALL_SWITCH);
 
     public void initDefaultCommand() {
         setDefaultCommand(new ElevatorIdleCmd());
@@ -34,6 +36,10 @@ public class Elevator extends Subsystem {
 
     public double getPressure() {
         return PRESSURE_SCALE * pressure.getVoltage();
+    }
+
+    public boolean getBallSwitch() {
+        return ballSwitch.get();
     }
 
     public void setPowerFB(double fPower, double bPower) {
