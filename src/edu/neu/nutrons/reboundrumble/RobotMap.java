@@ -18,7 +18,8 @@ public class RobotMap {
     public static final int F_ELEV_MOTOR = 4;
     public static final int B_ELEV_MOTOR = 5;
     public static final int INTAKE = 8;
-    public static final int DROP_DOWN = 7;
+    public static final int DROP_DOWN_1 = 7;
+    public static final int DROP_DOWN_2 = 8;
     public static final int COMPRESSOR = 1;
     public static final int SOLENOID = 11;
 

@@ -1,11 +1,8 @@
 package edu.neu.nutrons.reboundrumble.subsystems;
 
-import edu.neu.nutrons.lib.ComposedFilter;
-import edu.neu.nutrons.lib.DerivativeTimed;
-import edu.neu.nutrons.lib.MovingAverage;
-import edu.neu.nutrons.lib.Utils;
+import edu.neu.nutrons.lib.*;
 import edu.neu.nutrons.reboundrumble.RobotMap;
-import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterPIDCmd;
+import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterMaintainCmd;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -29,11 +26,12 @@ public class Shooter extends PIDSubsystem {
     public static final double FENDER_RATE = 9000.125;
     public static final double KEY_RATE = 16000.0;
     private final double ENC_SCALE = -1.0;
-    public static final double RATE_SETTLE_TIME = 1.0;
-    public static final double RATE_TOLERANCE = 1.0;
+    public static final double RATE_SETTLE_TIMEOUT = 2.0;
     private final int ENC_AVG_LENGTH = 10;
     private final int POWER_AVG_LENGTH = 15;
+    private final int SETPOINT_DEBOUNCE_LENGTH = 20;
     private final double MAX_BACKWARD_POWER = 0.2;
+    private final double TOLERANCE = 100;
 
     // Actual robot parts.
     private final SpeedController mot1 = new Jaguar(RobotMap.SHOOTER_MOTOR_1);
@@ -46,7 +44,7 @@ public class Shooter extends PIDSubsystem {
     private MovingAverage powerAvg = new MovingAverage(POWER_AVG_LENGTH);
     private ComposedFilter dEncAvg = new ComposedFilter(new MovingAverage(ENC_AVG_LENGTH),
                                                         new DerivativeTimed());
-    private final double TOLERANCE = 100;
+    private DebouncedBoolean dbAtSetpoint = new DebouncedBoolean(SETPOINT_DEBOUNCE_LENGTH);
 
     public Shooter() {
         super(kp, ki, kd);
@@ -55,11 +53,12 @@ public class Shooter extends PIDSubsystem {
 
     public void initDefaultCommand() {
         disable();
-        setDefaultCommand(new ShooterPIDCmd());
+        setDefaultCommand(new ShooterMaintainCmd());
     }
 
     public void processSensors() {
         dEncAvg.feed(ENC_SCALE * enc.get());
+        dbAtSetpoint.feed(Math.abs(getRate() - getSetpoint()) < TOLERANCE);
     }
 
     public void setPower(double power) {
@@ -80,7 +79,7 @@ public class Shooter extends PIDSubsystem {
     }
 
     public boolean atSetpoint() {
-        return Math.abs(getRate() - getSetpoint()) < TOLERANCE;
+        return dbAtSetpoint.get();
     }
 
     public void enable() {

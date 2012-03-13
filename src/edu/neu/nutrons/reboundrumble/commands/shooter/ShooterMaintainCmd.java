@@ -11,9 +11,9 @@ import edu.neu.nutrons.reboundrumble.commands.CommandBase;
  *
  * @author Nutrons Pros
  */
-public class ShooterPIDCmd extends CommandBase {
+public class ShooterMaintainCmd extends CommandBase {
 
-    public ShooterPIDCmd() {
+    public ShooterMaintainCmd() {
         requires(shooter);
     }
 
@@ -24,7 +24,7 @@ public class ShooterPIDCmd extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         if(!shooter.isEnabled()) {
-            shooter.setPower(0);
+            shooter.setPower(shooter.getPower());
         }
     }
 

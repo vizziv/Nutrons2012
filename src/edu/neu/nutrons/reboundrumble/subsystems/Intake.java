@@ -1,6 +1,7 @@
 package edu.neu.nutrons.reboundrumble.subsystems;
 
 import edu.neu.nutrons.reboundrumble.RobotMap;
+import edu.neu.nutrons.reboundrumble.commands.intake.IntakeSetCmd;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -13,13 +14,16 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Intake extends Subsystem {
 
     private final Relay intake = new Relay(RobotMap.INTAKE);
-    private final Solenoid dropDown = new Solenoid(RobotMap.DROP_DOWN);
+    private final Solenoid dropDown1 = new Solenoid(RobotMap.DROP_DOWN_1);
+    private final Solenoid dropDown2 = new Solenoid(RobotMap.DROP_DOWN_2);
 
     public void initDefaultCommand() {
+        setDefaultCommand(new IntakeSetCmd(false, false));
     }
 
-    public void setPos(boolean dropped) {
-        dropDown.set(dropped);
+    public void setDrop(boolean dropped) {
+        dropDown1.set(dropped);
+        dropDown2.set(dropped);
     }
 
     public void setIntake(boolean intaking) {

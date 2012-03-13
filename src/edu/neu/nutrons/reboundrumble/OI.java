@@ -1,20 +1,20 @@
 package edu.neu.nutrons.reboundrumble;
 
-import edu.neu.nutrons.lib.ToggleButton;
+import edu.neu.nutrons.lib.DualButton;
+import edu.neu.nutrons.lib.StartThenWaitCmd;
 import edu.neu.nutrons.lib.Utils;
-import edu.neu.nutrons.reboundrumble.commands.camera.CamPointAtTargetCmd;
 import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualCreepToTargetCmd;
-import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTSpinToTargetWithCamServoCmd;
-import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTTurnToTargetCmd;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorHopperCmd;
+import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorShootOneBallCmd;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorSpitCmd;
 import edu.neu.nutrons.reboundrumble.commands.group.PrepareHoodAndShooterCmd;
 import edu.neu.nutrons.reboundrumble.commands.hood.HoodSetPosCmd;
+import edu.neu.nutrons.reboundrumble.commands.intake.IntakeSetCmd;
+import edu.neu.nutrons.reboundrumble.commands.intake.IntakeSetCmdUnint;
 import edu.neu.nutrons.reboundrumble.commands.shifter.ShifterStaticCmd;
-import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterDeltaPowerCmd;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterDeltaRateCmd;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterSetPowerCmd;
-import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterSetRateCmd;
+import edu.neu.nutrons.reboundrumble.subsystems.Elevator;
 import edu.neu.nutrons.reboundrumble.subsystems.Shifter;
 import edu.neu.nutrons.reboundrumble.subsystems.Shooter;
 import edu.wpi.first.wpilibj.Joystick;
@@ -37,45 +37,46 @@ public class OI {
     // Driver.
     private Joystick driverPad = new Joystick(RobotMap.PAD_DRIVER);
     private Button shift = new JoystickButton(driverPad, 5);
-    private Button dtToTargetLeft = new JoystickButton(driverPad, 7);
-    private Button dtToTargetRight = new JoystickButton(driverPad, 8);
+    private Button driverIntake = new JoystickButton(driverPad, 7);
+    private Button autoAim = new JoystickButton(driverPad, 8);
 
     // Operator.
     private Joystick opPad = new Joystick(RobotMap.PAD_OPERATOR);
-    private Button shooterZero = new JoystickButton(opPad, 1);
-    private Button shooterPlus = new JoystickButton(opPad, 4);
+    private Button prepareFender = new JoystickButton(opPad, 4);
+    private Button prepareKey = new JoystickButton(opPad, 3);
+    private Button shooterPlus = new JoystickButton(opPad, 1);
     private Button shooterMinus = new JoystickButton(opPad, 2);
-    private Button shooterPID = new JoystickButton(opPad, 3);
-    //private Button elevShooterUp = new JoystickButton(opPad, 3);
-    //private Button shooterPID = new JoystickButton(opPad, 3);
-    private Button elevSpitDown = new JoystickButton(opPad, 6);
-    private Button elevHopperUp = new JoystickButton(opPad, 5);
-    private Button hoodUp = new JoystickButton(opPad, 7);
-    private Button hoodDown = new JoystickButton(opPad, 8);
-    private Button prepareFender = new JoystickButton(opPad, 9);
-    private Button prepareKey = new JoystickButton(opPad, 10);
-    private Button cameraTrack = new ToggleButton(new JoystickButton(opPad, 11));
-    private Button dtToTargetSpin = new JoystickButton(opPad, 12);
+    private Button shooterZero = new JoystickButton(opPad, 9);
+    private Button elevHopper = new JoystickButton(opPad, 6);
+    private DualButton intakeDrop = new DualButton(new JoystickButton(opPad, 5), elevHopper);
+    private Button elevShoot = new JoystickButton(opPad, 8);
+    private Button elevSpit = new JoystickButton(opPad, 7);
+    private Button hoodUp = new JoystickButton(opPad, 11);
+    private Button hoodDown = new JoystickButton(opPad, 12);
 
     public OI(){
+        // Driver.
         // When shift is held, go into the non-default gear.
         shift.whileHeld(new ShifterStaticCmd(!Shifter.DEFAULT));
-        shooterZero.whenPressed(new StartCommand(new ShooterSetPowerCmd(0)));
-        shooterPlus.whenPressed(new StartCommand(new ShooterDeltaRateCmd(Shooter.MANUAL_RATE_INC)));
-        shooterMinus.whenPressed(new StartCommand(new ShooterDeltaRateCmd(-Shooter.MANUAL_RATE_INC)));
-        shooterPID.whenPressed(new ShooterSetRateCmd(16000));
-        //elevShooterUp.whileHeld(new ElevatorShooterCmd(true));
-        //shooterPID.whenPressed(new ShooterSetRateCmd(9000.125));
-        elevHopperUp.whileHeld(new ElevatorHopperCmd(true));
-        elevSpitDown.whileHeld(new ElevatorSpitCmd(false));
-        hoodUp.whenPressed(new HoodSetPosCmd(true));
-        hoodDown.whenPressed(new HoodSetPosCmd(false));
-        dtToTargetLeft.whileHeld(new DTTurnToTargetCmd(false));
-        dtToTargetRight.whileHeld(new DTManualCreepToTargetCmd());
+        driverIntake.whileHeld(new IntakeSetCmdUnint(true, true));
+        autoAim.whileHeld(new DTManualCreepToTargetCmd());
+
+        // Operator.
         prepareFender.whenPressed(new PrepareHoodAndShooterCmd(Shooter.FENDER_RATE, false));
         prepareKey.whenPressed(new PrepareHoodAndShooterCmd(Shooter.KEY_RATE, true));
-        cameraTrack.whileHeld(new CamPointAtTargetCmd());
-        dtToTargetSpin.whileHeld(new DTSpinToTargetWithCamServoCmd());
+        shooterPlus.whenPressed(new StartCommand(new ShooterDeltaRateCmd(Shooter.MANUAL_RATE_INC)));
+        shooterMinus.whenPressed(new StartCommand(new ShooterDeltaRateCmd(-Shooter.MANUAL_RATE_INC)));
+        shooterZero.whenPressed(new StartCommand(new ShooterSetPowerCmd(0)));
+        elevHopper.whileHeld(new ElevatorHopperCmd());
+        // While we suck balls into the hopper, run the front intake whenever we
+        // drop it down.
+        // Otherwise, don't run the front intake when we drop it down.
+        intakeDrop.button1.whileHeld(new IntakeSetCmd(true, false));
+        intakeDrop.whileHeld(new IntakeSetCmd(true, true));
+        elevShoot.whileHeld(new StartThenWaitCmd(new ElevatorShootOneBallCmd(), Elevator.SHOOTING_DELAY));
+        elevSpit.whileHeld(new ElevatorSpitCmd());
+        hoodUp.whenPressed(new HoodSetPosCmd(true));
+        hoodDown.whenPressed(new HoodSetPosCmd(false));
     }
 
     // On driverPad.

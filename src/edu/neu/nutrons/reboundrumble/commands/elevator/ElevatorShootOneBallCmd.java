@@ -8,11 +8,11 @@ package edu.neu.nutrons.reboundrumble.commands.elevator;
 public class ElevatorShootOneBallCmd extends ElevatorShooterCmd {
 
     public ElevatorShootOneBallCmd() {
-        super(true);
+        super();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return elev.getBallSwitch();
+        return elev.hasNewBall();
     }
 }

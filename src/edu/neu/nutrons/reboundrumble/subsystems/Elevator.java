@@ -1,5 +1,6 @@
 package edu.neu.nutrons.reboundrumble.subsystems;
 
+import edu.neu.nutrons.lib.PulseTriggerBoolean;
 import edu.neu.nutrons.reboundrumble.RobotMap;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorIdleCmd;
 import edu.wpi.first.wpilibj.AnalogChannel;
@@ -23,23 +24,29 @@ public class Elevator extends Subsystem {
     public static final double F_SPIT_POWER = 0.85;
     public static final double B_SPIT_POWER = 0.55;
     public static final double MEASURING_POWER_SCALE = 0.2;
+    public static final double SHOOTING_DELAY = 0.5;
 
     // Actual robot parts.
     private final Jaguar fMot = new Jaguar(RobotMap.F_ELEV_MOTOR);
     private final Jaguar bMot = new Jaguar(RobotMap.B_ELEV_MOTOR);
     private final AnalogChannel pressure = new AnalogChannel(RobotMap.SQUISHINESS);
     private final DigitalInput ballSwitch = new DigitalInput(RobotMap.BALL_SWITCH);
+    private final PulseTriggerBoolean newBall = new PulseTriggerBoolean();
 
     public void initDefaultCommand() {
         setDefaultCommand(new ElevatorIdleCmd());
+    }
+
+    public void processSensors() {
+        newBall.feed(ballSwitch.get());
     }
 
     public double getPressure() {
         return PRESSURE_SCALE * pressure.getVoltage();
     }
 
-    public boolean getBallSwitch() {
-        return ballSwitch.get();
+    public boolean hasNewBall() {
+        return newBall.get();
     }
 
     public void setPowerFB(double fPower, double bPower) {

@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public abstract class CommandBase extends Command {
 
-    // Single static instance of OI, dashboard and all subsystems.
+    // Single static instance of OI and all subsystems.
     public static OI oi;
     public static DTPIDController dtPID;
     public static DriveTrain dt = new DriveTrain();
@@ -22,6 +22,7 @@ public abstract class CommandBase extends Command {
     public static Shooter shooter = new Shooter();
     public static Hood hood = new Hood();
     public static Elevator elev = new Elevator();
+    public static Intake intake = new Intake();
 
     public static void init() {
         // This MUST be here. If the OI creates Commands (which it very likely
@@ -36,7 +37,6 @@ public abstract class CommandBase extends Command {
         SmartDashboard.putData(dt);
         SmartDashboard.putData(cam);
         SmartDashboard.putData(shooter);
-        SmartDashboard.putData(hood);
         // Drive train PID put on SmartDashboard in dtPID constructor.
     }
 
