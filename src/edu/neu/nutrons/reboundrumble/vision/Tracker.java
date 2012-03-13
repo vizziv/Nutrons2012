@@ -39,7 +39,7 @@ public class Tracker implements PIDSource {
     public static final int IMAGE_HEIGHT = 240;
 
     // Actual robot part.
-    private final  AxisCamera cam = AxisCamera.getInstance();
+    //private final  AxisCamera cam = AxisCamera.getInstance();
 
     // Other objects.
     private Target highTarget = Target.NullTarget;
@@ -53,15 +53,11 @@ public class Tracker implements PIDSource {
     private final CriteriaCollection inertiaCriteriaY = new CriteriaCollection();
 
     public Tracker() {
-        cam.writeResolution(AxisCamera.ResolutionT.k320x240);
-        cam.writeBrightness(camBrightness);
-        cam.writeColorLevel(camColor);
-        cam.writeWhiteBalance(camWhiteBalance);
-        cam.writeExposureControl(camExposure);
-        //boxCriteriaX.addCriteria(NIVision.MeasurementType.IMAQ_MT_BOUNDING_RECT_WIDTH,
-        //                     0, bboxWidthMin, true);
-        //boxCriteriaY.addCriteria(NIVision.MeasurementType.IMAQ_MT_BOUNDING_RECT_HEIGHT,
-        //                     0, bboxHeightMin, true);
+        //cam.writeResolution(AxisCamera.ResolutionT.k320x240);
+        //cam.writeBrightness(camBrightness);
+        //cam.writeColorLevel(camColor);
+        //cam.writeWhiteBalance(camWhiteBalance);
+        //cam.writeExposureControl(camExposure);
         inertiaCriteriaX.addCriteria(NIVision.MeasurementType.IMAQ_MT_NORM_MOMENT_OF_INERTIA_XX,
                              0, inertiaXMin, true);
         inertiaCriteriaY.addCriteria(NIVision.MeasurementType.IMAQ_MT_NORM_MOMENT_OF_INERTIA_YY,
@@ -85,10 +81,10 @@ public class Tracker implements PIDSource {
     }
 
     public boolean processImage() {
-        boolean success = cam.freshImage();
-        if(success) {
+        //boolean success = cam.freshImage();
+        if(false) {//success) {
             try {
-                ColorImage im = cam.getImage();
+                ColorImage im = null; //cam.getImage();
                 // Look for target color.
                 BinaryImage thresholdIm = im.thresholdRGB(redLow, redHigh,
                                                           greenLow, greenHigh,
@@ -99,17 +95,15 @@ public class Tracker implements PIDSource {
                 // -Bounding box at least 24x18.
                 // -Moment of inertias are at least .32 (x^2) and .18 (y^2).
                 //  (This selects for hollow particles.)
-                //BinaryImage filteredIm1 = thresholdIm.particleFilter(boxCriteriaX);
-                //BinaryImage filteredIm2 = filteredIm1.particleFilter(boxCriteriaY);
-                BinaryImage filteredIm3 = thresholdIm.particleFilter(inertiaCriteriaX);
-                BinaryImage filteredIm4 = filteredIm3.particleFilter(inertiaCriteriaY);
+                BinaryImage filteredIm1 = thresholdIm.particleFilter(inertiaCriteriaX);
+                BinaryImage filteredIm2 = filteredIm1.particleFilter(inertiaCriteriaY);
                 // Look at convex hull of what's left. As well as convex area
                 // being useful (see below), taking the convex hull of every
                 // particle eliminates the target-within-a-taget phenomenon that
                 // occasionally happens in bad lighting conditions (namely, when
                 // only the outer and inner edge of the retroreflective strips
                 // are picked up by the color threshold).
-                BinaryImage convexHullIm = filteredIm4.convexHull(true);
+                BinaryImage convexHullIm = filteredIm2.convexHull(true);
                 ParticleAnalysisReport[] particles = convexHullIm.getOrderedParticleAnalysisReports();
                 // Initially assume that no targets are found.
                 // TODO: remember previous targets if we briefly lose track.
@@ -137,18 +131,18 @@ public class Tracker implements PIDSource {
                 thresholdIm.free();
                 //filteredIm1.free();
                 //filteredIm2.free();
-                filteredIm3.free();
-                filteredIm4.free();
+                filteredIm1.free();
+                filteredIm2.free();
                 convexHullIm.free();
             }
-            catch(AxisCameraException ex) {
+            /*catch(AxisCameraException ex) {
                 ex.printStackTrace();
-            }
+            }*/
             catch(NIVisionException ex) {
                 ex.printStackTrace();
             }
         }
-        return success;
+        return false; //success;
     }
 
     public Target getHighestTarget() {
