@@ -3,17 +3,17 @@ package edu.neu.nutrons.lib;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Starts a given command, then waits for a given time.
+ * Loops a given command forever. Will interrupt the loop but not the lopped
+ * command itself if that command is not interruptible.
  *
  * @author Ziv
  */
-public class StartThenWaitCmd extends Command {
+public class LoopCmd extends Command {
 
     private Command cmd;
 
-    public StartThenWaitCmd(Command cmd, double delay) {
+    public LoopCmd(Command cmd) {
         this.cmd = cmd;
-        setTimeout(delay);
     }
 
     protected void initialize() {
@@ -21,18 +21,22 @@ public class StartThenWaitCmd extends Command {
     }
 
     protected void execute() {
+        if(!cmd.isRunning()) {
+            cmd.start();
+        }
     }
 
     protected boolean isFinished() {
-        return isTimedOut();
+        return false;
     }
 
     protected void end() {
-    }
-
-    protected void interrupted() {
         if(cmd.isInterruptible()) {
             cmd.cancel();
         }
+    }
+
+    protected void interrupted() {
+        end();
     }
 }

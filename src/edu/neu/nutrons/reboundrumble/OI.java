@@ -7,10 +7,9 @@ import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualCreepToTargetCm
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorHopperCmd;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorShootOneBallCmd;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorSpitCmd;
-import edu.neu.nutrons.reboundrumble.commands.group.PrepareHoodAndShooterCmd;
+import edu.neu.nutrons.reboundrumble.commands.group.PrepareShooterAndHoodCmd;
 import edu.neu.nutrons.reboundrumble.commands.hood.HoodSetPosCmd;
 import edu.neu.nutrons.reboundrumble.commands.intake.IntakeSetCmd;
-import edu.neu.nutrons.reboundrumble.commands.intake.IntakeSetCmdUnint;
 import edu.neu.nutrons.reboundrumble.commands.shifter.ShifterStaticCmd;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterDeltaRateCmd;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterSetPowerCmd;
@@ -58,12 +57,12 @@ public class OI {
         // Driver.
         // When shift is held, go into the non-default gear.
         shift.whileHeld(new ShifterStaticCmd(!Shifter.DEFAULT));
-        driverIntake.whileHeld(new IntakeSetCmdUnint(true, true));
+        driverIntake.whileHeld(new IntakeSetCmd(true, true));
         autoAim.whileHeld(new DTManualCreepToTargetCmd());
 
         // Operator.
-        prepareFender.whenPressed(new PrepareHoodAndShooterCmd(Shooter.FENDER_RATE, false));
-        prepareKey.whenPressed(new PrepareHoodAndShooterCmd(Shooter.KEY_RATE, true));
+        prepareFender.whenPressed(new PrepareShooterAndHoodCmd(Shooter.FENDER_RATE, false));
+        prepareKey.whenPressed(new PrepareShooterAndHoodCmd(Shooter.KEY_RATE, true));
         shooterPlus.whenPressed(new StartCommand(new ShooterDeltaRateCmd(Shooter.MANUAL_RATE_INC)));
         shooterMinus.whenPressed(new StartCommand(new ShooterDeltaRateCmd(-Shooter.MANUAL_RATE_INC)));
         shooterZero.whenPressed(new StartCommand(new ShooterSetPowerCmd(0)));
