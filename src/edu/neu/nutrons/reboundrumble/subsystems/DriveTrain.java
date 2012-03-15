@@ -27,6 +27,8 @@ public class DriveTrain extends Subsystem {
     public static final double CAM_SETTLE_TIME = 1.0;
     public static final double SMOOTHING_CYCLES = 40;
     public static final double CAM_TOLERANCE = 0.0125;
+    public static final double MAX_CREEP_POW = 0.6125;
+    public static final double FENDER_CREEP_TOLERANCE = 0.0125;
 
     // Actual robot parts.
     private final LinearVictor lMot = new LinearVictor(RobotMap.L_DRIVE_MOTOR);

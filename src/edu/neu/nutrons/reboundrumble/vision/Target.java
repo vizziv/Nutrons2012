@@ -9,6 +9,9 @@ import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
  */
 public class Target {
 
+    // Constants.
+    public static final double FENDER_TARGET_WIDTH = 300;
+
     public final int index;
     // Measured values.
     public final double rawBboxCornerX;

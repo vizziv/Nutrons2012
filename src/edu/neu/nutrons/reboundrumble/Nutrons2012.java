@@ -8,7 +8,7 @@
 package edu.neu.nutrons.reboundrumble;
 
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
-import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualCheesyCmd;
+import edu.neu.nutrons.reboundrumble.commands.auto.ShootFromKeyAutoMode;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -32,7 +32,7 @@ public class Nutrons2012 extends IterativeRobot {
      */
     public void robotInit() {
         // Assign autonomous command.
-        autonomousCommand = new DTManualCheesyCmd();
+        autonomousCommand = new ShootFromKeyAutoMode(5);
 
         // Initialize all subsystems.
         CommandBase.init();

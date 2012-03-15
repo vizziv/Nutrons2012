@@ -1,8 +1,9 @@
 package edu.neu.nutrons.reboundrumble.commands.drivetrain;
 
 import edu.neu.nutrons.lib.Utils;
-import edu.neu.nutrons.reboundrumble.commands.TimedEndConditionCmd;
+import edu.neu.nutrons.reboundrumble.commands.CommandBase;
 import edu.neu.nutrons.reboundrumble.subsystems.DriveTrain;
+import edu.neu.nutrons.reboundrumble.vision.Target;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -10,10 +11,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  * @author Ziv
  */
-public class DTManualCreepToTargetCmd extends TimedEndConditionCmd {
+public class DTFenderCreepToTargetCmd extends CommandBase {
 
-    public DTManualCreepToTargetCmd() {
-        super(DriveTrain.CAM_SETTLE_TIME);
+    private static double kp = 1.0;
+
+    public DTFenderCreepToTargetCmd(double timeout) {
+        setTimeout(timeout);
         requires(dt);
         requires(cam);
     }
@@ -25,14 +28,18 @@ public class DTManualCreepToTargetCmd extends TimedEndConditionCmd {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        double wheel = Utils.absPow(cam.tracker.getTarget1().rawBboxWidth * dtPID.camOut.get(), .65);
+        // Drive the robot slower as we get closer to the fender.
+        double targetWidth = cam.tracker.getTarget1().rawBboxWidth;
+        double wheel = Utils.absPow(targetWidth * dtPID.camOut.get(), .65);
         SmartDashboard.putDouble("Cam turning power", wheel);
-        dt.driveCar(DriveTrain.MAX_CREEP_POW * oi.getDriveThrottle(),
-                    Math.abs(Utils.absPow(oi.getDriveThrottle(), .3)) * wheel);
+        double throttle = kp * Utils.absPow(disError(), .42);
+        throttle = Utils.limit(throttle, -DriveTrain.MAX_CREEP_POW, DriveTrain.MAX_CREEP_POW);
+        dt.driveCar(throttle, Math.abs(Utils.absPow(throttle, .3)) * wheel);
     }
 
-    protected boolean returnEndCondition() {
-        return Math.abs(posError()) < DriveTrain.CAM_TOLERANCE;
+    protected boolean isFinished() {
+        // No absolute value; if we pass it, still stop.
+        return isTimedOut() || disError() < DriveTrain.FENDER_CREEP_TOLERANCE;
     }
 
     protected boolean override() {
@@ -53,5 +60,9 @@ public class DTManualCreepToTargetCmd extends TimedEndConditionCmd {
 
     private double posError() {
         return cam.tracker.getTarget1().centerX;
+    }
+
+    private double disError() {
+        return (1 - cam.tracker.getTarget1().rawBboxWidth / Target.FENDER_TARGET_WIDTH);
     }
 }

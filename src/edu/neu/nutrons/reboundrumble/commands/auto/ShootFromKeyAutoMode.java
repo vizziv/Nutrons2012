@@ -15,8 +15,8 @@ import edu.wpi.first.wpilibj.command.WaitUntilCommand;
 public class ShootFromKeyAutoMode extends CommandGroup {
 
     public ShootFromKeyAutoMode(double shootTime) {
-        addSequential(new WaitUntilCommand(shootTime));
         addSequential(new PrepareShooterAndHoodCmd(Shooter.KEY_RATE, true));
+        addSequential(new WaitUntilCommand(shootTime));
         addSequential(new LoopCmd(new ShootWhenReadyCmd()));
     }
 }
