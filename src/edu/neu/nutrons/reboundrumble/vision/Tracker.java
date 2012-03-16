@@ -1,5 +1,6 @@
 package edu.neu.nutrons.reboundrumble.vision;
 
+import edu.neu.nutrons.reboundrumble.commands.CommandBase;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
 import edu.wpi.first.wpilibj.camera.AxisCamera.ExposureT;
@@ -17,14 +18,12 @@ import edu.wpi.first.wpilibj.image.*;
 public class Tracker implements PIDSource {
 
     // Constants.
-    private final int redLow = 32;
-    private final int redHigh = 255;
-    private final int greenLow = 1;
-    private final int greenHigh = 76;
+    private final int redLow = 88;
+    private final int redHigh = 204;
+    private final int greenLow = 28;
+    private final int greenHigh = 75;
     private final int blueLow = 0;
     private final int blueHigh = 42;
-    //private final int bboxWidthMin = 20;
-    //private final int bboxHeightMin = 15;
     private final float inertiaXMin = 0.32f;
     private final float inertiaYMin = 0.18f;
     private final double ratioMin = 1.0;
@@ -39,25 +38,24 @@ public class Tracker implements PIDSource {
     public static final int IMAGE_HEIGHT = 240;
 
     // Actual robot part.
-    //private final  AxisCamera cam = AxisCamera.getInstance();
+    private final  AxisCamera cam = AxisCamera.getInstance();
 
     // Other objects.
     private Target highTarget = Target.NullTarget;
+    private Target lowTarget = Target.NullTarget;
     private Target target1 = Target.NullTarget;
     private Target target2 = Target.NullTarget;
     private Target target3 = Target.NullTarget;
     private Target target4 = Target.NullTarget;
-    //private final CriteriaCollection boxCriteriaX = new CriteriaCollection();
-    //private final CriteriaCollection boxCriteriaY = new CriteriaCollection();
     private final CriteriaCollection inertiaCriteriaX = new CriteriaCollection();
     private final CriteriaCollection inertiaCriteriaY = new CriteriaCollection();
 
     public Tracker() {
-        //cam.writeResolution(AxisCamera.ResolutionT.k320x240);
-        //cam.writeBrightness(camBrightness);
-        //cam.writeColorLevel(camColor);
-        //cam.writeWhiteBalance(camWhiteBalance);
-        //cam.writeExposureControl(camExposure);
+        cam.writeResolution(AxisCamera.ResolutionT.k320x240);
+        cam.writeBrightness(camBrightness);
+        cam.writeColorLevel(camColor);
+        cam.writeWhiteBalance(camWhiteBalance);
+        cam.writeExposureControl(camExposure);
         inertiaCriteriaX.addCriteria(NIVision.MeasurementType.IMAQ_MT_NORM_MOMENT_OF_INERTIA_XX,
                              0, inertiaXMin, true);
         inertiaCriteriaY.addCriteria(NIVision.MeasurementType.IMAQ_MT_NORM_MOMENT_OF_INERTIA_YY,
@@ -81,10 +79,10 @@ public class Tracker implements PIDSource {
     }
 
     public boolean processImage() {
-        //boolean success = cam.freshImage();
-        if(false) {//success) {
+        boolean success = cam.freshImage();
+        if(success) {
             try {
-                ColorImage im = null; //cam.getImage();
+                ColorImage im = cam.getImage();
                 // Look for target color.
                 BinaryImage thresholdIm = im.thresholdRGB(redLow, redHigh,
                                                           greenLow, greenHigh,
@@ -108,6 +106,7 @@ public class Tracker implements PIDSource {
                 // Initially assume that no targets are found.
                 // TODO: remember previous targets if we briefly lose track.
                 highTarget = Target.NullTarget;
+                lowTarget = Target.NullTarget;
                 target1 = Target.NullTarget;
                 target2 = Target.NullTarget;
                 target3 = Target.NullTarget;
@@ -115,7 +114,8 @@ public class Tracker implements PIDSource {
                 // Loop through targets, keep track of highest one.
                 // Dispose of those that have an extreme length/width ratio or
                 // aren't very rectangular (don't fill their bounding box).
-                double minY = IMAGE_HEIGHT; // Minimum y <-> higher in image.
+                double minY = IMAGE_HEIGHT; // Smaller y <-> higher in image.
+                double maxY = 0; // Bigger y <-> lower in image.
                 for(int i=0; i < particles.length; i++) {
                     Target t = new Target(i, particles[i]);
                     if(t.ratio > ratioMin && t.ratio < ratioMax &&
@@ -124,20 +124,21 @@ public class Tracker implements PIDSource {
                         if(t.centerY <= minY) {
                             highTarget = t;
                         }
+                        if(t.centerY >= maxY) {
+                            lowTarget = t;
+                        }
                     }
                 }
                 // Free memory used by images.
                 im.free();
                 thresholdIm.free();
-                //filteredIm1.free();
-                //filteredIm2.free();
                 filteredIm1.free();
                 filteredIm2.free();
                 convexHullIm.free();
             }
-            /*catch(AxisCameraException ex) {
+            catch(AxisCameraException ex) {
                 ex.printStackTrace();
-            }*/
+            }
             catch(NIVisionException ex) {
                 ex.printStackTrace();
             }
@@ -145,9 +146,16 @@ public class Tracker implements PIDSource {
         return false; //success;
     }
 
-    public Target getHighestTarget() {
-        return highTarget;
+    public Target getBestTarget() {
+        // TODO: make less hacky!
+        if(CommandBase.elev.getSquishEnabled()) {
+            return highTarget;
+        }
+        else {
+            return lowTarget;
+        }
     }
+
     public Target getTarget1() {
         return target1;
     }
@@ -162,6 +170,6 @@ public class Tracker implements PIDSource {
     }
 
     public double pidGet() {
-        return -getTarget1().centerX;
+        return -getBestTarget().centerX;
     }
 }

@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
 public class Target {
 
     // Constants.
-    public static final double FENDER_TARGET_WIDTH = 300;
+    public static final double FENDER_TARGET_WIDTH = 125;
 
     public final int index;
     // Measured values.
@@ -58,6 +58,16 @@ public class Target {
     public Target(int index, ParticleAnalysisReport p) {
         this(index, p.boundingRectLeft, p.boundingRectTop, p.boundingRectWidth,
              p.boundingRectHeight, p.particleArea);
+    }
+
+    public static Target average(Target t1, Target t2) {
+        double bboxCornerX = (t1.rawBboxCornerX + t2.rawBboxCornerX) / 2.0;
+        double bboxCornerY = (t1.rawBboxCornerY + t2.rawBboxCornerY) / 2.0;
+        double bboxWidth = (t1.rawBboxWidth + t2.rawBboxWidth) / 2.0;
+        double bboxHeight = (t1.rawBboxHeight + t2.rawBboxHeight) / 2.0;
+        double area = (t1.rawArea + t2.rawArea) / 2.0;
+        // TODO: make index less hacky.
+        return new Target(9001, bboxCornerX, bboxCornerY, bboxWidth, bboxHeight, area);
     }
 
     public boolean isNotNull() {

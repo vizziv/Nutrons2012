@@ -19,6 +19,9 @@ import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterSetPowerCmd;
 import edu.neu.nutrons.reboundrumble.subsystems.Elevator;
 import edu.neu.nutrons.reboundrumble.subsystems.Shifter;
 import edu.neu.nutrons.reboundrumble.subsystems.Shooter;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStationEnhancedIO;
+import edu.wpi.first.wpilibj.DriverStationEnhancedIO.EnhancedIOException;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -38,9 +41,8 @@ public class OI {
 
     // Driver.
     private Joystick driverPad = new Joystick(RobotMap.PAD_DRIVER);
+    private DriverStationEnhancedIO io = DriverStation.getInstance().getEnhancedIO();
     private Button shift = new JoystickButton(driverPad, 5);
-    private Button driverIntake = new JoystickButton(driverPad, 7);
-    private Button autoAim = new JoystickButton(driverPad, 8);
 
     // Operator.
     private Joystick opPad = new Joystick(RobotMap.PAD_OPERATOR);
@@ -59,13 +61,14 @@ public class OI {
     private Button hoodUp = new JoystickDPadButton(opPad, 1, 2, Direction.N);
     private Button hoodDown = new JoystickDPadButton(opPad, 1, 2, Direction.S);
     public final AutoModeSelector ams = new AutoModeSelector(opPad);
+    private Button autoAim = new JoystickButton(opPad, 12);
 
     public OI(){
 
         // Driver.
         // When shift is held, go into the non-default gear.
         shift.whileHeld(new ShifterStaticCmd(!Shifter.DEFAULT));
-        driverIntake.whileHeld(new IntakeSetCmd(true, true));
+        //driverIntake.whileHeld(new IntakeSetCmd(true, true));
         autoAim.whileHeld(new DTManualCreepToTargetCmd());
 
         // Operator.
@@ -74,6 +77,8 @@ public class OI {
         shooterPlus.whenPressed(new StartCommand(new ShooterDeltaRateCmd(Shooter.MANUAL_RATE_INC)));
         shooterMinus.whenPressed(new StartCommand(new ShooterDeltaRateCmd(-Shooter.MANUAL_RATE_INC)));
         shooterZero.whenPressed(new StartCommand(new ShooterSetPowerCmd(0)));
+        shooterManPlus.whenPressed(new StartCommand(new ShooterDeltaRateCmd(Shooter.MANUAL_POWER_INC)));
+        shooterManMinus.whenPressed(new StartCommand(new ShooterDeltaRateCmd(-Shooter.MANUAL_POWER_INC)));
         toggleSquish.whenPressed(new ElevatorToggleSquishEnabledCmd());
         elevHopper.whileHeld(new ElevatorHopperCmd());
         // While we suck balls into the hopper, run the front intake whenever we
@@ -86,6 +91,38 @@ public class OI {
         hoodUp.whenPressed(new HoodSetPosCmd(true));
         hoodDown.whenPressed(new HoodSetPosCmd(false));
     }
+    private double capAndBand(double value) {
+        value = Utils.deadband(value, .075, -1);
+        value = Utils.deadband(value, .075, 0);
+        value = Utils.deadband(value, .075, 1);
+        return Utils.limit(value, -1, 1);
+    }
+
+    private double scaleAnalog(double voltageIn) {
+        double normalized = (2 * voltageIn / 3.25) - 1;
+        return normalized;
+    }
+
+    private double getIOAnalog(int port) {
+        double in = 0;
+        try {
+            in = io.getAnalogIn(port);
+        }
+        catch(EnhancedIOException ex) {
+        }
+        double refined = capAndBand(scaleAnalog(in));
+        return refined;
+    }
+
+    private boolean getIODigital(int port) {
+        boolean in = false;
+        try {
+            in = !io.getDigital(port); //active low
+        }
+        catch(EnhancedIOException ex) {
+        }
+        return in;
+    }
 
     // On driverPad.
     public double getDriveLeft() {
@@ -97,19 +134,23 @@ public class OI {
     }
 
     public double getDriveThrottle() {
-        return -Utils.deadband(driverPad.getRawAxis(2), PAD_DEADBAND, 0);
+        //return -Utils.deadband(driverPad.getRawAxis(2), PAD_DEADBAND, 0);
+        return getIOAnalog(1);
     }
 
     public double getDriveWheel() {
-        return Utils.deadband(driverPad.getRawAxis(3), PAD_DEADBAND, 0);
+        //return Utils.deadband(driverPad.getRawAxis(3), PAD_DEADBAND, 0);
+        return getIOAnalog(5);
     }
 
     public boolean getDriveQuickTurn() {
-        return driverPad.getRawButton(6);
+        //return driverPad.getRawButton(6);
+        return getIODigital(1);
     }
 
     public boolean getDriveManual() {
-        return driverPad.getRawButton(10);
+        //return driverPad.getRawButton(10);
+        return getIODigital(3);
     }
 
     // On opPad.
