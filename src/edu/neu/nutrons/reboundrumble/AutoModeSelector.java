@@ -55,9 +55,7 @@ public class AutoModeSelector {
         shootWait = (shootWait + Utils.toInt(isw) + Utils.toInt(dsw)) % 15;
         moveWait = (moveWait + Utils.toInt(imw) + Utils.toInt(dmw)) % 15;
         if(im || dm || isw || dsw || imw || dmw) {
-            String display = "Mode = " + mode + ", Shoot delay = " + shootWait +
-                             ", Move delay = " + moveWait;
-            System.out.println(display);
+            System.out.println(getAutoModeString());
         }
     }
 
@@ -85,5 +83,9 @@ public class AutoModeSelector {
                 autoMode = new DTManualCheesyCmd();
         }
         return autoMode;
+    }
+
+    public String getAutoModeString() {
+        return "Mode = " + mode + ", Shoot delay = " + shootWait + ", Move delay = " + moveWait;
     }
 }

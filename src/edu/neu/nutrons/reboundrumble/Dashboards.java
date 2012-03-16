@@ -18,7 +18,6 @@ public class Dashboards {
     private static Dashboards instance = null;
 
     private Dashboards() {
-        SmartDashboard.putDouble("Cam turn kp", 0);
     }
 
     public static Dashboards getInstance() {
@@ -56,7 +55,12 @@ public class Dashboards {
                 lowDash.addInt((int)CommandBase.cam.tracker.getTarget4().rawBboxHeight);
             lowDash.finalizeCluster();
             // Shooter.
+            lowDash.addDouble(CommandBase.shooter.getSetpoint());
             lowDash.addDouble(CommandBase.shooter.getRate());
+            // Elevator.
+            lowDash.addDouble(CommandBase.elev.getPressure());
+            // Auto mode selection.
+            lowDash.addString(CommandBase.oi.ams.getAutoModeString());
         lowDash.finalizeCluster();
         lowDash.commit();
     }
