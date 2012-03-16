@@ -8,7 +8,6 @@
 package edu.neu.nutrons.reboundrumble;
 
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
-import edu.neu.nutrons.reboundrumble.commands.auto.ShootFromKeyAutoMode;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -31,9 +30,6 @@ public class Nutrons2012 extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-        // Assign autonomous command.
-        autonomousCommand = new ShootFromKeyAutoMode(5);
-
         // Initialize all subsystems.
         CommandBase.init();
     }
@@ -43,8 +39,13 @@ public class Nutrons2012 extends IterativeRobot {
         CommandBase.shooter.setPower(0);
     }
 
+    public void disabledPeriodic() {
+        CommandBase.oi.ams.runSelection();
+    }
+
     public void autonomousInit() {
         // Start autonomous routine.
+        autonomousCommand = CommandBase.oi.ams.getAutoMode();
         autonomousCommand.start();
     }
 

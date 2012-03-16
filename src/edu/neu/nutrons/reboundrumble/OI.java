@@ -56,8 +56,10 @@ public class OI {
     private Button elevSpit = new JoystickButton(opPad, 7);
     private Button hoodUp = new JoystickDPadButton(opPad, 1, 2, Direction.N);
     private Button hoodDown = new JoystickDPadButton(opPad, 1, 2, Direction.S);
+    public final AutoModeSelector ams = new AutoModeSelector(opPad);
 
     public OI(){
+
         // Driver.
         // When shift is held, go into the non-default gear.
         shift.whileHeld(new ShifterStaticCmd(!Shifter.DEFAULT));
