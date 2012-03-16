@@ -59,6 +59,7 @@ public class Dashboards {
             lowDash.addDouble(CommandBase.shooter.getRate());
             // Elevator.
             lowDash.addDouble(CommandBase.elev.getPressure());
+            lowDash.addBoolean(CommandBase.elev.getSquishEnabled());
             // Auto mode selection.
             lowDash.addString(CommandBase.oi.ams.getAutoModeString());
         lowDash.finalizeCluster();

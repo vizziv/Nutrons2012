@@ -10,9 +10,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  *
  * @author Ziv
  */
-public class PrepareShooterHoodCamCmd extends CommandGroup {
+public class PrepareFenderCmd extends CommandGroup {
 
-    public PrepareShooterHoodCamCmd(double shooterRate, boolean hoodUp, double camPos) {
+    public PrepareFenderCmd(double shooterRate, boolean hoodUp, double camPos) {
         addParallel(new HoodSetPosCmd(hoodUp));
         addParallel(new CamSetPosCmd(camPos));
         addSequential(new ShooterSetRateCmd(shooterRate));

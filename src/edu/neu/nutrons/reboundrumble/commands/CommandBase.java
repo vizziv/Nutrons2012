@@ -2,7 +2,8 @@ package edu.neu.nutrons.reboundrumble.commands;
 
 import edu.neu.nutrons.reboundrumble.DTPIDController;
 import edu.neu.nutrons.reboundrumble.OI;
-import edu.neu.nutrons.reboundrumble.commands.group.PrepareShooterHoodCamCmd;
+import edu.neu.nutrons.reboundrumble.commands.group.PrepareFenderCmd;
+import edu.neu.nutrons.reboundrumble.commands.group.PrepareKeyCmd;
 import edu.neu.nutrons.reboundrumble.subsystems.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,9 +27,9 @@ public abstract class CommandBase extends Command {
     public static Intake intake = new Intake();
 
     // Some commands to be used in multiple places.
-    public static final Command prepareFender = new PrepareShooterHoodCamCmd(
+    public static final Command prepareFender = new PrepareFenderCmd(
                                 Shooter.FENDER_RATE, false, Camera.FENDER_POS);
-    public static final Command prepareKey = new PrepareShooterHoodCamCmd(
+    public static final Command prepareKey = new PrepareKeyCmd(
                                 Shooter.KEY_RATE, true, Camera.KEY_POS);;
 
     public static void init() {

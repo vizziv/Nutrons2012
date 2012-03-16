@@ -25,6 +25,8 @@ public class Elevator extends Subsystem {
     public static final double B_SPIT_POWER = 0.55;
     public static final double MEASURING_POWER_SCALE = 0.2;
     public static final double SHOOTING_DELAY = 0.5;
+    public static final double PRESSURE_THRESHOLD = 0.5;
+    public static final double IDEAL_PRESSURE = 2.5;
 
     // Actual robot parts.
     private final Jaguar fMot = new Jaguar(RobotMap.F_ELEV_MOTOR);
@@ -32,6 +34,9 @@ public class Elevator extends Subsystem {
     private final AnalogChannel pressure = new AnalogChannel(RobotMap.SQUISHINESS);
     private final DigitalInput ballSwitch = new DigitalInput(RobotMap.BALL_SWITCH);
     private final PulseTriggerBoolean newBall = new PulseTriggerBoolean();
+
+    // Other variables.
+    private boolean squishEnabled = false;
 
     public void initDefaultCommand() {
         setDefaultCommand(new ElevatorIdleCmd());
@@ -56,5 +61,13 @@ public class Elevator extends Subsystem {
 
     public void stop() {
         setPowerFB(0, 0);
+    }
+
+    public void setSquishEnabled(boolean squishEnabled) {
+        this.squishEnabled = squishEnabled;
+    }
+
+    public boolean getSquishEnabled() {
+        return squishEnabled;
     }
 }

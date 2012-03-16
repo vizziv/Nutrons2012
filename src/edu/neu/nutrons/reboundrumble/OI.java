@@ -10,6 +10,7 @@ import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualCreepToTargetCm
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorHopperCmd;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorShootOneBallCmd;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorSpitCmd;
+import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorToggleSquishEnabledCmd;
 import edu.neu.nutrons.reboundrumble.commands.hood.HoodSetPosCmd;
 import edu.neu.nutrons.reboundrumble.commands.intake.IntakeSetCmd;
 import edu.neu.nutrons.reboundrumble.commands.shifter.ShifterStaticCmd;
@@ -50,6 +51,7 @@ public class OI {
     private Button shooterZero = new JoystickButton(opPad, 10);
     private Button shooterManPlus = new JoystickDPadButton(opPad, Direction.N);
     private Button shooterManMinus = new JoystickDPadButton(opPad, Direction.S);
+    private Button toggleSquish = new JoystickButton(opPad, 9);
     private Button elevHopper = new JoystickButton(opPad, 6);
     private DualButton intakeDrop = new DualButton(new JoystickButton(opPad, 5), elevHopper);
     private Button elevShoot = new JoystickButton(opPad, 8);
@@ -72,6 +74,7 @@ public class OI {
         shooterPlus.whenPressed(new StartCommand(new ShooterDeltaRateCmd(Shooter.MANUAL_RATE_INC)));
         shooterMinus.whenPressed(new StartCommand(new ShooterDeltaRateCmd(-Shooter.MANUAL_RATE_INC)));
         shooterZero.whenPressed(new StartCommand(new ShooterSetPowerCmd(0)));
+        toggleSquish.whenPressed(new ElevatorToggleSquishEnabledCmd());
         elevHopper.whileHeld(new ElevatorHopperCmd());
         // While we suck balls into the hopper, run the front intake whenever we
         // drop it down.
