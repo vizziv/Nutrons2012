@@ -2,6 +2,7 @@ package edu.neu.nutrons.reboundrumble.commands;
 
 import edu.neu.nutrons.reboundrumble.DTPIDController;
 import edu.neu.nutrons.reboundrumble.OI;
+import edu.neu.nutrons.reboundrumble.commands.group.PrepareShooterHoodCamCmd;
 import edu.neu.nutrons.reboundrumble.subsystems.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,6 +24,12 @@ public abstract class CommandBase extends Command {
     public static Hood hood = new Hood();
     public static Elevator elev = new Elevator();
     public static Intake intake = new Intake();
+
+    // Some commands to be used in multiple places.
+    public static final Command prepareFender = new PrepareShooterHoodCamCmd(
+                                Shooter.FENDER_RATE, false, Camera.FENDER_POS);
+    public static final Command prepareKey = new PrepareShooterHoodCamCmd(
+                                Shooter.KEY_RATE, true, Camera.KEY_POS);;
 
     public static void init() {
         // This MUST be here. If the OI creates Commands (which it very likely

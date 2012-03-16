@@ -15,8 +15,6 @@ public class CamManualCmd extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        cam.disable();
-        cam.setPos(0);
     }
 
     // Called repeatedly when this Command is scheduled to run

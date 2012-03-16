@@ -1,13 +1,15 @@
 package edu.neu.nutrons.reboundrumble;
 
 import edu.neu.nutrons.lib.DualButton;
+import edu.neu.nutrons.lib.JoystickDPadButton;
+import edu.neu.nutrons.lib.JoystickDPadButton.Direction;
 import edu.neu.nutrons.lib.StartThenWaitCmd;
 import edu.neu.nutrons.lib.Utils;
+import edu.neu.nutrons.reboundrumble.commands.CommandBase;
 import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualCreepToTargetCmd;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorHopperCmd;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorShootOneBallCmd;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorSpitCmd;
-import edu.neu.nutrons.reboundrumble.commands.group.PrepareShooterAndHoodCmd;
 import edu.neu.nutrons.reboundrumble.commands.hood.HoodSetPosCmd;
 import edu.neu.nutrons.reboundrumble.commands.intake.IntakeSetCmd;
 import edu.neu.nutrons.reboundrumble.commands.shifter.ShifterStaticCmd;
@@ -30,7 +32,7 @@ import edu.wpi.first.wpilibj.command.StartCommand;
 public class OI {
 
     // Constants.
-    private final double CAM_JS_SCALE = 0.25;
+    private final double CAM_JS_SCALE = 0.125;
     private final double PAD_DEADBAND = 0.1;
 
     // Driver.
@@ -45,13 +47,15 @@ public class OI {
     private Button prepareKey = new JoystickButton(opPad, 3);
     private Button shooterPlus = new JoystickButton(opPad, 1);
     private Button shooterMinus = new JoystickButton(opPad, 2);
-    private Button shooterZero = new JoystickButton(opPad, 9);
+    private Button shooterZero = new JoystickButton(opPad, 10);
+    private Button shooterManPlus = new JoystickDPadButton(opPad, Direction.N);
+    private Button shooterManMinus = new JoystickDPadButton(opPad, Direction.S);
     private Button elevHopper = new JoystickButton(opPad, 6);
     private DualButton intakeDrop = new DualButton(new JoystickButton(opPad, 5), elevHopper);
     private Button elevShoot = new JoystickButton(opPad, 8);
     private Button elevSpit = new JoystickButton(opPad, 7);
-    private Button hoodUp = new JoystickButton(opPad, 11);
-    private Button hoodDown = new JoystickButton(opPad, 12);
+    private Button hoodUp = new JoystickDPadButton(opPad, 1, 2, Direction.N);
+    private Button hoodDown = new JoystickDPadButton(opPad, 1, 2, Direction.S);
 
     public OI(){
         // Driver.
@@ -61,8 +65,8 @@ public class OI {
         autoAim.whileHeld(new DTManualCreepToTargetCmd());
 
         // Operator.
-        prepareFender.whenPressed(new PrepareShooterAndHoodCmd(Shooter.FENDER_RATE, false));
-        prepareKey.whenPressed(new PrepareShooterAndHoodCmd(Shooter.KEY_RATE, true));
+        prepareFender.whenPressed(CommandBase.prepareFender);
+        prepareKey.whenPressed(CommandBase.prepareKey);
         shooterPlus.whenPressed(new StartCommand(new ShooterDeltaRateCmd(Shooter.MANUAL_RATE_INC)));
         shooterMinus.whenPressed(new StartCommand(new ShooterDeltaRateCmd(-Shooter.MANUAL_RATE_INC)));
         shooterZero.whenPressed(new StartCommand(new ShooterSetPowerCmd(0)));
@@ -105,14 +109,6 @@ public class OI {
 
     // On opPad.
     public double getCamDelta() {
-        return CAM_JS_SCALE * Utils.deadband(opPad.getRawAxis(1), PAD_DEADBAND, 0);
-    }
-
-    public boolean getHoodUp() {
-        return opPad.getRawButton(7);
-    }
-
-    public boolean getHoodDown() {
-        return opPad.getRawButton(8);
+        return CAM_JS_SCALE * Utils.deadband(-opPad.getRawAxis(3), 3*PAD_DEADBAND, 0);
     }
 }
