@@ -17,12 +17,16 @@ public class Camera extends Subsystem {
     // Constants.
     private final double MIN_POS = -1.0;
     private final double MAX_POS = 1.0;
-    public static final double FENDER_POS = 0.0;
-    public static final double KEY_POS = 0.4;
+    public static final double FENDER_POS = 0.18;
+    public static final double KEY_POS = 0.45;
 
     // Actual robot parts.
     public final Tracker tracker = new Tracker(); // Axis camera is in here.
     private final Servo servo = new Servo(RobotMap.CAM_SERVO);
+
+    public Camera() {
+        setPos(.45);
+    }
 
     protected void initDefaultCommand() {
         setDefaultCommand(new CamManualCmd());

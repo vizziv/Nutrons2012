@@ -8,6 +8,9 @@
 package edu.neu.nutrons.reboundrumble;
 
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
+import edu.neu.nutrons.reboundrumble.commands.auto.ShootFromKeyAutoMode;
+import edu.neu.nutrons.reboundrumble.commands.auto.ShootFromKeyHackyAutoMode;
+import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualCheesyCmd;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -32,6 +35,7 @@ public class Nutrons2012 extends IterativeRobot {
     public void robotInit() {
         // Initialize all subsystems.
         CommandBase.init();
+        autonomousCommand = new DTManualCheesyCmd();
     }
 
     public void disabledInit() {
@@ -43,14 +47,24 @@ public class Nutrons2012 extends IterativeRobot {
         CommandBase.oi.ams.runSelection();
     }
 
+    public void disabledContinuous() {
+        CommandBase.cam.tracker.processImage();
+        Dashboards.getInstance().sendContinuousData();
+    }
+
     public void autonomousInit() {
         // Start autonomous routine.
-        autonomousCommand = CommandBase.oi.ams.getAutoMode();
+        autonomousCommand = new ShootFromKeyHackyAutoMode(2.0);//CommandBase.oi.ams.getAutoMode();
         autonomousCommand.start();
     }
 
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
+    }
+
+    public void autonomousContinuous() {
+        CommandBase.cam.tracker.processImage();
+        Dashboards.getInstance().sendContinuousData();
     }
 
     public void teleopInit() {

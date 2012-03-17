@@ -4,7 +4,9 @@ import edu.neu.nutrons.lib.PulseTriggerBoolean;
 import edu.neu.nutrons.lib.Utils;
 import edu.neu.nutrons.reboundrumble.commands.auto.ShootFromFenderAutoMode;
 import edu.neu.nutrons.reboundrumble.commands.auto.ShootFromKeyAutoMode;
+import edu.neu.nutrons.reboundrumble.commands.auto.ShootFromKeyHackyAutoMode;
 import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualCheesyCmd;
+import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -29,7 +31,7 @@ public class AutoModeSelector {
     private PulseTriggerBoolean incMoveWait = new PulseTriggerBoolean();
     private PulseTriggerBoolean decMoveWait = new PulseTriggerBoolean();
     private int mode = 0;
-    private int shootWait = 0;
+    private int shootTime = 0;
     private int moveWait = 0;
 
     public AutoModeSelector(Joystick js) {
@@ -42,20 +44,15 @@ public class AutoModeSelector {
         decMode.feed(js.getRawButton(5));
         incShootWait.feed(js.getRawButton(1));
         decShootWait.feed(js.getRawButton(2));
-        incMoveWait.feed(js.getRawButton(4));
-        decMoveWait.feed(js.getRawButton(3));
         // Change parameters accordingly.
         boolean im = incMode.get();
         boolean dm = decMode.get();
         boolean isw = incShootWait.get();
         boolean dsw = decShootWait.get();
-        boolean imw = incMoveWait.get();
-        boolean dmw = decMoveWait.get();
-        mode = (mode + Utils.toInt(im) + Utils.toInt(dm)) % NUM_MODES;
-        shootWait = (shootWait + Utils.toInt(isw) + Utils.toInt(dsw)) % 15;
-        moveWait = (moveWait + Utils.toInt(imw) + Utils.toInt(dmw)) % 15;
-        if(im || dm || isw || dsw || imw || dmw) {
-            System.out.println(getAutoModeString());
+        mode = (mode + Utils.toInt(im) - Utils.toInt(dm)) % NUM_MODES;
+        shootTime = (shootTime + Utils.toInt(isw) - Utils.toInt(dsw)) % 15;
+        if(im || dm || isw || dsw) {
+            DriverStationLCD.getInstance().println(DriverStationLCD.Line.kUser2, 1, getAutoModeString());
         }
     }
 
@@ -74,10 +71,10 @@ public class AutoModeSelector {
         Command autoMode;
         switch(mode) {
             case KEY:
-                autoMode = new ShootFromKeyAutoMode(shootWait);
+                autoMode = new ShootFromKeyHackyAutoMode(shootTime);
                 break;
             case FENDER:
-                autoMode = new ShootFromFenderAutoMode(moveWait, shootWait);
+                autoMode = new ShootFromFenderAutoMode(shootTime);
                 break;
             default:
                 autoMode = new DTManualCheesyCmd();
@@ -86,6 +83,6 @@ public class AutoModeSelector {
     }
 
     public String getAutoModeString() {
-        return "Mode = " + mode + ", Shoot delay = " + shootWait + ", Move delay = " + moveWait;
+        return "Mode = " + getModeName(mode) + ", Shoot delay = " + shootTime + ", Move delay = " + moveWait;
     }
 }

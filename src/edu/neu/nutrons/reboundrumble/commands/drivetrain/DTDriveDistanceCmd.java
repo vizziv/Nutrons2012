@@ -33,10 +33,6 @@ public class DTDriveDistanceCmd extends TimedEndConditionCmd {
         return Math.abs(dt.disEncAvg.get() - feet) < TOLERANCE;
     }
 
-    protected boolean override() {
-        return oi.getDriveManual();
-    }
-
     // Called once after isFinished returns true
     protected void end() {
         dtPID.disableDistance();

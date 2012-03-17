@@ -35,10 +35,6 @@ public class DTManualCreepToTargetCmd extends TimedEndConditionCmd {
         return Math.abs(posError()) < DriveTrain.CAM_TOLERANCE;
     }
 
-    protected boolean override() {
-        return oi.getDriveManual();
-    }
-
     // Called once after isFinished returns true
     protected void end() {
         dt.stop();

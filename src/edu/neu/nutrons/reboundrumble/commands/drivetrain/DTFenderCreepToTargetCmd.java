@@ -42,10 +42,6 @@ public class DTFenderCreepToTargetCmd extends CommandBase {
         return isTimedOut() || disError() < DriveTrain.FENDER_CREEP_TOLERANCE;
     }
 
-    protected boolean override() {
-        return oi.getDriveManual();
-    }
-
     // Called once after isFinished returns true
     protected void end() {
         dt.stop();

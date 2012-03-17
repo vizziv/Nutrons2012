@@ -1,6 +1,5 @@
 package edu.neu.nutrons.reboundrumble.vision;
 
-import edu.neu.nutrons.reboundrumble.commands.CommandBase;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
 import edu.wpi.first.wpilibj.camera.AxisCamera.ExposureT;
@@ -40,7 +39,7 @@ public class Tracker implements PIDSource {
     // Actual robot part.
     private final  AxisCamera cam = AxisCamera.getInstance();
 
-    // Other objects.
+    // Other variables.
     private Target highTarget = Target.NullTarget;
     private Target lowTarget = Target.NullTarget;
     private Target target1 = Target.NullTarget;
@@ -49,6 +48,7 @@ public class Tracker implements PIDSource {
     private Target target4 = Target.NullTarget;
     private final CriteriaCollection inertiaCriteriaX = new CriteriaCollection();
     private final CriteriaCollection inertiaCriteriaY = new CriteriaCollection();
+    private boolean aimHigh = true;
 
     public Tracker() {
         cam.writeResolution(AxisCamera.ResolutionT.k320x240);
@@ -148,7 +148,7 @@ public class Tracker implements PIDSource {
 
     public Target getBestTarget() {
         // TODO: make less hacky!
-        if(CommandBase.elev.getSquishEnabled()) {
+        if(aimHigh) {
             return highTarget;
         }
         else {

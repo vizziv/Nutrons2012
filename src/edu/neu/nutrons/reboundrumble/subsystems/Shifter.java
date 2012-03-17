@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Shifter extends Subsystem {
 
     private final Solenoid shifter = new Solenoid(RobotMap.SHIFTER);
-    public static final boolean DEFAULT = false; // Default is high gear.
+    public static final boolean DEFAULT = true; // Default is high gear.
 
     public void initDefaultCommand() {
         setDefaultCommand(new ShifterStaticCmd(DEFAULT));

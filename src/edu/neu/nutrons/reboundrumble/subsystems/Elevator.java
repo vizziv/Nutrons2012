@@ -5,7 +5,7 @@ import edu.neu.nutrons.reboundrumble.RobotMap;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorIdleCmd;
 import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Jaguar;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -15,22 +15,23 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Elevator extends Subsystem {
 
+
     // Constants.
     private final double PRESSURE_SCALE = 1.0;
-    public static final double F_SHOOTER_POWER = 0.15;
+    public static final double F_SHOOTER_POWER = 0.45;
     public static final double B_SHOOTER_POWER = 0.85;
     public static final double F_HOPPER_POWER = 0.45;
     public static final double B_HOPPER_POWER = 0.85;
     public static final double F_SPIT_POWER = 0.85;
-    public static final double B_SPIT_POWER = 0.55;
+    public static final double B_SPIT_POWER = 0.6;
     public static final double MEASURING_POWER_SCALE = 0.2;
     public static final double SHOOTING_DELAY = 0.5;
     public static final double PRESSURE_THRESHOLD = 0.5;
     public static final double IDEAL_PRESSURE = 2.5;
 
     // Actual robot parts.
-    private final Jaguar fMot = new Jaguar(RobotMap.F_ELEV_MOTOR);
-    private final Jaguar bMot = new Jaguar(RobotMap.B_ELEV_MOTOR);
+    private final Victor fMot = new Victor(RobotMap.F_ELEV_MOTOR);
+    private final Victor bMot = new Victor(RobotMap.B_ELEV_MOTOR);
     private final AnalogChannel pressure = new AnalogChannel(RobotMap.SQUISHINESS);
     private final DigitalInput ballSwitch = new DigitalInput(RobotMap.BALL_SWITCH);
     private final PulseTriggerBoolean newBall = new PulseTriggerBoolean();
@@ -55,8 +56,8 @@ public class Elevator extends Subsystem {
     }
 
     public void setPowerFB(double fPower, double bPower) {
-        fMot.set(-fPower);
-        bMot.set(bPower);
+        fMot.set(fPower);
+        bMot.set(-bPower);
     }
 
     public void stop() {

@@ -29,7 +29,7 @@ public abstract class CommandBase extends Command {
     // Some commands to be used in multiple places.
     public static final Command prepareFender = new PrepareFenderCmd(
                                 Shooter.FENDER_RATE, false, Camera.FENDER_POS);
-    public static final Command prepareKey = new PrepareKeyCmd(
+    public static final Command prepareKey = new PrepareFenderCmd(//PrepareKeyCmd(
                                 Shooter.KEY_RATE, true, Camera.KEY_POS);;
 
     public static void init() {
@@ -45,6 +45,7 @@ public abstract class CommandBase extends Command {
         SmartDashboard.putData(dt);
         SmartDashboard.putData(cam);
         SmartDashboard.putData(shooter);
+        SmartDashboard.putData(hood);
         // Drive train PID put on SmartDashboard in dtPID constructor.
     }
 

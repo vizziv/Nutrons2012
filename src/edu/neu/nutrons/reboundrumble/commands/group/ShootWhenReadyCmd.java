@@ -4,7 +4,7 @@
  */
 package edu.neu.nutrons.reboundrumble.commands.group;
 
-import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorShootOneBallCmd;
+import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorShooterCmd;
 import edu.neu.nutrons.reboundrumble.commands.shooter.WaitForShooterCmd;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -16,6 +16,6 @@ public class ShootWhenReadyCmd extends CommandGroup {
 
     public ShootWhenReadyCmd() {
         addSequential(new WaitForShooterCmd());
-        addSequential(new ElevatorShootOneBallCmd());
+        addSequential(new ElevatorShooterCmd(), 0.5);//ElevatorShootOneBallCmd());
     }
 }

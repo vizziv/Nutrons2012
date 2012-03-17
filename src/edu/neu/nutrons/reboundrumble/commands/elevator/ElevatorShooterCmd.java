@@ -19,7 +19,7 @@ public class ElevatorShooterCmd extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        elev.setPowerFB(Elevator.B_SHOOTER_POWER, Elevator.B_SHOOTER_POWER);
+        elev.setPowerFB(Elevator.F_SHOOTER_POWER, Elevator.B_SHOOTER_POWER);
     }
 
     protected boolean isFinished() {
