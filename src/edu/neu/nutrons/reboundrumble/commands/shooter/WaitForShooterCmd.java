@@ -1,6 +1,6 @@
 package edu.neu.nutrons.reboundrumble.commands.shooter;
 
-import edu.neu.nutrons.reboundrumble.commands.CommandBase;
+import edu.neu.nutrons.reboundrumble.commands.TimedEndConditionCmd;
 import edu.neu.nutrons.reboundrumble.subsystems.Shooter;
 
 /**
@@ -8,9 +8,10 @@ import edu.neu.nutrons.reboundrumble.subsystems.Shooter;
  *
  * @author Ziv
  */
-public class WaitForShooterCmd extends CommandBase {
+public class WaitForShooterCmd extends TimedEndConditionCmd {
 
     public WaitForShooterCmd() {
+        super(.25);
         setTimeout(Shooter.RATE_SETTLE_TIMEOUT);
     }
 
@@ -22,8 +23,7 @@ public class WaitForShooterCmd extends CommandBase {
     protected void execute() {
     }
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
+    protected boolean returnEndCondition() {
         return shooter.atSetpoint();
     }
 

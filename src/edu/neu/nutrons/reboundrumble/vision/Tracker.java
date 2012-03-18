@@ -17,10 +17,10 @@ import edu.wpi.first.wpilibj.image.*;
 public class Tracker implements PIDSource {
 
     // Constants.
-    private final int redLow = 88;
-    private final int redHigh = 204;
+    private final int redLow = 86;
+    private final int redHigh = 220;
     private final int greenLow = 28;
-    private final int greenHigh = 75;
+    private final int greenHigh = 112;
     private final int blueLow = 0;
     private final int blueHigh = 42;
     private final float inertiaXMin = 0.32f;
@@ -35,6 +35,7 @@ public class Tracker implements PIDSource {
     private final ExposureT camExposure = ExposureT.hold;
     public static final int IMAGE_WIDTH = 320;
     public static final int IMAGE_HEIGHT = 240;
+    public static final double CAM_CENTER = 0;
 
     // Actual robot part.
     private final  AxisCamera cam = AxisCamera.getInstance();
@@ -170,6 +171,6 @@ public class Tracker implements PIDSource {
     }
 
     public double pidGet() {
-        return -getBestTarget().centerX;
+        return -getBestTarget().centerX - CAM_CENTER;
     }
 }

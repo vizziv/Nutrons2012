@@ -32,7 +32,7 @@ public class DTManualCreepToTargetCmd extends TimedEndConditionCmd {
     }
 
     protected boolean returnEndCondition() {
-        return Math.abs(posError()) < DriveTrain.CAM_TOLERANCE;
+        return false;//Math.abs(posError()) < DriveTrain.CAM_TOLERANCE;
     }
 
     // Called once after isFinished returns true

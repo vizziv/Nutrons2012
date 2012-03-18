@@ -68,8 +68,8 @@ public class OI {
 
         // Operator.
         autoAim.whileHeld(new DTManualCreepToTargetCmd());
-        prepareFender.whenPressed(CommandBase.prepareFender);
-        prepareKey.whenPressed(CommandBase.prepareKey);
+        prepareFender.whenPressed(CommandBase.prepareFenderCmd());
+        prepareKey.whenPressed(CommandBase.prepareKeyCmd());
         shooterPlus.whenPressed(new StartCommand(new ShooterDeltaRateCmd(Shooter.MANUAL_RATE_INC)));
         shooterMinus.whenPressed(new StartCommand(new ShooterDeltaRateCmd(-Shooter.MANUAL_RATE_INC)));
         shooterZero.whenPressed(new ShooterSetPowerCmd(0));

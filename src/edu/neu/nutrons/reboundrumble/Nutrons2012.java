@@ -8,8 +8,6 @@
 package edu.neu.nutrons.reboundrumble;
 
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
-import edu.neu.nutrons.reboundrumble.commands.auto.ShootFromKeyAutoMode;
-import edu.neu.nutrons.reboundrumble.commands.auto.ShootFromKeyHackyAutoMode;
 import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualCheesyCmd;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -41,9 +39,11 @@ public class Nutrons2012 extends IterativeRobot {
     public void disabledInit() {
         comp.stop();
         CommandBase.shooter.setPower(0);
+        CommandBase.shooter.setSetpoint(0);
     }
 
     public void disabledPeriodic() {
+        processAllSensors();
         CommandBase.oi.ams.runSelection();
     }
 
@@ -54,11 +54,12 @@ public class Nutrons2012 extends IterativeRobot {
 
     public void autonomousInit() {
         // Start autonomous routine.
-        autonomousCommand = new ShootFromKeyHackyAutoMode(2.0);//CommandBase.oi.ams.getAutoMode();
+        autonomousCommand = CommandBase.oi.ams.getAutoMode();//new ShootFromKeyHackyAutoMode(2.0);
         autonomousCommand.start();
     }
 
     public void autonomousPeriodic() {
+        processAllSensors();
         Scheduler.getInstance().run();
     }
 
@@ -77,7 +78,7 @@ public class Nutrons2012 extends IterativeRobot {
     }
 
     public void teleopPeriodic() {
-        CommandBase.shooter.processSensors();
+        processAllSensors();
         Scheduler.getInstance().run();
         Dashboards.getInstance().sendPeriodicData();
     }
@@ -86,5 +87,9 @@ public class Nutrons2012 extends IterativeRobot {
         // Do camera processing and dashboard communication separately.
         CommandBase.cam.tracker.processImage();
         Dashboards.getInstance().sendContinuousData();
+    }
+
+    private void processAllSensors() {
+        CommandBase.shooter.processSensors();
     }
 }

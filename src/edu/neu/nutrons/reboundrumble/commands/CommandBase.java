@@ -27,10 +27,14 @@ public abstract class CommandBase extends Command {
     public static Intake intake = new Intake();
 
     // Some commands to be used in multiple places.
-    public static final Command prepareFender = new PrepareFenderCmd(
-                                Shooter.FENDER_RATE, false, Camera.FENDER_POS);
-    public static final Command prepareKey = new PrepareFenderCmd(//PrepareKeyCmd(
-                                Shooter.KEY_RATE, true, Camera.KEY_POS);;
+    public static Command prepareFenderCmd() {
+        return new PrepareFenderCmd( Shooter.FENDER_RATE, false, Camera.FENDER_POS);
+    }
+
+    public static Command prepareKeyCmd() {
+        // Fender command because we don't use the squish sensor yet.
+        return new PrepareFenderCmd(Shooter.KEY_RATE, true, Camera.KEY_POS);
+    }
 
     public static void init() {
         // This MUST be here. If the OI creates Commands (which it very likely

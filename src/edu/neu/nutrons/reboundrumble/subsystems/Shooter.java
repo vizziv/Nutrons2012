@@ -16,22 +16,22 @@ import edu.wpi.first.wpilibj.command.PIDSubsystem;
 public class Shooter extends PIDSubsystem {
 
     // TODO: tune PID.
-    private static final double kp = 2.75E-6;
+    private static final double kp = 3.3E-6;
     private static final double ki = 0.0;
-    private static final double kd = 2.95E-5;
+    private static final double kd = 3.025E-5;
     public static final double MANUAL_POWER_INC = 0.02;
     public static final double MANUAL_RATE_INC = 300.0;
     public static final double FENDER_POWER = 0.56;
     public static final double KEY_POWER = 0.94;
-    public static final double FENDER_RATE = 10000.0;
-    public static final double KEY_RATE = 16000.0;
+    public static final double FENDER_RATE = 10500.0;
+    public static final double KEY_RATE = 15300.0;
     private final double ENC_SCALE = -1.0;
     public static final double RATE_SETTLE_TIMEOUT = 2.0;
-    private final int ENC_AVG_LENGTH = 10;
-    private final int POWER_AVG_LENGTH = 15;
-    private final int SETPOINT_DEBOUNCE_LENGTH = 20;
+    private final int ENC_AVG_LENGTH = 5;
+    private final int POWER_AVG_LENGTH = 10;
+    private final int SETPOINT_DEBOUNCE_LENGTH = 30;
     private final double MAX_BACKWARD_POWER = 0.2;
-    private final double TOLERANCE = 100;
+    private final double TOLERANCE = 150;
 
     // Actual robot parts.
     private final SpeedController mot1 = new Jaguar(RobotMap.SHOOTER_MOTOR_1);

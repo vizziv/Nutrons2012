@@ -4,6 +4,7 @@ import edu.neu.nutrons.reboundrumble.commands.camera.CamSetPosCmd;
 import edu.neu.nutrons.reboundrumble.commands.hood.HoodSetPosCmd;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterSetRateCmd;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.StartCommand;
 
 /**
  * Sets both the shooter power and hood position to certain values.
@@ -13,8 +14,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class PrepareFenderCmd extends CommandGroup {
 
     public PrepareFenderCmd(double shooterRate, boolean hoodUp, double camPos) {
-        addParallel(new HoodSetPosCmd(hoodUp));
-        addParallel(new CamSetPosCmd(camPos));
-        addSequential(new ShooterSetRateCmd(shooterRate));
+        addParallel(new StartCommand(new HoodSetPosCmd(hoodUp)));
+        addParallel(new StartCommand(new CamSetPosCmd(camPos)));
+        addSequential(new StartCommand(new ShooterSetRateCmd(shooterRate)));
     }
 }

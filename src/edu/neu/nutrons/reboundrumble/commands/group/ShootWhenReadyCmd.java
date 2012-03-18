@@ -16,6 +16,6 @@ public class ShootWhenReadyCmd extends CommandGroup {
 
     public ShootWhenReadyCmd() {
         addSequential(new WaitForShooterCmd());
-        addSequential(new ElevatorShooterCmd(), 0.5);//ElevatorShootOneBallCmd());
+        addSequential(new ElevatorShooterCmd(), 0.08);//ElevatorShootOneBallCmd());
     }
 }

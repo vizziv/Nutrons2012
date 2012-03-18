@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.command.WaitUntilCommand;
 public class ShootFromFenderAutoMode extends CommandGroup {
 
     public ShootFromFenderAutoMode(double shootTime) {
-        addSequential(CommandBase.prepareFender);
+        addSequential(CommandBase.prepareFenderCmd());
         addSequential(new DTFenderCreepToTargetCmd(6.0));
         addSequential(new WaitUntilCommand(shootTime), 10.0);
         addSequential(new LoopCmd(new ShootWhenReadyCmd()));
