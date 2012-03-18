@@ -17,7 +17,7 @@ public class Hood extends Subsystem {
 
     public void setPos(boolean up){
         this.up = up;
-        hood.set(this.up);
+        hood.set(!this.up);
     }
 
     public boolean getPos() {

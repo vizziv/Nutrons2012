@@ -51,10 +51,10 @@ public class OI {
     private Button shooterMinus = new JoystickButton(opPad, 2);
     private Button shooterZero = new JoystickButton(opPad, 10);
     private Button toggleSquish = new JoystickButton(opPad, 9);
-    private Button elevHopper = new JoystickButton(opPad, 6);
-    private DualButton intakeDrop = new DualButton(new JoystickButton(opPad, 5), elevHopper);
-    private Button elevShoot = new JoystickButton(opPad, 8);
-    private Button elevSpit = new JoystickButton(opPad, 7);
+    private Button elevHopper = new JoystickButton(opPad, 5);
+    private DualButton intakeDrop = new DualButton(new JoystickButton(opPad, 7), elevHopper);
+    private Button elevShoot = new JoystickButton(opPad, 6);
+    private Button elevSpit = new JoystickButton(opPad, 8);
     public final AutoModeSelector ams = new AutoModeSelector(opPad);
     private Button autoAim = new JoystickButton(opPad, 11);
 

@@ -16,8 +16,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class DriveTrain extends Subsystem {
 
     // Constants.
-    private final double HIGH_GEAR_T_SENS = 1.7;
-    private final double LOW_GEAR_T_SENS = 1.36;
+    private final double HIGH_GEAR_T_SENS = 1.5;
+    private final double LOW_GEAR_T_SENS = 1.3;
     private final double ENC_SCALE = 0.01265;
     private final double LEFT_SCALE = 1.0;
     private final double RIGHT_SCALE = 1.0;

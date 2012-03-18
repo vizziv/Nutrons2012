@@ -18,11 +18,11 @@ public class Tracker implements PIDSource {
 
     // Constants.
     private final int redLow = 86;
-    private final int redHigh = 220;
+    private final int redHigh = 255;
     private final int greenLow = 28;
-    private final int greenHigh = 112;
+    private final int greenHigh = 132;
     private final int blueLow = 0;
-    private final int blueHigh = 42;
+    private final int blueHigh = 62;
     private final float inertiaXMin = 0.32f;
     private final float inertiaYMin = 0.18f;
     private final double ratioMin = 1.0;
@@ -43,6 +43,7 @@ public class Tracker implements PIDSource {
     // Other variables.
     private Target highTarget = Target.NullTarget;
     private Target lowTarget = Target.NullTarget;
+    private Target centerTarget = Target.NullTarget;
     private Target target1 = Target.NullTarget;
     private Target target2 = Target.NullTarget;
     private Target target3 = Target.NullTarget;
@@ -115,8 +116,9 @@ public class Tracker implements PIDSource {
                 // Loop through targets, keep track of highest one.
                 // Dispose of those that have an extreme length/width ratio or
                 // aren't very rectangular (don't fill their bounding box).
-                double minY = IMAGE_HEIGHT; // Smaller y <-> higher in image.
-                double maxY = 0; // Bigger y <-> lower in image.
+                double minY = .5; // Smaller y <-> higher in image.
+                double maxY = -.5; // Bigger y <-> lower in image.
+                double maxAbsX = .5;
                 for(int i=0; i < particles.length; i++) {
                     Target t = new Target(i, particles[i]);
                     if(t.ratio > ratioMin && t.ratio < ratioMax &&
@@ -127,6 +129,9 @@ public class Tracker implements PIDSource {
                         }
                         if(t.centerY >= maxY) {
                             lowTarget = t;
+                        }
+                        if(Math.abs(t.centerX - CAM_CENTER) <= maxAbsX) {
+                            centerTarget = t;
                         }
                     }
                 }
@@ -148,13 +153,7 @@ public class Tracker implements PIDSource {
     }
 
     public Target getBestTarget() {
-        // TODO: make less hacky!
-        if(aimHigh) {
-            return highTarget;
-        }
-        else {
-            return lowTarget;
-        }
+        return highTarget;
     }
 
     public Target getTarget1() {

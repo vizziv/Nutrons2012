@@ -27,8 +27,10 @@ public class ElevatorShooterCmd extends CommandBase {
     }
 
     protected void end() {
+        elev.stop();
     }
 
     protected void interrupted() {
+        end();
     }
 }

@@ -23,8 +23,8 @@ public class Shooter extends PIDSubsystem {
     public static final double MANUAL_RATE_INC = 300.0;
     public static final double FENDER_POWER = 0.56;
     public static final double KEY_POWER = 0.94;
-    public static final double FENDER_RATE = 10500.0;
-    public static final double KEY_RATE = 15300.0;
+    public static final double FENDER_RATE = 10000.0;
+    public static final double KEY_RATE = 14700.0;
     private final double ENC_SCALE = -1.0;
     public static final double RATE_SETTLE_TIMEOUT = 2.0;
     private final int ENC_AVG_LENGTH = 5;
