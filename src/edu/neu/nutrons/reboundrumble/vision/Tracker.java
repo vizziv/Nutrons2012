@@ -35,7 +35,7 @@ public class Tracker implements PIDSource {
     private final ExposureT camExposure = ExposureT.hold;
     public static final int IMAGE_WIDTH = 320;
     public static final int IMAGE_HEIGHT = 240;
-    public static final double CAM_CENTER = 0;
+    private final double CAM_CENTER = 0.0625;
 
     // Actual robot part.
     private final  AxisCamera cam = AxisCamera.getInstance();
@@ -43,14 +43,13 @@ public class Tracker implements PIDSource {
     // Other variables.
     private Target highTarget = Target.NullTarget;
     private Target lowTarget = Target.NullTarget;
-    private Target centerTarget = Target.NullTarget;
     private Target target1 = Target.NullTarget;
     private Target target2 = Target.NullTarget;
     private Target target3 = Target.NullTarget;
     private Target target4 = Target.NullTarget;
     private final CriteriaCollection inertiaCriteriaX = new CriteriaCollection();
     private final CriteriaCollection inertiaCriteriaY = new CriteriaCollection();
-    private boolean aimHigh = true;
+    private boolean aimHigh = true; // I was in 6th grade in 2006.
 
     public Tracker() {
         cam.writeResolution(AxisCamera.ResolutionT.k320x240);
@@ -92,8 +91,7 @@ public class Tracker implements PIDSource {
                 // We want targets to meet ALL criteria (not ANY), so we use
                 // multiple filters.
                 // The criteria:
-                // -Bounding box at least 24x18.
-                // -Moment of inertias are at least .32 (x^2) and .18 (y^2).
+                // -Moments of inertias are at least .32 (x^2) and .18 (y^2).
                 //  (This selects for hollow particles.)
                 BinaryImage filteredIm1 = thresholdIm.particleFilter(inertiaCriteriaX);
                 BinaryImage filteredIm2 = filteredIm1.particleFilter(inertiaCriteriaY);
@@ -130,9 +128,6 @@ public class Tracker implements PIDSource {
                         if(t.centerY >= maxY) {
                             lowTarget = t;
                         }
-                        if(Math.abs(t.centerX - CAM_CENTER) <= maxAbsX) {
-                            centerTarget = t;
-                        }
                     }
                 }
                 // Free memory used by images.
@@ -149,22 +144,29 @@ public class Tracker implements PIDSource {
                 ex.printStackTrace();
             }
         }
-        return false; //success;
+        return success;
+    }
+
+    public void setAimHigh(boolean aimHigh) {
+        this.aimHigh = aimHigh;
     }
 
     public Target getBestTarget() {
-        return highTarget;
+        return aimHigh ? highTarget : lowTarget;
     }
 
     public Target getTarget1() {
         return target1;
     }
+
     public Target getTarget2() {
         return target2;
     }
+
     public Target getTarget3() {
         return target3;
     }
+
     public Target getTarget4() {
         return target4;
     }

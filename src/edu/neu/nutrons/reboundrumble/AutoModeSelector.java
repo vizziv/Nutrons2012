@@ -4,6 +4,7 @@ import edu.neu.nutrons.lib.PulseTriggerBoolean;
 import edu.neu.nutrons.lib.Utils;
 import edu.neu.nutrons.reboundrumble.commands.auto.ShootFromFenderAutoMode;
 import edu.neu.nutrons.reboundrumble.commands.auto.ShootFromKeyHackyAutoMode;
+import edu.neu.nutrons.reboundrumble.commands.auto.TipBridgeAutoMode;
 import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualCheesyCmd;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Joystick;
@@ -18,17 +19,18 @@ public class AutoModeSelector {
 
     // Constants.
     private final int KEY = 1;
-    private final int FENDER = 2;
-    private final int NUM_MODES = 3;
+    private final int BRIDGE = 9000;
+    private final int FENDER = 9001;
+    private final int NUM_MODES = 2;
 
     // Other variables.
     private Joystick js;
     private PulseTriggerBoolean incMode = new PulseTriggerBoolean();
     private PulseTriggerBoolean decMode = new PulseTriggerBoolean();
-    private PulseTriggerBoolean incShootDelay = new PulseTriggerBoolean();
-    private PulseTriggerBoolean decShootDelay = new PulseTriggerBoolean();
+    private PulseTriggerBoolean incDelay = new PulseTriggerBoolean();
+    private PulseTriggerBoolean decDelay = new PulseTriggerBoolean();
     private int mode = 1;
-    private int shootDelay = 0;
+    private int delay = 0;
 
     public AutoModeSelector(Joystick js) {
         this.js = js;
@@ -38,18 +40,18 @@ public class AutoModeSelector {
         // Get button data.
         incMode.feed(js.getRawButton(6));
         decMode.feed(js.getRawButton(5));
-        incShootDelay.feed(js.getRawButton(1));
-        decShootDelay.feed(js.getRawButton(2));
+        incDelay.feed(js.getRawButton(1));
+        decDelay.feed(js.getRawButton(2));
         // Change parameters accordingly.
         boolean im = incMode.get();
         boolean dm = decMode.get();
-        boolean is = incShootDelay.get();
-        boolean ds = decShootDelay.get();
+        boolean id = incDelay.get();
+        boolean dd = decDelay.get();
         mode = (int)Utils.modulo(mode + Utils.toInt(im) - Utils.toInt(dm), NUM_MODES);
-        shootDelay = (int)Utils.modulo(shootDelay + Utils.toInt(is) - Utils.toInt(ds), 15);
-        if(im || dm || is || ds) {
-            DriverStationLCD.getInstance().println(DriverStationLCD.Line.kUser2, 1, "Mode: " + getModeName(mode) + "     ");
-            DriverStationLCD.getInstance().println(DriverStationLCD.Line.kUser3, 1, "Delay: " + shootDelay + "     ");
+        delay = (int)Utils.modulo(delay + Utils.toInt(id) - Utils.toInt(dd), 15);
+        if(im || dm || id || dd) {
+            DriverStationLCD.getInstance().println(DriverStationLCD.Line.kUser2, 1, "Mode: " + getModeName(mode) + "             ");
+            DriverStationLCD.getInstance().println(DriverStationLCD.Line.kUser3, 1, "Delay: " + delay + "             ");
             DriverStationLCD.getInstance().updateLCD();
         }
     }
@@ -58,6 +60,8 @@ public class AutoModeSelector {
         switch(mode) {
             case KEY:
                 return "Key";
+            case BRIDGE:
+                return "Tip bridge";
             case FENDER:
                 return "Fender";
             default:
@@ -69,10 +73,13 @@ public class AutoModeSelector {
         Command autoMode;
         switch(mode) {
             case KEY:
-                autoMode = new ShootFromKeyHackyAutoMode(shootDelay);
+                autoMode = new ShootFromKeyHackyAutoMode(delay);
+                break;
+            case BRIDGE:
+                autoMode = new TipBridgeAutoMode();
                 break;
             case FENDER:
-                autoMode = new ShootFromFenderAutoMode(shootDelay);
+                autoMode = new ShootFromFenderAutoMode(delay);
                 break;
             default:
                 autoMode = new DTManualCheesyCmd();

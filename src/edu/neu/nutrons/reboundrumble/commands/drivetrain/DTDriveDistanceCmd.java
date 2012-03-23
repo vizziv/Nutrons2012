@@ -1,5 +1,6 @@
 package edu.neu.nutrons.reboundrumble.commands.drivetrain;
 
+import edu.neu.nutrons.lib.Utils;
 import edu.neu.nutrons.reboundrumble.commands.TimedEndConditionCmd;
 import edu.neu.nutrons.reboundrumble.subsystems.DriveTrain;
 
@@ -11,11 +12,13 @@ import edu.neu.nutrons.reboundrumble.subsystems.DriveTrain;
 public class DTDriveDistanceCmd extends TimedEndConditionCmd {
 
     private double feet;
+    private double power;
     private final double TOLERANCE = .05;
 
-    public DTDriveDistanceCmd(double feet) {
+    public DTDriveDistanceCmd(double feet, double power) {
         super(DriveTrain.DIS_SETTLE_TIME);
         this.feet = feet;
+        this.power = power;
         requires(dt);
     }
 
@@ -26,7 +29,7 @@ public class DTDriveDistanceCmd extends TimedEndConditionCmd {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        dt.driveCar(dtPID.disOut.get(), 0);
+        dt.driveCar(Utils.limit(dtPID.disOut.get(), -power, power), 0);
     }
 
     protected boolean returnEndCondition() {

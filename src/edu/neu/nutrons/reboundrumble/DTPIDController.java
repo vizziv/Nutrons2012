@@ -52,12 +52,12 @@ public class DTPIDController {
 
     public void enableDistance(double setpoint) {
         disPID.enable();
-        disPID.setSetpoint(setpoint);
+        disPID.setSetpoint(disOut.get() + setpoint);
     }
 
     public void enableYaw(double setpoint) {
         yawPID.enable();
-        yawPID.setSetpoint(setpoint);
+        yawPID.setSetpoint(yawOut.get() + setpoint);
     }
 
     public void enablePitch(double setpoint) {
