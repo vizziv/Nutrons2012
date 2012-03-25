@@ -12,6 +12,7 @@ import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorSpitCmd;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorToggleSquishEnabledCmd;
 import edu.neu.nutrons.reboundrumble.commands.intake.IntakeSetCmd;
 import edu.neu.nutrons.reboundrumble.commands.shifter.ShifterStaticCmd;
+import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterDeltaPowerCmd;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterDeltaRateCmd;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterSetPowerCmd;
 import edu.neu.nutrons.reboundrumble.subsystems.Shifter;
@@ -47,10 +48,15 @@ public class OI {
     private Joystick opPad = new Joystick(RobotMap.PAD_OPERATOR);
     private Button prepareFender = new JoystickButton(opPad, 4);
     private Button prepareKey = new JoystickButton(opPad, 3);
+    private Button shooterManual = new JoystickButton(opPad, 9);
     private Button shooterPlus = new JoystickButton(opPad, 1);
     private Button shooterMinus = new JoystickButton(opPad, 2);
+    private DualButton shooterManPlus = new DualButton(shooterPlus, shooterManual);
+    private DualButton shooterManMinus = new DualButton(shooterMinus, shooterManual);
+    private Button shooterAutoPlus = shooterManPlus.button1;
+    private Button shooterAutoMinus = shooterManMinus.button1;
     private Button shooterZero = new JoystickButton(opPad, 10);
-    private Button toggleSquish = new JoystickButton(opPad, 9);
+    //private Button toggleSquish = new JoystickButton(opPad, 9);
     private Button elevHopper = new JoystickButton(opPad, 5);
     private DualButton intakeDrop = new DualButton(new JoystickButton(opPad, 7), elevHopper);
     private Button elevShoot = new JoystickButton(opPad, 6);
@@ -72,10 +78,12 @@ public class OI {
         prepareFender.whileHeld(new ElevatorHopperCmd());
         prepareKey.whenPressed(CommandBase.prepareKeyCmd());
         prepareKey.whileHeld(new ElevatorHopperCmd());
-        shooterPlus.whenPressed(new StartCommand(new ShooterDeltaRateCmd(Shooter.MANUAL_RATE_INC)));
-        shooterMinus.whenPressed(new StartCommand(new ShooterDeltaRateCmd(-Shooter.MANUAL_RATE_INC)));
+        shooterAutoPlus.whenPressed(new StartCommand(new ShooterDeltaRateCmd(Shooter.MANUAL_RATE_INC)));
+        shooterAutoMinus.whenPressed(new StartCommand(new ShooterDeltaRateCmd(-Shooter.MANUAL_RATE_INC)));
+        shooterManPlus.whenPressed(new StartCommand(new ShooterDeltaPowerCmd(Shooter.MANUAL_POWER_INC)));
+        shooterManMinus.whenPressed(new StartCommand(new ShooterDeltaPowerCmd(-Shooter.MANUAL_POWER_INC)));
         shooterZero.whenPressed(new ShooterSetPowerCmd(0));
-        toggleSquish.whenPressed(new ElevatorToggleSquishEnabledCmd());
+        //toggleSquish.whenPressed(new ElevatorToggleSquishEnabledCmd());
         elevHopper.whileHeld(new ElevatorHopperCmd());
         // While we suck balls into the hopper, run the front intake whenever we
         // drop it down.

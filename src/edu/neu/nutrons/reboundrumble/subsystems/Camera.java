@@ -25,7 +25,7 @@ public class Camera extends Subsystem {
     private final Servo servo = new Servo(RobotMap.CAM_SERVO);
 
     public Camera() {
-        setPos(.45);
+        setPos(KEY_POS);
     }
 
     protected void initDefaultCommand() {

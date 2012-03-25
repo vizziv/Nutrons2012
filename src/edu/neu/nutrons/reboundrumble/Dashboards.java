@@ -59,8 +59,7 @@ public class Dashboards {
             lowDash.addDouble(CommandBase.shooter.getSetpoint());
             lowDash.addDouble(CommandBase.shooter.getRate());
             // Elevator.
-            lowDash.addDouble(CommandBase.elev.getPressure());
-            lowDash.addBoolean(CommandBase.elev.getSquishEnabled());
+            lowDash.addDouble(CommandBase.shooter.getPower());
         lowDash.finalizeCluster();
         lowDash.commit();
     }
@@ -69,7 +68,7 @@ public class Dashboards {
         // SmartDashboard output stuff.
         SmartDashboard.putDouble("Force Sensor Value", CommandBase.elev.getPressure());
         SmartDashboard.putDouble("Yaw position", CommandBase.dt.yawGyro.getAngle());
-        SmartDashboard.putDouble("Target1 X", CommandBase.cam.tracker.getTarget1().centerX);
+        SmartDashboard.putDouble("Target1 X", CommandBase.cam.tracker.pidGet());
         SmartDashboard.putDouble("Cam servo", CommandBase.cam.getPos());
         SmartDashboard.putDouble("Shooter rate", CommandBase.shooter.getRate());
         SmartDashboard.putDouble("DT left", CommandBase.dt.getLeftPos());

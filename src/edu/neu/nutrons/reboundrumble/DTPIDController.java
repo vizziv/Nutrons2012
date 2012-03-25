@@ -23,7 +23,7 @@ public class DTPIDController {
     private static final double pitchKp = 0;
     private static final double pitchKi = 0;
     private static final double pitchKd = 0;
-    private static final double camKp = 0.007;
+    private static final double camKp = 0.01;
     private static final double camKi = 0;
     private static final double camKd = 0;
 

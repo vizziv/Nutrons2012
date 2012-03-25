@@ -24,7 +24,7 @@ public class DTDriveDistanceCmd extends TimedEndConditionCmd {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        dtPID.enableDistance(dt.disEncAvg.get() + feet);
+        dtPID.enableDistance(feet);
     }
 
     // Called repeatedly when this Command is scheduled to run

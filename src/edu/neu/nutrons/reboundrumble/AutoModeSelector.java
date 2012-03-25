@@ -18,10 +18,10 @@ import edu.wpi.first.wpilibj.command.Command;
 public class AutoModeSelector {
 
     // Constants.
-    private final int KEY = 1;
-    private final int BRIDGE = 9000;
+    private final int KEY = 0;
+    private final int BRIDGE = 1;
     private final int FENDER = 9001;
-    private final int NUM_MODES = 2;
+    private final int NUM_MODES = 2 ;
 
     // Other variables.
     private Joystick js;
@@ -29,7 +29,7 @@ public class AutoModeSelector {
     private PulseTriggerBoolean decMode = new PulseTriggerBoolean();
     private PulseTriggerBoolean incDelay = new PulseTriggerBoolean();
     private PulseTriggerBoolean decDelay = new PulseTriggerBoolean();
-    private int mode = 1;
+    private int mode = 0;
     private int delay = 0;
 
     public AutoModeSelector(Joystick js) {
@@ -76,7 +76,7 @@ public class AutoModeSelector {
                 autoMode = new ShootFromKeyHackyAutoMode(delay);
                 break;
             case BRIDGE:
-                autoMode = new TipBridgeAutoMode();
+                autoMode = new TipBridgeAutoMode(delay);
                 break;
             case FENDER:
                 autoMode = new ShootFromFenderAutoMode(delay);
