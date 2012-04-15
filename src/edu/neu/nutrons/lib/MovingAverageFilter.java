@@ -5,14 +5,14 @@ package edu.neu.nutrons.lib;
  *
  * @author Ziv
  */
-public class MovingAverage extends Filter {
+public class MovingAverageFilter extends Filter {
 
     private double[] data;
     private double sum = 0;
     private int length;
     private int i = 0;
 
-    public MovingAverage(int length) {
+    public MovingAverageFilter(int length) {
         data = new double[length];
         this.length = length;
     }

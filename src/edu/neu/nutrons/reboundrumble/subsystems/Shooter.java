@@ -41,9 +41,9 @@ public class Shooter extends PIDSubsystem {
     // Other variables.
     private double power = 0;
     private boolean enabled = false;
-    private MovingAverage powerAvg = new MovingAverage(POWER_AVG_LENGTH);
-    private ComposedFilter dEncAvg = new ComposedFilter(new MovingAverage(ENC_AVG_LENGTH),
-                                                        new DerivativeTimed());
+    private MovingAverageFilter powerAvg = new MovingAverageFilter(POWER_AVG_LENGTH);
+    private ComposedFilter dEncAvg = new ComposedFilter(new MovingAverageFilter(ENC_AVG_LENGTH),
+                                                        new DerivativeTimedFilter());
     private DebouncedBoolean dbAtSetpoint = new DebouncedBoolean(SETPOINT_DEBOUNCE_LENGTH);
 
     public Shooter() {

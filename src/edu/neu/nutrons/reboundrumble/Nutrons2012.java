@@ -7,6 +7,7 @@
 
 package edu.neu.nutrons.reboundrumble;
 
+import edu.neu.nutrons.lib.fpop.BlockHandler;
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -63,6 +64,7 @@ public class Nutrons2012 extends IterativeRobot {
     }
 
     public void teleopPeriodic() {
+        BlockHandler.getInstance().run();
         CommandBase.shooter.processSensors();
         Scheduler.getInstance().run();
         Dashboards.getInstance().sendPeriodicData();

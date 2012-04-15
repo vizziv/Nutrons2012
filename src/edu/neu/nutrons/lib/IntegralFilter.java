@@ -4,7 +4,7 @@ package edu.neu.nutrons.lib;
  *
  * @author Ziv
  */
-public class Integral extends Filter {
+public class IntegralFilter extends Filter {
 
     private double sum = 0;
 
