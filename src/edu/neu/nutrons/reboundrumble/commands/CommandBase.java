@@ -2,8 +2,8 @@ package edu.neu.nutrons.reboundrumble.commands;
 
 import edu.neu.nutrons.reboundrumble.DTPIDController;
 import edu.neu.nutrons.reboundrumble.OI;
-import edu.neu.nutrons.reboundrumble.commands.group.PrepareFenderCmd;
-import edu.neu.nutrons.reboundrumble.commands.group.PrepareKeyCmd;
+import edu.neu.nutrons.reboundrumble.commands.group.PrepareManualShootingCmd;
+import edu.neu.nutrons.reboundrumble.commands.group.PrepareShootingCmd;
 import edu.neu.nutrons.reboundrumble.subsystems.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,13 +27,30 @@ public abstract class CommandBase extends Command {
     public static Intake intake = new Intake();
 
     // Some commands to be used in multiple places.
+    public static Command prepareFenderCmd(boolean manual) {
+        if(manual) {
+            return new PrepareManualShootingCmd(Shooter.FENDER_POWER, false, Camera.FENDER_POS);
+        }
+        else {
+            return new PrepareShootingCmd(Shooter.FENDER_RATE, false, Camera.FENDER_POS);
+        }
+    }
+
     public static Command prepareFenderCmd() {
-        return new PrepareFenderCmd( Shooter.FENDER_RATE, false, Camera.FENDER_POS);
+        return prepareFenderCmd(false);
+    }
+
+    public static Command prepareKeyCmd(boolean manual) {
+        if(manual) {
+            return new PrepareManualShootingCmd(Shooter.KEY_POWER, false, Camera.KEY_POS);
+        }
+        else {
+            return new PrepareShootingCmd(Shooter.KEY_RATE, false, Camera.KEY_POS);
+        }
     }
 
     public static Command prepareKeyCmd() {
-        // Fender command because we don't use the squish sensor yet.
-        return new PrepareFenderCmd(Shooter.KEY_RATE, true, Camera.KEY_POS);
+        return prepareFenderCmd(false);
     }
 
     public static void init() {

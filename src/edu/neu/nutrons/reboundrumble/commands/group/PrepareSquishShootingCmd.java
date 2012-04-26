@@ -10,9 +10,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  *
  * @author Ziv
  */
-public class PrepareKeyCmd extends CommandGroup {
+public class PrepareSquishShootingCmd extends CommandGroup {
 
-    public PrepareKeyCmd(double shooterRate, boolean hoodUp, double camPos) {
+    public PrepareSquishShootingCmd(double shooterRate, boolean hoodUp, double camPos) {
         addParallel(new HoodSetPosCmd(hoodUp));
         addParallel(new CamSetPosCmd(camPos));
         addSequential(new ShooterSetAdjustedRateCmd(shooterRate));
