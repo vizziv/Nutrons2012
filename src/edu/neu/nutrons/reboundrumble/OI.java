@@ -8,8 +8,8 @@ import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualCheesyCmd;
 import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualCreepToTargetCmd;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorHopperCmd;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorShooterCmd;
-import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorShooterWhenReadyCmd;
 import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorSpitCmd;
+import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorSuperintakeCmd;
 import edu.neu.nutrons.reboundrumble.commands.intake.IntakeSetCmd;
 import edu.neu.nutrons.reboundrumble.commands.shifter.ShifterStaticCmd;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterDeltaPowerCmd;
@@ -63,8 +63,9 @@ public class OI {
     private Button elevHopper = new JoystickButton(opPad, 5);
     private DualButton intakeDrop = new DualButton(new JoystickButton(opPad, 7), elevHopper);
     private Button elevShoot = new JoystickButton(opPad, 6);
-    private DualButton elevShootMan = new DualButton(elevShoot, manualMode);
-    private Button elevShootAuto = elevShootMan.button1;
+    private DualButton elevSuperintake = new DualButton(elevShoot, elevHopper);
+    private Button elevShootOnly = elevSuperintake.button1;
+    private Button elevHopperOnly = elevSuperintake.button2;
     private Button elevSpit = new JoystickButton(opPad, 8);
     public final AutoModeSelector ams = new AutoModeSelector(opPad);
     private Button autoAim = new JoystickButton(opPad, 11);
@@ -89,14 +90,14 @@ public class OI {
         shooterPlusMan.whenPressed(new StartCommand(new ShooterDeltaPowerCmd(Shooter.MANUAL_POWER_INC)));
         shooterMinusMan.whenPressed(new StartCommand(new ShooterDeltaPowerCmd(-Shooter.MANUAL_POWER_INC)));
         shooterZero.whenPressed(new ShooterSetPowerCmd(0));
-        elevHopper.whileHeld(new ElevatorHopperCmd());
+        elevHopperOnly.whileHeld(new ElevatorHopperCmd());
         // While we suck balls into the hopper, run the front intake whenever we
         // drop it down.
         // Otherwise, don't run the front intake when we drop it down.
         intakeDrop.button1.whileHeld(new IntakeSetCmd(true, false));
         intakeDrop.whileHeld(new IntakeSetCmd(true, true));
-        elevShootAuto.whileHeld(new ElevatorShooterWhenReadyCmd());
-        elevShootMan.whileHeld(new ElevatorShooterCmd());
+        elevShootOnly.whileHeld(new ElevatorShooterCmd());
+        elevSuperintake.whileHeld(new ElevatorSuperintakeCmd());
         elevSpit.whileHeld(new ElevatorSpitCmd());
     }
 

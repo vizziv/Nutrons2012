@@ -17,7 +17,7 @@ public class ShootFromKeyHackyAutoMode extends CommandGroup {
         addSequential(new WaitCommand(shootTime));
         addSequential(new ElevatorShooterCmd(), .1);
         addSequential(new WaitCommand(2.2));
-        addSequential(new ElevatorShooterCmd(), .1);
+        addSequential(new ElevatorShooterCmd(), .2);
         addSequential(new WaitCommand(2.2));
         addSequential(new ElevatorShooterCmd(), .2);
         addSequential(new WaitCommand(2.2));

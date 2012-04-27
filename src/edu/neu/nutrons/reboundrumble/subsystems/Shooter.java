@@ -15,22 +15,22 @@ import edu.wpi.first.wpilibj.command.PIDSubsystem;
  */
 public class Shooter extends PIDSubsystem {
 
-    private static final double kp = 1.0E-5;//3.3E-6;
+    private static final double kp = 3.3E-6;//2.8E-6;
     private static final double ki = 0.0;
-    private static final double kd = 0.0;//3.025E-5;
+    private static final double kd = 3.025E-5;
     public static final double MANUAL_POWER_INC = 0.02;
     public static final double MANUAL_RATE_INC = 200.0;
-    public static final double FENDER_POWER = 0.56;
+    public static final double FENDER_POWER = 0.6;
     public static final double KEY_POWER = 0.94;
     public static final double FENDER_RATE = 9800.0;
     public static final double KEY_RATE = 15400.0;
-    private final double ENC_SCALE = -7.2;
+    private final double ENC_SCALE = 7.2;
     public static final double RATE_SETTLE_TIMEOUT = 2.0;
-    private final int ENC_AVG_LENGTH = 1;//5;
+    private final int ENC_AVG_LENGTH = 4;
     private final int POWER_AVG_LENGTH = 5;//10;
-    private final int SETPOINT_DEBOUNCE_LENGTH = 10;
+    private final int SETPOINT_DEBOUNCE_LENGTH = 1;
     private final double MAX_BACKWARD_POWER = 0.0;
-    private final double TOLERANCE = 150;
+    private final double TOLERANCE = 220;
 
     // Actual robot parts.
     private final SpeedController mot1 = new Jaguar(RobotMap.SHOOTER_MOTOR_1);
@@ -41,8 +41,9 @@ public class Shooter extends PIDSubsystem {
     private double power = 0;
     private boolean enabled = false;
     private MovingAverage powerAvg = new MovingAverage(POWER_AVG_LENGTH);
-    private ComposedFilter dEncAvg = new ComposedFilter(new MovingAverage(ENC_AVG_LENGTH),
+    private ComposedFilter dEnc = new ComposedFilter(new MovingAverage(ENC_AVG_LENGTH),
                                                         new DerivativeTimed());
+    private DerivativeTimed ddEnc = new DerivativeTimed();
     private DebouncedBoolean dbAtSetpoint = new DebouncedBoolean(SETPOINT_DEBOUNCE_LENGTH);
 
     public Shooter() {
@@ -56,7 +57,8 @@ public class Shooter extends PIDSubsystem {
     }
 
     public void processSensors() {
-        dEncAvg.feed(ENC_SCALE * enc.get());
+        dEnc.feed(ENC_SCALE * enc.get());
+        ddEnc.feed(dEnc.get());
         dbAtSetpoint.feed(Math.abs(getRate() - getSetpoint()) < TOLERANCE);
     }
 
@@ -74,7 +76,7 @@ public class Shooter extends PIDSubsystem {
     }
 
     public double getRate() {
-        return dEncAvg.get();
+        return dEnc.get();
     }
 
     public boolean atSetpoint() {
@@ -96,6 +98,13 @@ public class Shooter extends PIDSubsystem {
     }
 
     protected double returnPIDInput() {
+        // Prevent overshoot after shooting a ball.
+        if(ddEnc.get() < 0 && Math.abs(dEnc.get() - getSetpoint()) > TOLERANCE) {
+            getPIDController().setPID(kp, ki, 0);
+        }
+        else {
+            getPIDController().setPID(kp, ki, kd);
+        }
         return getRate();
     }
 

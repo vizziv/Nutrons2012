@@ -42,15 +42,15 @@ public abstract class CommandBase extends Command {
 
     public static Command prepareKeyCmd(boolean manual) {
         if(manual) {
-            return new PrepareManualShootingCmd(Shooter.KEY_POWER, false, Camera.KEY_POS);
+            return new PrepareManualShootingCmd(Shooter.KEY_POWER, true, Camera.KEY_POS);
         }
         else {
-            return new PrepareShootingCmd(Shooter.KEY_RATE, false, Camera.KEY_POS);
+            return new PrepareShootingCmd(Shooter.KEY_RATE, true, Camera.KEY_POS);
         }
     }
 
     public static Command prepareKeyCmd() {
-        return prepareFenderCmd(false);
+        return prepareKeyCmd(false);
     }
 
     public static void init() {
