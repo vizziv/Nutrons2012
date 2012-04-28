@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Elevator extends Subsystem {
 
-
     // Constants.
     private final double PRESSURE_SCALE = 1.0;
     public static final double F_SHOOTER_POWER = 0.45;

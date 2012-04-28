@@ -6,10 +6,7 @@ import edu.neu.nutrons.lib.Utils;
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
 import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualCheesyCmd;
 import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualCreepToTargetCmd;
-import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorHopperCmd;
-import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorShooterCmd;
-import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorSpitCmd;
-import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorSuperintakeCmd;
+import edu.neu.nutrons.reboundrumble.commands.elevator.*;
 import edu.neu.nutrons.reboundrumble.commands.intake.IntakeSetCmd;
 import edu.neu.nutrons.reboundrumble.commands.shifter.ShifterStaticCmd;
 import edu.neu.nutrons.reboundrumble.commands.shooter.ShooterDeltaPowerCmd;
@@ -66,6 +63,8 @@ public class OI {
     private DualButton elevSuperintake = new DualButton(elevShoot, elevHopper);
     private Button elevShootOnly = elevSuperintake.button1;
     private Button elevHopperOnly = elevSuperintake.button2;
+    private DualButton elevShootAuto = new DualButton(elevShootOnly, manualMode);
+    private Button elevShootMan = elevShootAuto.button1;
     private Button elevSpit = new JoystickButton(opPad, 8);
     public final AutoModeSelector ams = new AutoModeSelector(opPad);
     private Button autoAim = new JoystickButton(opPad, 11);
@@ -96,7 +95,8 @@ public class OI {
         // Otherwise, don't run the front intake when we drop it down.
         intakeDrop.button1.whileHeld(new IntakeSetCmd(true, false));
         intakeDrop.whileHeld(new IntakeSetCmd(true, true));
-        elevShootOnly.whileHeld(new ElevatorShooterCmd());
+        elevShootAuto.whileHeld(new ElevatorShooterWhenReadyCmd());
+        elevShootMan.whileHeld(new ElevatorShooterCmd());
         elevSuperintake.whileHeld(new ElevatorSuperintakeCmd());
         elevSpit.whileHeld(new ElevatorSpitCmd());
     }
