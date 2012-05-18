@@ -95,7 +95,7 @@ public class OI {
         // Otherwise, don't run the front intake when we drop it down.
         intakeDrop.button1.whileHeld(new IntakeSetCmd(true, false));
         intakeDrop.whileHeld(new IntakeSetCmd(true, true));
-        elevShootAuto.whileHeld(new ElevatorShooterWhenReadyCmd());
+        elevShootAuto.whileHeld(new ElevatorShooterUntilShotCmd());
         elevShootMan.whileHeld(new ElevatorShooterCmd());
         elevSuperintake.whileHeld(new ElevatorSuperintakeCmd());
         elevSpit.whileHeld(new ElevatorSpitCmd());

@@ -3,6 +3,7 @@ package edu.neu.nutrons.reboundrumble;
 import edu.neu.nutrons.lib.PulseTriggerBoolean;
 import edu.neu.nutrons.lib.Utils;
 import edu.neu.nutrons.reboundrumble.commands.auto.ShootFromFenderAutoMode;
+import edu.neu.nutrons.reboundrumble.commands.auto.ShootFromKeyAutoMode;
 import edu.neu.nutrons.reboundrumble.commands.auto.ShootFromKeyHackyAutoMode;
 import edu.neu.nutrons.reboundrumble.commands.auto.TipBridgeAutoMode;
 import edu.neu.nutrons.reboundrumble.commands.drivetrain.DTManualCheesyCmd;
@@ -19,9 +20,10 @@ public class AutoModeSelector {
 
     // Constants.
     private final int KEY = 0;
-    private final int BRIDGE = 1;
-    private final int FENDER = 9001;
-    private final int NUM_MODES = 2 ;
+    private final int KEY_ALT = 1;
+    private final int BRIDGE = 9001;
+    private final int FENDER = 9002;
+    private final int NUM_MODES = 2;
 
     // Other variables.
     private Joystick js;
@@ -60,6 +62,8 @@ public class AutoModeSelector {
         switch(mode) {
             case KEY:
                 return "Key";
+            case KEY_ALT:
+                return "Key alt";
             case BRIDGE:
                 return "Tip bridge";
             case FENDER:
@@ -74,6 +78,9 @@ public class AutoModeSelector {
         switch(mode) {
             case KEY:
                 autoMode = new ShootFromKeyHackyAutoMode(delay);
+                break;
+            case KEY_ALT:
+                autoMode = new ShootFromKeyAutoMode(delay, 3);
                 break;
             case BRIDGE:
                 autoMode = new TipBridgeAutoMode(delay);

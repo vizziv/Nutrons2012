@@ -35,7 +35,7 @@ public class Tracker implements PIDSource {
     private final ExposureT camExposure = ExposureT.hold;
     public static final int IMAGE_WIDTH = 320;
     public static final int IMAGE_HEIGHT = 240;
-    private final double CAM_CENTER = -2.0/32.0;
+    private final double CAM_CENTER = -1.3/32.0;
 
     // Actual robot part.
     private final  AxisCamera cam = AxisCamera.getInstance();

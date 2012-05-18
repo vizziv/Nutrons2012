@@ -1,8 +1,7 @@
 package edu.neu.nutrons.reboundrumble.commands.auto;
 
-import edu.neu.nutrons.lib.LoopCmd;
 import edu.neu.nutrons.reboundrumble.commands.CommandBase;
-import edu.neu.nutrons.reboundrumble.commands.group.ShootWhenReadyCmd;
+import edu.neu.nutrons.reboundrumble.commands.elevator.ElevatorShooterUntilShotCmd;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 
@@ -13,9 +12,11 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
  */
 public class ShootFromKeyAutoMode extends CommandGroup {
 
-    public ShootFromKeyAutoMode(double shootTime) {
+    public ShootFromKeyAutoMode(double shootTime, double betweenTime) {
         addParallel(CommandBase.prepareKeyCmd());
         addSequential(new WaitCommand(shootTime));
-        addSequential(new LoopCmd(new ShootWhenReadyCmd()));
+        addSequential(new ElevatorShooterUntilShotCmd());
+        addSequential(new WaitCommand(betweenTime));
+        addSequential(new ElevatorShooterUntilShotCmd());
     }
 }

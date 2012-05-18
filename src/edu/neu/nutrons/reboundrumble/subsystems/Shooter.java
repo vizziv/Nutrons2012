@@ -31,6 +31,7 @@ public class Shooter extends PIDSubsystem {
     private final int SETPOINT_DEBOUNCE_LENGTH = 1;
     private final double MAX_BACKWARD_POWER = 0.0;
     private final double TOLERANCE = 220;
+    private final double CHILL_TOLERANCE = 1000;
 
     // Actual robot parts.
     private final SpeedController mot1 = new Jaguar(RobotMap.SHOOTER_MOTOR_1);
@@ -81,6 +82,10 @@ public class Shooter extends PIDSubsystem {
 
     public boolean atSetpoint() {
         return dbAtSetpoint.get();
+    }
+
+    public boolean nearSetpoint() {
+        return Math.abs(getRate() - getSetpoint()) < CHILL_TOLERANCE;
     }
 
     public void enable() {
